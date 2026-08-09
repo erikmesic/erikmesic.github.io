@@ -5,7 +5,6 @@ async function loadData(){
     const data = await res.json();
     // footer year (applies across pages)
     document.querySelectorAll('.footer p').forEach(p => { p.textContent = '© 2026 Erik Mesic'; });
-    document.querySelectorAll('.footer-center').forEach(el=> el.textContent = '© 2026 Erik Mesic');
 
     // Featured projects on home
     const cardRoot = document.getElementById('featured-projects');
@@ -78,7 +77,17 @@ document.addEventListener('DOMContentLoaded', ()=>{
     if(close) close.addEventListener('click', ()=>{ panel.style.display='none'; panel.setAttribute('aria-hidden','true'); });
     // clicking outside panel content hides it
     panel.addEventListener('click', (e)=>{ if(e.target === panel) { panel.style.display='none'; panel.setAttribute('aria-hidden','true'); }});
-    // keep anchors default so mailto works and external links open
+    // ensure links inside the panel work regardless of event propagation
+    panel.querySelectorAll('a').forEach(a=>{
+      const href = a.getAttribute('href') || a.dataset.href;
+      if(!href) return;
+      a.addEventListener('click',(e)=>{
+        e.preventDefault();
+        if(href.startsWith('mailto:')){ window.location.href = href; }
+        else { window.open(href, '_blank', 'noopener'); }
+        // keep panel open to allow user to close it manually
+      });
+    });
   }
 
   // theme toggle — persistent across pages via localStorage
@@ -93,14 +102,16 @@ document.addEventListener('DOMContentLoaded', ()=>{
     }
     localStorage.setItem('site-theme', t);
   }
-  const saved = localStorage.getItem('site-theme');
-  const prefersDark = window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches;
-  applyTheme(saved || (prefersDark ? 'dark' : 'light'));
-  if(toggle) toggle.addEventListener('click', ()=>{ const cur = localStorage.getItem('site-theme') || (prefersDark ? 'dark' : 'light'); applyTheme(cur === 'light' ? 'dark' : 'light'); });
-
-  // back-to-top
-  const back = document.getElementById('back-to-top');
-  if(back) back.addEventListener('click', ()=> window.scrollTo({top:0,behavior:'smooth'}));
+  if(toggle){
+    const saved = localStorage.getItem('site-theme');
+    const prefersDark = window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches;
+    applyTheme(saved || (prefersDark ? 'dark' : 'light'));
+    toggle.addEventListener('click', ()=>{ const cur = localStorage.getItem('site-theme') || (prefersDark ? 'dark' : 'light'); applyTheme(cur === 'light' ? 'dark' : 'light'); });
+  } else {
+    // still apply saved theme even if this page lacks a toggle element
+    const saved = localStorage.getItem('site-theme');
+    if(saved) applyTheme(saved);
+  }
 
   // Ensure footer year centered (in case inline styles differ)
   document.querySelectorAll('.footer').forEach(f=> f.style.textAlign = 'center');
