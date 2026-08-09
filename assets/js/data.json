@@ -2,14 +2,14 @@
   "name": "Erik Mesic",
   "headline": "Student at NYU Stern — Finance | Pre-Law",
   "summary": "Interested in the intersection of law, business, and governance. Open to internships and research opportunities.",
-  "about": "I am a student at NYU Stern studying Finance and Pre-Law. I focus on the intersection of law and business, and I am passionate about governance, policy, and financial analysis. This site is a simple, editable resume built for GitHub Pages.",
+  "about": "I am a student at NYU Stern studying Finance and Pre-Law. I focus on the intersection of law and business, and I am passionate about governance, policy, and financial analysis. This site collects my education, experience, projects, and contact information.",
   "experience": [
     {
       "title": "Student",
       "company": "NYU Stern School of Business",
       "range": "2024 — Present",
       "location": "New York, NY",
-      "description": "Coursework: Finance, Accounting, Statistics. Involved in student organizations and projects at the intersection of law and business."
+      "description": "Coursework: Finance, Accounting, Statistics. Interested in corporate governance, policy, and legal frameworks affecting business."
     }
   ],
   "projects": [
@@ -25,9 +25,9 @@
     {"school":"Hillsborough College","degree":"Associate of Arts","range":"2021 — 2023","details":"General studies prior to transfer to NYU."}
   ],
   "skills": ["Financial Analysis","Research","Written Communication","Policy Analysis","Microsoft Excel","Public Speaking"],
-  "honors": ["(Add honors/awards here)"],
+  "honors": ["(Please edit honors/awards from your resume where applicable)"],
   "updates": [
-    {"title":"Launched new resume site","date":"2026-08-09","text":"Deployed initial version of the resume website to GitHub Pages."}
+    {"title":"Launched updated resume site","date":"2026-08-09","text":"Deployed redesigned resume site with dark-academia styling and LinkedIn-sourced public information."}
   ],
-  "contact": {"email":"your.email@example.com","linkedin":"https://www.linkedin.com/in/erikmesic/","resume":"/resume.pdf"}
+  "contact": {"email":"erik.mesic@live.com","linkedin":"https://www.linkedin.com/in/erikmesic/","resume":"/Mesic Résumé - Technology.pdf"}
 }

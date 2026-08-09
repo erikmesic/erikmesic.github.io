@@ -1,4 +1,4 @@
-// main.js — populate the single-page resume from data.json
+// main.js — populate the single-page resume from data.json and add theme toggle
 async function loadData(){
   try{
     const res = await fetch('/assets/js/data.json');
@@ -22,7 +22,7 @@ async function loadData(){
     const projectsRoot = document.getElementById('projects-list'); projectsRoot.innerHTML='';
     (data.projects||[]).forEach(p=>{
       const c = document.createElement('div'); c.className='card';
-      c.innerHTML = `<h3 style="margin:0">${escape(p.name)}</h3><p class="muted">${escape(p.tags?.join(', ')||'')}</p><p>${escape(p.description)}</p>${p.link?`<p><a href="${p.link}" target="_blank" rel="noopener">Project link</a></p>`:''}`;
+      c.innerHTML = `<h3 style="margin:0">${escape(p.name)}</h3><p class="muted">${escape((p.tags||[]).join(', '))}</p><p>${escape(p.description)}</p>${p.link?`<p><a href="${p.link}" target="_blank" rel="noopener">Project link</a></p>`:''}`;
       projectsRoot.appendChild(c);
     });
 
@@ -61,5 +61,28 @@ async function loadData(){
 }
 
 function escape(str){ if(!str && str!==0) return ''; return String(str).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;'); }
+
+// Theme toggle
+const toggle = document.getElementById('theme-toggle');
+function applyTheme(theme){
+  if(theme === 'light') document.documentElement.classList.add('light');
+  else document.documentElement.classList.remove('light');
+  localStorage.setItem('site-theme', theme);
+  toggle.textContent = theme === 'light' ? '☼' : '☾';
+}
+
+toggle.addEventListener('click', ()=>{
+  const cur = localStorage.getItem('site-theme') || 'dark';
+  const next = cur === 'light' ? 'dark' : 'light';
+  applyTheme(next);
+});
+
+// initialize theme on load
+(function(){
+  const saved = localStorage.getItem('site-theme');
+  const prefersDark = window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches;
+  const theme = saved || (prefersDark ? 'dark' : 'light');
+  applyTheme(theme);
+})();
 
 loadData();

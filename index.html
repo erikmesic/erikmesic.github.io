@@ -4,6 +4,8 @@
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width,initial-scale=1" />
   <title>Erik Mesic — Resume</title>
+  <!-- Prefer Glacial Indifference, fall back to classic serif fonts for a dark-academic feel -->
+  <link href="https://fonts.googleapis.com/css2?family=Glacial+Indifference:wght@300;400;600&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="/assets/css/styles.css">
   <meta name="description" content="Resume, projects, and contact for Erik Mesic">
 </head>
@@ -18,14 +20,15 @@
         <li><a href="#education">Education</a></li>
         <li><a href="#skills">Skills</a></li>
         <li><a href="#honors">Honors</a></li>
+        <li><a href="#updates">Updates</a></li>
         <li><a href="#contact">Contact</a></li>
       </ul>
     </nav>
     <div class="hero" id="hero">
       <div class="hero-inner">
         <h1 id="name">Erik Mesic</h1>
-        <p id="headline">Student at NYU Stern — Finance | Pre-Law</p>
-        <p id="summary" class="muted">Loading summary…</p>
+        <p id="headline" class="muted">Student at NYU Stern — Finance | Pre-Law</p>
+        <p id="summary" class="lead muted">Loading summary…</p>
         <div class="hero-ctas">
           <a id="download-resume" class="btn" href="#">Download Resume</a>
           <a id="contact-cta" class="btn btn-outline" href="#contact">Contact</a>
@@ -35,7 +38,7 @@
   </header>
 
   <main class="container">
-    <section id="about" class="section">
+    <section id="about" class="section carded">
       <h2>About</h2>
       <p id="about-text">Loading…</p>
     </section>
@@ -70,7 +73,7 @@
       <div id="updates-list"></div>
     </section>
 
-    <section id="contact" class="section contact-section">
+    <section id="contact" class="section contact-section carded">
       <h2>Contact</h2>
       <p>If you'd like to reach me, email: <a id="email-link" href="#">(email)</a></p>
       <p>LinkedIn: <a id="linkedin-link" href="#" target="_blank" rel="noopener">Profile</a></p>
@@ -80,6 +83,9 @@
   <footer class="footer">
     <p>© <span id="footer-year"></span> Erik Mesic • Built with GitHub Pages</p>
   </footer>
+
+  <!-- Light/Dark toggle placed bottom-left -->
+  <button id="theme-toggle" aria-label="Toggle theme" title="Toggle light/dark" class="theme-toggle">☾</button>
 
   <script src="/assets/js/main.js"></script>
 </body>
