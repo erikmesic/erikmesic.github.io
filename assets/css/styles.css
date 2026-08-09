@@ -1,10 +1,9 @@
-/* styles.css — add texture, mouse light follower, hover pop with thin border, image placeholders, subtle particles, preserved font setup */
 :root{
   --topbar-height:56px;
   --bg:#0b0a09;
   --panel:#14120f;
   --muted:#bfb3a2;
-  --accent:#7a4b2f;       /* warm brown you liked — used for contact pill and highlights */
+  --accent:#7a4b2f;
   --accent-2:#6b8a83;
   --text:#efe8df;
 }
@@ -12,17 +11,11 @@
 *{box-sizing:border-box}
 html,body{height:100%;margin:0}
 body{font-family: 'Glacial Indifference', system-ui, -apple-system, 'Segoe UI', Roboto, 'Helvetica Neue', Arial; background:var(--bg); color:var(--text); -webkit-font-smoothing:antialiased; overflow-x:hidden}
-/* background texture layer (subtle) */
-body::before{
-  content:"";position:fixed;inset:0;pointer-events:none;background-image:url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="40" height="40" viewBox="0 0 40 40"><rect width="40" height="40" fill="%230b0a09"/><g fill="%2314140f" opacity="0.03"><circle cx="10" cy="10" r="1"/><circle cx="30" cy="30" r="1"/></g></svg>');background-repeat:repeat;opacity:0.06;z-index:0
-}
-/* mouse light follower */
+body::before{content:"";position:fixed;inset:0;pointer-events:none;background-image:url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="40" height="40" viewBox="0 0 40 40"><rect width="40" height="40" fill="%230b0a09"/><g fill="%2314140f" opacity="0.03"><circle cx="10" cy="10" r="1"/><circle cx="30" cy="30" r="1"/></g></svg>');background-repeat:repeat;opacity:0.06;z-index:0}
 #mouse-light{position:fixed;left:0;top:0;width:420px;height:420px;border-radius:50%;pointer-events:none;mix-blend-mode:screen;background:radial-gradient(circle at center, rgba(186,142,111,0.45) 0%, rgba(186,142,111,0.33) 14%, rgba(186,142,111,0.18) 30%, rgba(186,142,111,0.08) 50%, rgba(186,142,111,0.03) 70%, transparent 100%);filter: blur(10px);z-index:1;will-change:left,top,opacity;transform:translate(-50%,-50%)}
-/* particles canvas sits underneath UI but above texture */
 #particles-canvas{position:fixed;left:0;top:0;width:100%;height:100%;z-index:0;pointer-events:none}
 h1,h2,h3{font-family:"Libre Baskerville", Georgia, serif;z-index:2}
 a{color:var(--accent-2);text-decoration:none}
-/* topbar: center the logo while keeping nav to the right */
 .site-header{position:fixed;top:0;left:0;right:0;height:var(--topbar-height);display:flex;align-items:center;justify-content:center;background:rgba(11,10,9,0.86);backdrop-filter:blur(6px);z-index:3;border-bottom:1px solid rgba(255,255,255,0.03)}
 .topbar-inner{width:100%;max-width:1100px;padding:0 20px;display:flex;align-items:center;justify-content:center;position:relative}
 .logo{font-weight:700}
@@ -35,25 +28,19 @@ main.container{padding-top:calc(var(--topbar-height) + 28px)}
 .hero h1{font-size:46px;margin:0 0 8px}
 .lead{font-size:17px;line-height:1.6}
 .muted{color:var(--muted)}
-/* slower transitions */
 .btn{display:inline-block;padding:10px 16px;border-radius:8px;background:var(--accent);color:var(--panel);text-decoration:none;font-weight:600;transition:transform .28s ease, box-shadow .28s ease, border .28s ease}
 .btn-outline{display:inline-block;padding:10px 16px;border-radius:8px;background:transparent;border:1px solid rgba(255,255,255,0.04);color:var(--text);transition:transform .28s ease,border .28s ease}
-/* hover pop + thin 3px border almost like background but slightly lighter */
 .btn:hover, .btn-outline:hover{transform:translateY(-6px);box-shadow:0 12px 36px rgba(0,0,0,0.5);border:1px solid rgba(255,255,255,0.04);}
 .section{padding:36px 0}
-/* About Me layout similar to reference: left text, right profile with broken-paper mask */
 .about-grid{display:grid;grid-template-columns:1fr 320px;gap:28px;align-items:start}
 .about-left{font-size:16px;line-height:1.8}
 .about-right{background:transparent;padding:0;border-radius:8px}
 .profile-photo{width:100%;height:320px;background:linear-gradient(180deg, rgba(0,0,0,0.18), rgba(0,0,0,0.08));border-radius:8px;display:block;object-fit:cover}
-/* paper-edge mask for profile image */
 .paper-edge{ -webkit-mask-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><filter id="t"><feTurbulence baseFrequency="0.02" numOctaves="2" stitchTiles="stitch"/></filter><rect width="100" height="100" fill="white" filter="url(%23t)"/></svg>'); mask-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><filter id="t"><feTurbulence baseFrequency="0.02" numOctaves="2" stitchTiles="stitch"/></filter><rect width="100" height="100" fill="white" filter="url(%23t)"/></svg>'); mask-mode: alpha; box-shadow: inset 0 -6px 18px rgba(0,0,0,0.15); }
 .cards{display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:16px}
 .card{padding:18px;border-radius:6px;background:transparent;border:1px solid rgba(255,255,255,0.03);transition:transform .36s ease, box-shadow .36s ease}
 .card:hover{transform:translateY(-6px);box-shadow:0 12px 36px rgba(0,0,0,0.45)}
-/* Contact pill bottom-right floating */
 .contact-pill{position:fixed;right:20px;bottom:20px;background:linear-gradient(90deg,var(--accent),#8f5a3b);color:var(--panel);border:1px solid rgba(0,0,0,0.12);padding:12px 18px;border-radius:999px;font-weight:700;box-shadow:0 16px 48px rgba(0,0,0,0.6);z-index:5;transition:transform .28s ease, box-shadow .28s ease}
-/* ring on hover ON TOP OF existing border: using extra box-shadow */
 .contact-pill:hover{transform:translateY(-6px);box-shadow:0 18px 56px rgba(0,0,0,0.55), 0 0 0 3px rgba(255,255,255,0.02);}
 .contact-panel{display:none;position:fixed;right:20px;bottom:72px;background:var(--panel);color:var(--text);padding:18px;border-radius:8px;box-shadow:0 14px 40px rgba(0,0,0,0.6);z-index:6}
 .contact-close{background:transparent;border:none;color:var(--muted);font-size:18px;float:right;cursor:pointer}
@@ -63,7 +50,6 @@ main.container{padding-top:calc(var(--topbar-height) + 28px)}
 .timeline-item:before{content:'';position:absolute;left:-20px;top:12px;width:12px;height:12px;border-radius:50%;background:var(--accent)}
 .tag{display:inline-block;padding:6px 10px;border-radius:999px;background:rgba(255,255,255,0.02);color:var(--muted);font-size:13px;margin-right:8px}
 .page-title{display:inline-block;position:relative}
-/* typing caret for the typewriter effect */
-.type-caret{display:inline-block;width:2px;height:1.05em;background:var(--text);margin-left:8px;vertical-align:bottom;animation:blink 1s steps(2,start) infinite}
+.type-caret{display:inline-block;width:2px;height:1em;background:var(--text);margin-left:8px;vertical-align:middle;animation:blink 1s steps(2,start) infinite}
 @keyframes blink{50%{opacity:0}}
 @media(max-width:900px){.about-grid{grid-template-columns:1fr}.about-right{order:2}.topnav{display:none;position:static;transform:none;margin-left:auto}.topbar-inner{justify-content:space-between}}
