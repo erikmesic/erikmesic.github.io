@@ -24,3 +24,6 @@
 .profile-info-box .info-label{ color: var(--muted); font-size:11px; letter-spacing:1px; text-transform:uppercase; }
 .profile-info-box .info-value{ font-weight:600; text-align:right; }
 .profile-info-box .divider{ height:1px; background: rgba(255,255,255,0.015); margin:6px 0; border-radius:1px; }
+
+/* mouse-light: smoother radial gradient and centered using left/top positioning */
+#mouse-light{position:fixed;left:50%;top:50%;width:420px;height:420px;border-radius:50%;pointer-events:none;mix-blend-mode:screen;z-index:1;will-change:left,top,opacity;transform:translate(-50%,-50%);background:radial-gradient(circle at center, rgba(186,142,111,0.45) 0%, rgba(186,142,111,0.33) 10%, rgba(186,142,111,0.18) 25%, rgba(186,142,111,0.08) 45%, rgba(186,142,111,0.03) 70%, transparent 100%);}

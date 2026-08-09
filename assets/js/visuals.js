@@ -1,15 +1,18 @@
-// visuals.js — mouse light (no lag), subtle particles, and page-title animation tests
+// visuals.js — mouse light follows cursor using left/top (no lag), smoother gradient already styled in CSS, particles, and page-title animation tests
 (function(){
-  // Mouse-light directly follows cursor (no smoothing)
+  // Mouse-light element
   let light = document.getElementById('mouse-light');
   if(!light){
     light = document.createElement('div');
     light.id = 'mouse-light';
     document.body.appendChild(light);
   }
+
+  // Place the light using left/top so CSS translate(-50%,-50%) keeps it centered on cursor
   window.addEventListener('mousemove', function(e){
-    // place center of light at cursor
-    light.style.transform = `translate(${e.clientX}px, ${e.clientY}px)`;
+    // directly set left/top (no smoothing) so it stays centered on cursor
+    light.style.left = e.clientX + 'px';
+    light.style.top = e.clientY + 'px';
   });
 
   // Particles canvas (simple, low-cost)
