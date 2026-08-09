@@ -40,7 +40,7 @@
       </div>
     </section>
 
-    <!-- About Me: left text, right profile with broken-paper mask -->
+    <!-- About Me: left text, right profile with user-supplied photo and sidebar info -->
     <section class="section">
       <div class="about-grid">
         <div class="about-left">
@@ -48,14 +48,23 @@
           <p>I am an undergraduate at NYU Stern in the Certified Public Accounting track with minors in Mathematics and Computer Science. I pursue research and practical work at the intersection of policy, law, and financial modeling. Outside of school, I enjoy debate, photography, and community education projects.</p>
           <p class="muted">I am interested in corporate governance, public policy, and empirical research. I build reproducible analysis pipelines and enjoy mentoring high school students in mathematics and writing.</p>
         </div>
+        <!-- START UPDATED ASIDE: local change only -->
         <aside class="about-right" aria-hidden="false">
-          <!-- profile-no-bg.png should be added to assets/img/ before pushing -->
-          <img src="/assets/img/profile-no-bg.png" alt="Erik Mesic — portrait" class="profile-photo paper-edge" />
-          <div style="margin-top:12px">
-            <div><strong>NYU Stern</strong><div class="muted">B.S. Accounting, CPA Track (Expected)</div></div>
-            <div style="margin-top:10px;"><span class="tag">Accounting</span><span class="tag">Policy</span><span class="tag">Research</span></div>
+          <div class="photo-wrap">
+            <img src="/assets/img/profile-no-bg.png" alt="Erik Mesic — portrait" class="profile-photo" />
+          </div>
+
+          <div class="profile-info-box" aria-hidden="false" role="note" style="margin-top:14px">
+            <div class="info-row"><div class="info-label">EDUCATION</div><div class="info-value">NYU Leonard N. Stern School of Business</div></div>
+            <div class="divider"></div>
+            <div class="info-row"><div class="info-label">FOCUS AREAS</div><div class="info-value">Accounting, Law, Public Policy, Technology, Finance</div></div>
+            <div class="divider"></div>
+            <div class="info-row"><div class="info-label">LOCATION</div><div class="info-value">New York, NY and Tampa, FL</div></div>
+            <div class="divider"></div>
+            <div class="info-row"><div class="info-label">GRADUATION</div><div class="info-value">Expected September 2028</div></div>
           </div>
         </aside>
+        <!-- END UPDATED ASIDE -->
       </div>
     </section>
 
