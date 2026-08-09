@@ -3,9 +3,8 @@ async function loadData(){
   try{
     const res = await fetch('/assets/js/data.json');
     const data = await res.json();
-    // footer year
-    const fy = document.querySelector('.footer p');
-    if(fy) fy.textContent = '© 2026 Erik Mesic';
+    // footer year (applies across pages)
+    document.querySelectorAll('.footer p').forEach(p => { p.textContent = '© 2026 Erik Mesic'; });
 
     // Featured projects on home
     const cardRoot = document.getElementById('featured-projects');
@@ -41,13 +40,8 @@ async function loadData(){
     const honorsRoot = document.getElementById('honors-list');
     if(honorsRoot && data.honors){
       honorsRoot.innerHTML = '';
-      // data.honors is expected to be an array of objects {year:2026,title:...,meta:...}
       const grouped = {};
-      data.honors.forEach(h=>{
-        grouped[h.year] = grouped[h.year] || [];
-        grouped[h.year].push(h);
-      });
-      // sort years descending
+      data.honors.forEach(h=>{ grouped[h.year] = grouped[h.year] || []; grouped[h.year].push(h); });
       Object.keys(grouped).sort((a,b)=>b-a).forEach(year=>{
         const yearH = document.createElement('h3'); yearH.textContent = year; honorsRoot.appendChild(yearH);
         grouped[year].forEach(h=>{
@@ -62,34 +56,63 @@ async function loadData(){
     const hobbiesRoot = document.getElementById('hobbies-root');
     if(hobbiesRoot && data.hobbies){
       hobbiesRoot.innerHTML = '';
-      data.hobbies.forEach(h=>{
-        const d = document.createElement('div'); d.className = 'hobby-item'; d.innerHTML = `<h4>${h}</h4>`;
-        hobbiesRoot.appendChild(d);
-      });
+      data.hobbies.forEach(h=>{ const d = document.createElement('div'); d.className = 'hobby-item'; d.innerHTML = `<h4>${h}</h4>`; hobbiesRoot.appendChild(d); });
     }
 
-    // About profile image: if present, the markup points to /assets/img/profile-no-bg.png
+    // About profile image
     const pimg = document.querySelector('.profile-photo');
     if(pimg && data.contact && data.contact.photo){ pimg.src = data.contact.photo; }
   }catch(err){ console.error('Error loading data.json', err); }
 }
+
 document.addEventListener('DOMContentLoaded', ()=>{
   loadData();
-  // contact pill behavior
+
+  // contact pill behavior and links
   const pill = document.getElementById('contact-pill');
   const panel = document.getElementById('contact-panel');
   const close = document.getElementById('contact-close');
   if(pill && panel){
     pill.addEventListener('click', ()=>{ panel.style.display='block'; panel.setAttribute('aria-hidden','false'); });
-    close && close.addEventListener('click', ()=>{ panel.style.display='none'; panel.setAttribute('aria-hidden','true'); });
+    if(close) close.addEventListener('click', ()=>{ panel.style.display='none'; panel.setAttribute('aria-hidden','true'); });
+    // clicking outside panel content hides it
     panel.addEventListener('click', (e)=>{ if(e.target === panel) { panel.style.display='none'; panel.setAttribute('aria-hidden','true'); }});
+    // ensure links inside the panel work regardless of event propagation
+    panel.querySelectorAll('a').forEach(a=>{
+      const href = a.getAttribute('href') || a.dataset.href;
+      if(!href) return;
+      a.addEventListener('click',(e)=>{
+        e.preventDefault();
+        if(href.startsWith('mailto:')){ window.location.href = href; }
+        else { window.open(href, '_blank', 'noopener'); }
+        // keep panel open to allow user to close it manually
+      });
+    });
   }
-  // theme toggle
+
+  // theme toggle — persistent across pages via localStorage
   const toggle = document.getElementById('theme-toggle');
-  if(toggle){
-    function apply(t){ if(t==='light') document.documentElement.classList.add('light'); else document.documentElement.classList.remove('light'); localStorage.setItem('site-theme', t); toggle.textContent = t==='light'?'☼':'☾'; }
-    const saved = localStorage.getItem('site-theme'); const prefersDark = window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches;
-    apply(saved || (prefersDark ? 'dark' : 'light'));
-    toggle.addEventListener('click', ()=>{ const cur = localStorage.getItem('site-theme') || 'dark'; apply(cur === 'light' ? 'dark' : 'light'); });
+  function applyTheme(t){
+    if(t === 'light'){
+      document.documentElement.classList.add('light');
+      if(toggle) toggle.textContent = '☼';
+    } else {
+      document.documentElement.classList.remove('light');
+      if(toggle) toggle.textContent = '☾';
+    }
+    localStorage.setItem('site-theme', t);
   }
+  if(toggle){
+    const saved = localStorage.getItem('site-theme');
+    const prefersDark = window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches;
+    applyTheme(saved || (prefersDark ? 'dark' : 'light'));
+    toggle.addEventListener('click', ()=>{ const cur = localStorage.getItem('site-theme') || (prefersDark ? 'dark' : 'light'); applyTheme(cur === 'light' ? 'dark' : 'light'); });
+  } else {
+    // still apply saved theme even if this page lacks a toggle element
+    const saved = localStorage.getItem('site-theme');
+    if(saved) applyTheme(saved);
+  }
+
+  // Ensure footer year centered (in case inline styles differ)
+  document.querySelectorAll('.footer').forEach(f=> f.style.textAlign = 'center');
 });
