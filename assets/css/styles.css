@@ -35,8 +35,9 @@ main.container{padding-top:calc(var(--topbar-height) + 28px)}
 .hero h1{font-size:46px;margin:0 0 8px}
 .lead{font-size:17px;line-height:1.6}
 .muted{color:var(--muted)}
-.btn{display:inline-block;padding:10px 16px;border-radius:8px;background:var(--accent);color:var(--panel);text-decoration:none;font-weight:600;transition:transform .12s ease, box-shadow .12s ease, border .12s ease}
-.btn-outline{display:inline-block;padding:10px 16px;border-radius:8px;background:transparent;border:1px solid rgba(255,255,255,0.04);color:var(--text);transition:transform .12s ease,border .12s ease}
+/* slower transitions */
+.btn{display:inline-block;padding:10px 16px;border-radius:8px;background:var(--accent);color:var(--panel);text-decoration:none;font-weight:600;transition:transform .28s ease, box-shadow .28s ease, border .28s ease}
+.btn-outline{display:inline-block;padding:10px 16px;border-radius:8px;background:transparent;border:1px solid rgba(255,255,255,0.04);color:var(--text);transition:transform .28s ease,border .28s ease}
 /* hover pop + thin 3px border almost like background but slightly lighter */
 .btn:hover, .btn-outline:hover{transform:translateY(-6px);box-shadow:0 12px 36px rgba(0,0,0,0.5);border:1px solid rgba(255,255,255,0.04);}
 .section{padding:36px 0}
@@ -48,10 +49,10 @@ main.container{padding-top:calc(var(--topbar-height) + 28px)}
 /* paper-edge mask for profile image */
 .paper-edge{ -webkit-mask-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><filter id="t"><feTurbulence baseFrequency="0.02" numOctaves="2" stitchTiles="stitch"/></filter><rect width="100" height="100" fill="white" filter="url(%23t)"/></svg>'); mask-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><filter id="t"><feTurbulence baseFrequency="0.02" numOctaves="2" stitchTiles="stitch"/></filter><rect width="100" height="100" fill="white" filter="url(%23t)"/></svg>'); mask-mode: alpha; box-shadow: inset 0 -6px 18px rgba(0,0,0,0.15); }
 .cards{display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:16px}
-.card{padding:18px;border-radius:6px;background:transparent;border:1px solid rgba(255,255,255,0.03);transition:transform .18s ease, box-shadow .18s ease}
+.card{padding:18px;border-radius:6px;background:transparent;border:1px solid rgba(255,255,255,0.03);transition:transform .36s ease, box-shadow .36s ease}
 .card:hover{transform:translateY(-6px);box-shadow:0 12px 36px rgba(0,0,0,0.45)}
 /* Contact pill bottom-right floating */
-.contact-pill{position:fixed;right:20px;bottom:20px;background:linear-gradient(90deg,var(--accent),#8f5a3b);color:var(--panel);border:1px solid rgba(0,0,0,0.12);padding:12px 18px;border-radius:999px;font-weight:700;box-shadow:0 16px 48px rgba(0,0,0,0.6);z-index:5;transition:transform .12s ease, box-shadow .12s ease}
+.contact-pill{position:fixed;right:20px;bottom:20px;background:linear-gradient(90deg,var(--accent),#8f5a3b);color:var(--panel);border:1px solid rgba(0,0,0,0.12);padding:12px 18px;border-radius:999px;font-weight:700;box-shadow:0 16px 48px rgba(0,0,0,0.6);z-index:5;transition:transform .28s ease, box-shadow .28s ease}
 /* ring on hover ON TOP OF existing border: using extra box-shadow */
 .contact-pill:hover{transform:translateY(-6px);box-shadow:0 18px 56px rgba(0,0,0,0.55), 0 0 0 3px rgba(255,255,255,0.02);}
 .contact-panel{display:none;position:fixed;right:20px;bottom:72px;background:var(--panel);color:var(--text);padding:18px;border-radius:8px;box-shadow:0 14px 40px rgba(0,0,0,0.6);z-index:6}

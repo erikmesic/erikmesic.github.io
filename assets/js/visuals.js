@@ -1,4 +1,4 @@
-// visuals.js — mouse light follows cursor using left/top (no lag), smoother gradient already styled in CSS, particles, and page-title animation tests
+// visuals.js — mouse light follows cursor using left/top (no lag), slower page title animations, and typewriter with caret
 (function(){
   // Mouse-light element
   let light = document.getElementById('mouse-light');
@@ -8,11 +8,9 @@
     document.body.appendChild(light);
   }
 
-  // Place the light using left/top so CSS translate(-50%,-50%) keeps it centered on cursor
   window.addEventListener('mousemove', function(e){
-    // directly set left/top (no smoothing) so it stays centered on cursor
     light.style.left = e.clientX + 'px';
-    light.style.top = e.clientY + 'px';
+    light.style.top  = e.clientY + 'px';
   });
 
   // Particles canvas (simple, low-cost)
@@ -21,9 +19,9 @@
   if(ctx){
     let w = canvas.width = innerWidth, h = canvas.height = innerHeight;
     const particles = [];
-    const count = 40; // small count for performance
+    const count = 30; // slightly fewer for performance
     for(let i=0;i<count;i++){
-      particles.push({x:Math.random()*w, y:Math.random()*h, r: Math.random()*1.3+0.3, vx:(Math.random()-0.5)*0.25, vy:(Math.random()-0.5)*0.25, o:0.05+Math.random()*0.12});
+      particles.push({x:Math.random()*w, y:Math.random()*h, r: Math.random()*1.3+0.3, vx:(Math.random()-0.5)*0.15, vy:(Math.random()-0.5)*0.15, o:0.04+Math.random()*0.10});
     }
     function resize(){ w = canvas.width = innerWidth; h = canvas.height = innerHeight; }
     window.addEventListener('resize', resize);
@@ -42,49 +40,32 @@
     draw();
   }
 
-  // Page title animations — test one per page
-  function typeEffect(el, text, speed=30){
+  // Page title animations — slower timings and a typewriter with caret
+  function typeEffect(el, text, speed=90){ // slower typing
     el.textContent = '';
-    let i=0;
-    const id = setInterval(()=>{ el.textContent += text[i++]||''; if(i>text.length) clearInterval(id); }, speed);
+    let i = 0;
+    // insert caret element after the title if not present
+    let caret = el.nextElementSibling;
+    if(!caret || !caret.classList || !caret.classList.contains('type-caret')){
+      caret = document.createElement('span'); caret.className = 'type-caret'; el.parentNode && el.parentNode.insertBefore(caret, el.nextSibling);
+    }
+    const id = setInterval(()=>{
+      if(i < text.length){ el.textContent += text[i++]; }
+      else { clearInterval(id); setTimeout(()=>{ caret.remove(); }, 800); }
+    }, speed);
   }
-  function underlineNeat(el){
-    el.classList.add('title-underline');
-    setTimeout(()=> el.classList.add('animated'), 70);
-  }
-  function messyHighlight(el){
-    el.style.background = 'linear-gradient(90deg, rgba(186,142,111,0.12) 0%, rgba(186,142,111,0.08) 100%)';
-    el.style.transform = 'skewX(-8deg)';
-    setTimeout(()=> el.style.transform = 'skewX(0deg)', 480);
-  }
-  function circled(el){
-    const svg = document.createElementNS('http://www.w3.org/2000/svg','svg');
-    svg.setAttribute('viewBox','0 0 200 40');
-    svg.style.height='12px'; svg.style.display='block'; svg.style.marginTop='8px';
-    const rect = document.createElementNS('http://www.w3.org/2000/svg','rect');
-    rect.setAttribute('x','0'); rect.setAttribute('y','0'); rect.setAttribute('width','100%'); rect.setAttribute('height','6');
-    rect.setAttribute('rx','3'); rect.style.fill = 'rgba(186,142,111,0.06)';
-    svg.appendChild(rect); el.parentNode.insertBefore(svg, el.nextSibling);
-  }
+  function underlineNeat(el){ el.classList.add('title-underline'); setTimeout(()=> el.classList.add('animated'), 300); }
+  function messyHighlight(el){ el.style.background = 'linear-gradient(90deg, rgba(186,142,111,0.12) 0%, rgba(186,142,111,0.08) 100%)'; el.style.transform = 'skewX(-8deg)'; setTimeout(()=> el.style.transform = 'skewX(0deg)', 1000); }
+  function circled(el){ const svg = document.createElementNS('http://www.w3.org/2000/svg','svg'); svg.setAttribute('viewBox','0 0 200 40'); svg.style.height='12px'; svg.style.display='block'; svg.style.marginTop='8px'; const rect = document.createElementNS('http://www.w3.org/2000/svg','rect'); rect.setAttribute('x','0'); rect.setAttribute('y','0'); rect.setAttribute('width','100%'); rect.setAttribute('height','6'); rect.setAttribute('rx','3'); rect.style.fill = 'rgba(186,142,111,0.06)'; svg.appendChild(rect); el.parentNode.insertBefore(svg, el.nextSibling); }
 
   const path = location.pathname.replace(/\/$/, '');
   const titleEls = document.querySelectorAll('.page-title');
   titleEls.forEach(el=>{
     if(path === '' || path === '/index.html' || path === '/'){
-      // home: typewriter test
-      typeEffect(el, el.textContent, 30);
-    } else if(path.includes('/experience')){
-      // neat underline test
-      underlineNeat(el);
-    } else if(path.includes('/projects')){
-      // messy highlight test
-      messyHighlight(el);
-    } else if(path.includes('/education')){
-      // circled test
-      circled(el);
-    } else {
-      // default: no effect
-    }
+      typeEffect(el, el.textContent, 90);
+    } else if(path.includes('/experience')){ underlineNeat(el); }
+    else if(path.includes('/projects')){ messyHighlight(el); }
+    else if(path.includes('/education')){ circled(el); }
   });
 
 })();
