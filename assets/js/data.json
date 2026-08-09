@@ -1,33 +1,32 @@
 {
   "name": "Erik Mesic",
-  "headline": "Student at NYU Stern — Accounting | Pre-Law",
-  "summary": "Interested in the intersection of law, business, and governance. Open to internships and research opportunities.",
-  "about": "I am a student at NYU Stern studying Finance and Pre-Law. I focus on the intersection of law and business, and I am passionate about governance, policy, and financial analysis. This site collects my education, experience, projects, and contact information.",
+  "headline": "Student at NYU Stern — Finance | Certified Public Accounting Track — Pre-Law",
+  "summary": "I study finance and the intersection of business, law, and governance. My work spans legislative advocacy, educational reform, debate, and quantitative research.",
+  "about": "I am an undergraduate student at NYU Stern in the Certified Public Accounting track with minors in Mathematics and Computer Science. I focus on corporate governance, public policy, and education reform. I have organized student associations, led advocacy work, and completed quantitative projects integrating Python models and statistical inference.",
   "experience": [
-    {
-      "title": "Student",
-      "company": "NYU Stern School of Business",
-      "range": "2024 — Present",
-      "location": "New York, NY",
-      "description": "Coursework: Finance, Accounting, Statistics. Interested in corporate governance, policy, and legal frameworks affecting business."
-    }
+    {"title":"Associate Editor","company":"Undergraduate Law Review, New York University","range":"Sep 2025 – Present","location":"New York, NY","description":"Listed on the 2025 membership masthead as an Associate Editor. Contribute to editorial review and selection for student legal scholarship."},
+    {"title":"Debater (Novice Division)","company":"Cross-Examination Debate Association (CEDA)","range":"Sep 2025 – Present","location":"New York, NY","description":"Competed as a novice debater; quarterfinalist at the Jacob M. Weigler Debate, Novice Division, with partner Joseph Baez. Served as an IPPF Ambassador and engaged in international policy debate programming."},
+    {"title":"Founder & President","company":"Homework Helping","range":"Oct 2021 – Jul 2026","location":"Remote / United States","description":"Founded a volunteer community to support students with homework, grew membership to 70+, resolved 200+ help tickets, and coordinated with schools to provide community service hours."},
+    {"title":"NYU Ambassador","company":"Brewer Foundation / International Public Policy Forum","range":"Mar 2026 – Apr 2026","location":"New York, NY","description":"Organized the 25th Anniversary Symposium on Global Education and the final IPPF tournament; mediated quarterfinal rounds and coordinated logistics for visiting teams."},
+    {"title":"Founder & President","company":"Student Collective for Educational Reform","range":"Oct 2019 – Sep 2025","location":"Woodinville, WA / Remote","description":"Led student activism efforts and collaborated with district officials on program surveys and assessment monitoring."},
+    {"title":"Founder & Co-President","company":"Accelerated Preparation Society / Durant Senior High School","range":"Apr 2024 – May 2025","location":"Plant City, FL","description":"Launched college-prep society, organized a college essay competition with scholarship, mentored students, trained staff, and managed leadership meetings and social media."},
+    {"title":"Student Council Secretary","company":"Durant Senior High School","range":"May 2024 – May 2025","location":"Plant City, FL","description":"Communicated student perspectives to administration, organized fundraisers, and supported community events."},
+    {"title":"Treasurer","company":"Durant High School FBLA","range":"Apr 2024 – May 2025","location":"Plant City, FL","description":"Modernized chapter record-keeping, tracked and forecasted revenues, and managed chapter finances to support competitions and scholarships."}
   ],
   "projects": [
-    {
-      "name": "Personal Resume Site",
-      "description": "Static, data-driven GitHub Pages site (this site).",
-      "tags": ["website","html","css","javascript"],
-      "link": "https://erikmesic.github.io/"
-    }
+    {"name":"RAISE Act Legislative Advocacy","description":"Led targeted legislative advocacy to improve funding for rural and underrepresented students; modeled redirected educational supplement funding (~$600M), coordinated with legislators and stakeholders, and achieved bipartisan support.","tags":["policy","legislative advocacy","education"]},
+    {"name":"Assessing Tucson Property: Deep Analysis","description":"40-page quantitative and qualitative investment analysis for a single-family rental property using a Python MCMC model and tax analysis to deliver actionable recommendations.","tags":["real estate","python","financial modeling"]},
+    {"name":"Interrogating 'Common Knowledge' of LLMs Across Temperatures","description":"Collaborated on LLM stability research; implemented hierarchical models, ANOVA tests, and semi-synthetic data generation to analyze sentiment stability across sampling temperatures.","tags":["research","nlp","statistics"]},
+    {"name":"Changing Social Landscapes: ChatGPT Bias and Diet Adoption","description":"Mixed-method AP Capstone research examining bias in GPT responses and public opinion effects on non-meat diet adoption across core Anglosphere countries.","tags":["research","ap capstone","mixed-methods"]},
+    {"name":"Sir Seretse Khama: The Creation of Contemporary Botswana","description":"Historical research paper (36 pages) analyzing Sir Seretse Khama's role in Botswana's political development and relative stability.","tags":["research","history"]}
   ],
   "education": [
-    {"school":"New York University (Stern School of Business)","degree":"B.S. Finance, Pre-Law","range":"2024 — Present","details":"Coursework in Finance, Corporate Finance, and Legal Studies."},
-    {"school":"Hillsborough College","degree":"Associate of Arts","range":"2021 — 2023","details":"General studies prior to transfer to NYU."}
+    {"school":"New York University (Stern School of Business)","degree":"B.S. Business, Certified Public Accounting Track (Minor: Mathematics & Computer Science)","range":"Sep 2025 – May 2028","details":"GPA: 3.93. Activities: CEDA, Undergraduate Law Review, BIPOC Legal Society, Undergraduate Law Society."},
+    {"school":"Hillsborough College","degree":"Associate of Arts (AA)","range":"Jan 2024 – May 2025","details":"GPA: 4.0. Dual-enrollment coursework including Managerial and Financial Accounting; graduated with highest honors."},
+    {"school":"Durant Senior High School","degree":"High School Diploma","range":"Aug 2022 – May 2025","details":"Unweighted GPA: 4.0 / Weighted GPA: 7.68. Activities: Student Council Secretary, Founder & President, FBLA Treasurer, Mu Alpha Theta VP; 220 community service hours."}
   ],
-  "skills": ["Financial Analysis","Research","Written Communication","Policy Analysis","Microsoft Excel","Public Speaking"],
-  "honors": ["(Please edit honors/awards from your resume where applicable)"],
-  "updates": [
-    {"title":"Launched updated resume site","date":"2026-08-09","text":"Deployed redesigned resume site with dark-academia styling and LinkedIn-sourced public information."}
-  ],
-  "contact": {"email":"erik.mesic@live.com","linkedin":"https://www.linkedin.com/in/erikmesic/","resume":"/Mesic Résumé - Technology.pdf"}
+  "skills":["Financial Modeling","Legislative & Policy Analysis","Statistical Analysis","Python (MCMC models)","Research Design","Public Speaking & Debate","Leadership & Organization","Microsoft Excel"],
+  "honors":["Dean's List — NYU Stern (Jul 2026)","National Merit Semifinalist (Sep 2025)","AP Capstone Diploma (Jul 2025)","AP Scholar with Distinction (Jul 2025)","FBLA Intl. Business Law Champion — 1st Place (Jul 2025)","Math Dept Diamond Award — Durant HS (May 2025)","H.C.T.E. Spring Writing Awards — 1st Place Nonfiction (Apr 2025)"],
+  "volunteering":[{"title":"Debate Judge","organization":"Brewer Foundation / IPPF","range":"Oct 2025 – Apr 2026","location":"New York, NY","description":"Graded IPPF debates across several rounds (round of 64 through round of 16), contributed 50+ hours of judging and wrote detailed feedback."},{"title":"Co-President / Tutor","organization":"Accelerated Preparation Society","range":"Aug 2023 – May 2025","location":"Plant City, FL","description":"Tutored mathematics and test prep (SAT, AP Calculus BC/AB) and provided college & career counseling."},{"title":"Senate Page","organization":"Florida Senate","range":"Jan 2024","location":"Tallahassee, FL","description":"Served as an elected page and interacted with lawmakers as part of the program."}],
+  "contact":{"email":"erik.mesic@live.com","linkedin":"https://www.linkedin.com/in/erikmesic/","resume":"/Mesic Résumé - Technology.pdf"}
 }
