@@ -1,4 +1,4 @@
-// visuals.js — mouse light follows cursor using left/top (no lag), slower page title animations, and typewriter with inline caret
+// visuals.js — mouse light follows cursor using left/top (no lag), slower page title animations, and typewriter with inline caret aligned
 (function(){
   let light = document.getElementById('mouse-light');
   if(!light){ light = document.createElement('div'); light.id = 'mouse-light'; document.body.appendChild(light); }
@@ -19,7 +19,6 @@
   }
 
   function typeEffect(el, text, speed=90){
-    // create inline text span and caret inside the heading so caret aligns
     el.innerHTML = '';
     const textSpan = document.createElement('span'); textSpan.className = 'type-text';
     const caret = document.createElement('span'); caret.className = 'type-caret';
@@ -41,7 +40,7 @@
   const titleEls = document.querySelectorAll('.page-title');
   titleEls.forEach(el=>{
     if(path === '' || path === '/index.html' || path === '/'){
-      typeEffect(el, el.textContent, 90);
+      typeEffect(el, el.getAttribute('data-original-text') || el.textContent, 90);
     } else if(path.includes('/experience')){ underlineNeat(el); }
     else if(path.includes('/projects')){ messyHighlight(el); }
     else if(path.includes('/education')){ circled(el); }
