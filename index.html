@@ -8,11 +8,25 @@
   <meta name="description" content="Erik Mesic — accounting, policy, law, quantitative research, and strategy">
   <link rel="stylesheet" href="/assets/css/styles.css">
   <link rel="stylesheet" href="/assets/css/phase1-overrides.css">
+  <style>
+    .masthead-image{position:relative;margin:0 0 2.5rem;overflow:hidden;border:1px solid rgba(124,151,145,.28);background:#181714;min-height:clamp(240px,42vw,520px)}
+    .masthead-image img{display:block;width:100%;height:clamp(240px,42vw,520px);object-fit:cover;object-position:center 42%;filter:saturate(.78) contrast(.96);opacity:.88}
+    .masthead-image::after{content:"";position:absolute;inset:0;background:linear-gradient(90deg,rgba(20,18,15,.62),rgba(20,18,15,.08) 62%,rgba(20,18,15,.28));pointer-events:none}
+    .masthead-caption{position:absolute;z-index:1;left:clamp(1.25rem,5vw,4rem);bottom:clamp(1.25rem,5vw,3.5rem);max-width:760px;color:#f2eadb}
+    .masthead-caption .eyebrow{margin-bottom:.55rem;color:#c9bda8;letter-spacing:.14em}
+    .masthead-caption h1{font-size:clamp(3rem,8vw,7rem);line-height:.88;margin:0;font-weight:500;letter-spacing:-.04em}
+    .masthead-caption em{font-size:clamp(1.15rem,2.3vw,1.8rem);display:block;margin-top:.7rem;max-width:620px;color:#ded3c1}
+    @media(max-width:700px){.masthead-image{margin-left:-1rem;margin-right:-1rem}.masthead-caption h1{font-size:clamp(2.6rem,14vw,4.5rem)}}
+  </style>
 </head>
 <body>
   <div id="mouse-light" aria-hidden="true"></div>
   <header class="site-header" role="banner"><div class="topbar-inner"><a class="logo" href="/">Erik Mesic</a><nav class="topnav" role="navigation" aria-label="Main navigation"></nav></div></header>
   <main class="container" id="main">
+    <section class="masthead-image" aria-label="Erik Mesic masthead">
+      <img src="/assets/img/IMG_0082.jpg" alt="" aria-hidden="true">
+      <div class="masthead-caption"><p class="eyebrow">ERIK MESIC · NYU STERN</p><h1>Analysis,<br><em>argument &amp; action.</em></h1></div>
+    </section>
     <section class="hero large">
       <div class="hero-inner">
         <p class="eyebrow">NYU STERN SCHOOL OF BUSINESS · BS/MS IN ACCOUNTING</p>
@@ -26,8 +40,8 @@
       <div class="about-left"><h2 class="page-title">About Me</h2><p>I am an NYU Stern BS/MS in Accounting candidate whose work spans financial analysis, quantitative research, policy, law, and organizational strategy. My experience includes investment analysis, legislative advocacy, legal editing, competitive debate, and accounting operations.</p><p class="muted">I am most interested in work where rigorous analysis has to become a practical decision: modeling uncertainty, interpreting regulation, communicating an argument, evaluating an investment, or improving a financial process.</p></div>
       <aside class="about-right" aria-label="Profile"><img src="/nobgprofesh.png" alt="Erik Mesic — portrait" class="profile-photo paper-edge" /><div class="profile-details"><div><strong>NYU Stern School of Business</strong><div class="muted">BS/MS in Accounting</div><div class="muted">B.S. · GPA 3.933 · Expected May 2028</div><div class="muted">M.S. · Expected August 2028</div></div><div class="profile-tags"><span class="tag">Accounting</span><span class="tag">Research</span><span class="tag">Policy</span><span class="tag">Law</span></div></div></aside>
     </div></section>
-    <section class="section"><div class="signal-grid"><div><strong>3.933</strong><span>NYU Stern GPA</span></div><div><strong>$600M+</strong><span>State funds modeled</span></div><div><strong>$500K+</strong><span>Equity divestment planned</span></div><div><strong>1st</strong><span>FBLA Business Law · National</span></div></div></section>
-    <section class="section"><div class="section-heading"><h2 class="page-title">Selected Work</h2><a class="muted" href="/projects.html">View all →</a></div><div class="cards" id="featured-projects"><p class="muted">Loading projects…</p></div></section>
+    <section class="section"><div class="signal-grid"><div><strong>3.933</strong><span>NYU Stern GPA</span></div><div><strong>$600M+</strong><span>State funds modeled</span></div><div><strong>$500K+</strong><span>Equity divestment planned</span></div><div><strong>1st</strong><span>FBLA Business Law · National</span></div></section>
+    <section class="section"><div class="section-heading"><h2 class="page-title">Selected Work</h2><a class="muted" href="/projects.html">View all →</a></div><div class="cards" id="featured-projects"></div></section>
   </main>
   <footer class="footer"><p>© 2026 Erik Mesic</p></footer>
   <button id="contact-pill" class="contact-pill" aria-haspopup="dialog" aria-controls="contact-panel">Contact • erik.mesic@live.com</button>
