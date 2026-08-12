@@ -3,21 +3,48 @@
   "headline": "Student at NYU Stern — Accounting | CPA Track — Pre-Law",
   "summary": "I study accounting and the intersection of business, law, and governance. My work spans legislative advocacy, educational reform, debate, and quantitative research.",
   "projects": [
-    {"name":"RAISE Act Legislative Advocacy","description":"Policy design and fiscal modeling to improve education funding.","tags":["policy","education","modeling"]},
-    {"name":"LLM Stability Research","description":"Hierarchical models and variance analysis on LLM outputs.","tags":["research","nlp","hierarchical"]},
-    {"name":"Assessing Tucson Property","description":"Quantitative investment analysis and MCMC modeling.","tags":["mcmc","real-estate"]}
+    {
+      "slug": "raise-act-legislative-advocacy",
+      "name": "RAISE Act Legislative Advocacy",
+      "description": "Policy design and fiscal modeling to improve education funding.",
+      "tags": ["policy", "education", "modeling"],
+      "status": "Selected work",
+      "overview": "A policy-focused project examining the RAISE Act through the lenses of education funding, legislative advocacy, and fiscal modeling.",
+      "role": "Policy research, legislative analysis, and quantitative modeling.",
+      "details": ["Examined the policy design and funding implications of the proposal.", "Translated policy questions into a quantitative modeling framework.", "Developed advocacy-oriented materials to communicate the proposal clearly."]
+    },
+    {
+      "slug": "llm-stability-research",
+      "name": "LLM Stability Research",
+      "description": "Hierarchical models and variance analysis on LLM outputs.",
+      "tags": ["research", "NLP", "hierarchical models"],
+      "status": "Research",
+      "overview": "An empirical research project investigating the stability and variance of large-language-model outputs using hierarchical statistical methods.",
+      "role": "Research design, statistical analysis, and interpretation.",
+      "details": ["Designed a framework for comparing variation across model outputs.", "Applied hierarchical modeling to separate sources of variance.", "Focused on reproducible quantitative analysis rather than anecdotal model behavior."]
+    },
+    {
+      "slug": "assessing-tucson-property",
+      "name": "Assessing Tucson Property",
+      "description": "Quantitative investment analysis and MCMC modeling.",
+      "tags": ["MCMC", "real estate", "investment analysis"],
+      "status": "Investment analysis",
+      "overview": "A quantitative real-estate analysis using Markov Chain Monte Carlo methods to evaluate property-level assumptions and investment risk.",
+      "role": "Investment analysis, modeling, and risk assessment.",
+      "details": ["Built a probabilistic framework for evaluating uncertain property outcomes.", "Used MCMC simulation to explore distributions rather than relying on point estimates.", "Connected quantitative results to practical investment and asset-management decisions."]
+    }
   ],
-  "experience":[
+  "experience": [
     {"title":"Strategic Real Estate and Investments Analyst","company":"Monsoon Asset Management, LLC","range":"June 2026 – July 2026","location":"Tucson, AZ","bullets":["Executing Markov Chain Monte Carlo (MCMC) simulations for portfolio risk assessment.","Planning and overseeing the divestment of over $500,000 from equity to diversified asset classes.","Assessing rental property management options following a distressed situation."]},
     {"title":"Associate Editor","company":"Undergraduate Law Review","range":"Sep 2025 – Present","location":"New York, NY","description":"Listed on the 2025 membership masthead as an Associate Editor. Contribute to editorial review and selection for student legal scholarship."},
     {"title":"Debater (Novice Division)","company":"Cross-Examination Debate Association (CEDA)","range":"Sep 2025 – Present","location":"New York, NY","description":"Competed as a novice debater; quarterfinalist at the Jacob M. Weigler Debate, Novice Division, with partner Joseph Baez. Served as an IPPF Ambassador and engaged in international policy debate programming."},
     {"title":"Founder & President","company":"Homework Helping","range":"Oct 2021 – Jul 2026","location":"Remote / United States","description":"Founded a volunteer community to support students with homework, grew membership to 70+, resolved 200+ help tickets, and coordinated with schools to provide community service hours."}
   ],
-  "education":[
+  "education": [
     {"school":"New York University — Stern School of Business","degree":"B.S. Accounting, CPA Track (Expected)","range":"2023–2027","details":"Minors: Mathematics, Computer Science. Activities: Debate (CEDA), Undergraduate Law Review."},
     {"school":"Hillsborough Community College","degree":"Associate of Arts","range":"2021–2023","details":"Dual-enrollment coursework."}
   ],
-  "honors":[
+  "honors": [
     {"year":2026,"month":"Jul","title":"Dean's List","issuer":"New York University, Stern School of Business","note":"Awarded for maintaining a GPA of 3.667 or higher, no missing/incomplete grades, and completion of at least 28 graded credits in a year."},
     {"year":2026,"month":"Apr","title":"2nd Place Team, NYU Intramural Tournament","issuer":"NYU CEDA","note":"Participation quality and debate excellence."},
     {"year":2026,"month":"Mar","title":"2nd Place, Ethan Rosen Incentive Award (ERIA)","issuer":"Brewer Foundation / NYU IPPF","note":"Graded 700+ pages and wrote 21+ pages of judge comments across rounds."},
