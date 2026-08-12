@@ -3,6 +3,7 @@
   const NAV_ITEMS=[['Home','/'],['Experience','/experience.html'],['Projects','/projects.html'],['Education','/education.html'],['Honors','/honors.html'],['Hobbies','/hobbies.html']];
   const currentPath=()=>{const p=window.location.pathname.replace(/\/+$/,'');return p===''?'/':p;};
   const escapeHTML=value=>String(value??'').replace(/[&<>\"]/g,char=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[char]));
+  const renderTags=items=>(items||[]).map(x=>`<span class="tag">${escapeHTML(x)}</span>`).join('');
 
   function buildNavigation(){
     const nav=document.querySelector('.topnav');if(!nav)return;
@@ -17,71 +18,18 @@
     button.onclick=()=>{const open=header.classList.toggle('menu-open');button.setAttribute('aria-expanded',String(open));button.setAttribute('aria-label',open?'Close navigation':'Open navigation');};
     menu.querySelectorAll('a').forEach(a=>a.addEventListener('click',close));
   }
-
-  function setupMouseLight(){
-    let light=document.getElementById('mouse-light');if(!light){light=document.createElement('div');light.id='mouse-light';light.setAttribute('aria-hidden','true');document.body.appendChild(light);}
-    if(window.matchMedia?.('(prefers-reduced-motion: reduce)').matches||window.matchMedia?.('(pointer: coarse)').matches)return;
-    window.addEventListener('mousemove',e=>{light.style.left=`${e.clientX}px`;light.style.top=`${e.clientY}px`;},{passive:true});
-  }
-
-  function setupContact(data){
-    const pill=document.getElementById('contact-pill'),panel=document.getElementById('contact-panel');if(!pill||!panel)return;
-    const email=data?.contact?.email||'erik.mesic@live.com',linkedin=data?.contact?.linkedin||'https://www.linkedin.com/in/erikmesic/';
-    pill.textContent=`Contact • ${email}`;
-    const el=panel.querySelector('[data-contact-email]'),ll=panel.querySelector('[data-contact-linkedin]');
-    if(el){el.href=`mailto:${email}`;el.textContent=email;}if(ll){ll.href=linkedin;ll.textContent=linkedin.replace(/^https?:\/\/(www\.)?linkedin\.com/,'');}
-    const close=()=>{panel.style.display='none';panel.setAttribute('aria-hidden','true');};
-    pill.onclick=()=>{panel.style.display='block';panel.setAttribute('aria-hidden','false');};
-    document.getElementById('contact-close')?.addEventListener('click',close);panel.addEventListener('click',e=>{if(e.target===panel)close();});
-  }
-
-  function setupTheme(){
-    const toggle=document.getElementById('theme-toggle'),saved=localStorage.getItem('site-theme'),prefersDark=window.matchMedia?.('(prefers-color-scheme: dark)').matches;
-    const apply=t=>{document.documentElement.classList.toggle('light',t==='light');localStorage.setItem('site-theme',t);if(toggle)toggle.textContent=t==='light'?'☼':'☾';};
-    apply(saved||(prefersDark?'dark':'light'));toggle?.addEventListener('click',()=>apply((localStorage.getItem('site-theme')||'dark')==='light'?'dark':'light'));
-  }
-
-  function renderEducation(data){
-    const root=document.getElementById('education-list');if(!root||!data.education)return;root.innerHTML='';
-    data.education.forEach(e=>{const card=document.createElement('article');card.className='card';card.innerHTML=`<h3>${escapeHTML(e.school)}</h3><p class="muted">${escapeHTML(e.degree)}</p><p class="muted">${escapeHTML(e.range)}</p><p>${escapeHTML(e.details||'')}</p>`;root.appendChild(card);});
-  }
-
-  function renderProjectCards(projects){
-    document.querySelectorAll('[data-project-list], #featured-projects').forEach(root=>{
-      root.innerHTML='';
-      projects.forEach(p=>{
-        const a=document.createElement('a');a.className='card project-card';a.href=`/projects/${encodeURIComponent(p.slug)}.html`;
-        a.innerHTML=`<div class="project-card-meta"><span>${escapeHTML(p.status||'Selected work')}</span><span>${(p.tags||[]).map(escapeHTML).join(' · ')}</span></div><h3>${escapeHTML(p.name)}</h3><p>${escapeHTML(p.description||'')}</p><span class="project-card-link">Read project →</span>`;
-        root.appendChild(a);
-      });
-    });
-  }
-
-  function renderProjectDetail(projects){
-    const root=document.getElementById('project-detail');if(!root)return;
-    const slug=root.dataset.slug||currentPath().split('/').pop().replace(/\.html$/,'');
-    const project=projects.find(p=>p.slug===slug);
-    if(!project){root.innerHTML='<div class="project-not-found"><h1>Project not found</h1><p class="muted">The requested project could not be found.</p><a class="btn" href="/projects.html">Back to projects</a></div>';return;}
-    document.title=`${project.name} — Erik Mesic`;
-    const tags=(project.tags||[]).map(tag=>`<span class="tag">${escapeHTML(tag)}</span>`).join('');
-    const details=(project.details||[]).map(item=>`<li>${escapeHTML(item)}</li>`).join('');
-    root.innerHTML=`<a class="back-link" href="/projects.html">← All projects</a><header class="project-header"><p class="eyebrow">${escapeHTML(project.status||'Selected work')}</p><h1>${escapeHTML(project.name)}</h1><p class="project-deck">${escapeHTML(project.description||'')}</p><div class="project-tags">${tags}</div></header><div class="project-layout"><article class="project-main"><section><h2>Overview</h2><p>${escapeHTML(project.overview||project.description||'')}</p></section><section><h2>My role</h2><p>${escapeHTML(project.role||'Research, analysis, and development.')}</p></section>${details?`<section><h2>Selected work</h2><ul class="project-details">${details}</ul></section>`:''}</article><aside class="project-aside"><div class="project-aside-rule"></div><p class="eyebrow">Project</p><p class="muted">This page is intentionally concise. Supporting materials and links can be added as they are finalized.</p></aside></div>`;
-  }
-
-  async function loadData(){
-    try{
-      const res=await fetch('/assets/js/data.json',{cache:'no-store'});if(!res.ok)throw new Error(`data.json returned ${res.status}`);const data=await res.json();
-      document.querySelectorAll('[data-site-name]').forEach(el=>el.textContent=data.name||'Erik Mesic');
-      const headline=document.getElementById('headline');if(headline&&data.headline)headline.textContent=data.headline;
-      const summary=document.getElementById('summary');if(summary&&data.summary)summary.textContent=data.summary;
-      document.querySelectorAll('.footer p').forEach(p=>p.textContent=`© ${new Date().getFullYear()} ${data.name||'Erik Mesic'}`);
-      renderEducation(data);if(data.projects)renderProjectCards(data.projects);renderProjectDetail(data.projects||[]);
-      const timeline=document.getElementById('timeline');if(timeline&&data.experience){timeline.innerHTML='';data.experience.forEach(e=>{const item=document.createElement('div');item.className='timeline-item';item.innerHTML=`<h3>${escapeHTML(e.title)}</h3><div class="muted">${escapeHTML(e.company)} · ${escapeHTML(e.range)}${e.location?' · '+escapeHTML(e.location):''}</div>`;if(e.bullets?.length){const ul=document.createElement('ul');e.bullets.forEach(b=>{const li=document.createElement('li');li.textContent=b;ul.appendChild(li);});item.appendChild(ul);}else if(e.description){const p=document.createElement('p');p.textContent=e.description;item.appendChild(p);}timeline.appendChild(item);});}
-      const honors=document.getElementById('honors-list');if(honors&&data.honors){honors.innerHTML='';const grouped={};data.honors.forEach(h=>(grouped[h.year]??=[]).push(h));Object.keys(grouped).sort((a,b)=>b-a).forEach(year=>{const h3=document.createElement('h3');h3.textContent=year;honors.appendChild(h3);grouped[year].forEach(h=>{const li=document.createElement('li');li.innerHTML=`<strong>${escapeHTML(h.title)}</strong> — ${escapeHTML(h.issuer)} · ${escapeHTML(h.month||'')} ${escapeHTML(h.year)}<div class="muted">${escapeHTML(h.note||'')}</div>`;honors.appendChild(li);});});}
-      const hobbies=document.getElementById('hobbies-root');if(hobbies&&data.hobbies){hobbies.innerHTML='';data.hobbies.forEach(h=>{const d=document.createElement('div');d.className='hobby-item';d.innerHTML=`<h4>${escapeHTML(h)}</h4>`;hobbies.appendChild(d);});}
-      const img=document.querySelector('.profile-photo');if(img&&data.contact?.photo){img.src=data.contact.photo;img.addEventListener('error',()=>{img.classList.add('profile-photo-missing');img.removeAttribute('src');},{once:true});}
-      setupContact(data);
-    }catch(err){console.error('Error loading data.json',err);setupContact({});}
-  }
+  function setupMouseLight(){let light=document.getElementById('mouse-light');if(!light){light=document.createElement('div');light.id='mouse-light';light.setAttribute('aria-hidden','true');document.body.appendChild(light);}if(window.matchMedia?.('(prefers-reduced-motion: reduce)').matches||window.matchMedia?.('(pointer: coarse)').matches)return;window.addEventListener('mousemove',e=>{light.style.left=`${e.clientX}px`;light.style.top=`${e.clientY}px`;},{passive:true});}
+  function setupContact(data){const pill=document.getElementById('contact-pill'),panel=document.getElementById('contact-panel');if(!pill||!panel)return;const email=data?.contact?.email||'erik.mesic@live.com',linkedin=data?.contact?.linkedin||'https://www.linkedin.com/in/erikmesic/';pill.textContent=`Contact • ${email}`;const el=panel.querySelector('[data-contact-email]'),ll=panel.querySelector('[data-contact-linkedin]');if(el){el.href=`mailto:${email}`;el.textContent=email;}if(ll){ll.href=linkedin;ll.textContent=linkedin.replace(/^https?:\/\/(www\.)?linkedin\.com/,'');}const close=()=>{panel.style.display='none';panel.setAttribute('aria-hidden','true');};pill.onclick=()=>{panel.style.display='block';panel.setAttribute('aria-hidden','false');};document.getElementById('contact-close')?.addEventListener('click',close);panel.addEventListener('click',e=>{if(e.target===panel)close();});}
+  function setupTheme(){const toggle=document.getElementById('theme-toggle'),saved=localStorage.getItem('site-theme'),prefersDark=window.matchMedia?.('(prefers-color-scheme: dark)').matches;const apply=t=>{document.documentElement.classList.toggle('light',t==='light');localStorage.setItem('site-theme',t);if(toggle)toggle.textContent=t==='light'?'☼':'☾';};apply(saved||(prefersDark?'dark':'light'));toggle?.addEventListener('click',()=>apply((localStorage.getItem('site-theme')||'dark')==='light'?'dark':'light'));}
+  function renderEducation(data){const root=document.getElementById('education-list');if(!root||!data.education)return;root.className='education-grid';root.innerHTML='';data.education.forEach(e=>{const card=document.createElement('article');card.className='card education-card';card.innerHTML=`<p class="eyebrow">${escapeHTML(e.range)}</p><h3>${escapeHTML(e.school)}</h3><p><strong>${escapeHTML(e.degree)}</strong></p><p class="muted">${escapeHTML(e.details||'')}</p>`;root.appendChild(card);});}
+  function renderSkills(data){const root=document.getElementById('skills-root');if(!root||!data.skills)return;root.innerHTML=`<div class="skills-panel"><h3>Professional Skills</h3><div class="skill-tags">${renderTags(data.skills.professional)}</div></div><div class="skills-panel"><h3>Proficiencies</h3><div class="skill-tags">${renderTags(data.skills.proficiencies)}</div></div>`;}
+  function renderProjectCards(projects){document.querySelectorAll('[data-project-list], #featured-projects').forEach(root=>{root.innerHTML='';projects.forEach(p=>{const a=document.createElement('a');a.className='card project-card';a.href=`/projects/${encodeURIComponent(p.slug)}.html`;a.innerHTML=`<div class="project-card-meta"><span>${escapeHTML(p.status||'Selected work')}</span><span>${(p.tags||[]).map(escapeHTML).join(' · ')}</span></div><h3>${escapeHTML(p.name)}</h3><p>${escapeHTML(p.description||'')}</p><span class="project-card-link">Read project →</span>`;root.appendChild(a);});});}
+  function renderProjectDetail(projects){const root=document.getElementById('project-detail');if(!root)return;const slug=root.dataset.slug||currentPath().split('/').pop().replace(/\.html$/,'');const project=projects.find(p=>p.slug===slug);if(!project){root.innerHTML='<div class="project-not-found"><h1>Project not found</h1><p class="muted">The requested project could not be found.</p><a class="btn" href="/projects.html">Back to projects</a></div>';return;}document.title=`${project.name} — Erik Mesic`;const tags=renderTags(project.tags),details=(project.details||[]).map(item=>`<li>${escapeHTML(item)}</li>`).join('');root.innerHTML=`<a class="back-link" href="/projects.html">← All projects</a><header class="project-header"><p class="eyebrow">${escapeHTML(project.status||'Selected work')}</p><h1>${escapeHTML(project.name)}</h1><p class="project-deck">${escapeHTML(project.description||'')}</p><div class="project-tags">${tags}</div></header><div class="project-layout"><article class="project-main"><section><h2>Overview</h2><p>${escapeHTML(project.overview||project.description||'')}</p></section><section><h2>My role</h2><p>${escapeHTML(project.role||'Research, analysis, and development.')}</p></section>${details?`<section><h2>Selected work</h2><ul class="project-details">${details}</ul></section>`:''}</article><aside class="project-aside"><div class="project-aside-rule"></div><p class="eyebrow">Project</p><p class="muted">Supporting materials and links can be added as they are finalized.</p></aside></div>`;}
+  async function loadData(){try{const res=await fetch('/assets/js/data.json',{cache:'no-store'});if(!res.ok)throw new Error(`data.json returned ${res.status}`);const data=await res.json();document.querySelectorAll('[data-site-name]').forEach(el=>el.textContent=data.name||'Erik Mesic');const headline=document.getElementById('headline');if(headline&&data.headline)headline.textContent=data.headline;const summary=document.getElementById('summary');if(summary&&data.summary)summary.textContent=data.summary;document.querySelectorAll('.footer p').forEach(p=>p.textContent=`© ${new Date().getFullYear()} ${data.name||'Erik Mesic'}`);renderEducation(data);renderSkills(data);if(data.projects)renderProjectCards(data.projects);renderProjectDetail(data.projects||[]);
+    const timeline=document.getElementById('timeline');if(timeline&&data.experience){timeline.innerHTML='';data.experience.forEach(e=>{const item=document.createElement('div');item.className='timeline-item';item.innerHTML=`<h3>${escapeHTML(e.title)}</h3><div class="muted">${escapeHTML(e.company)} · ${escapeHTML(e.range)}${e.location?' · '+escapeHTML(e.location):''}</div>`;if(e.bullets?.length){const ul=document.createElement('ul');e.bullets.forEach(b=>{const li=document.createElement('li');li.textContent=b;ul.appendChild(li);});item.appendChild(ul);}else if(e.description){const p=document.createElement('p');p.textContent=e.description;item.appendChild(p);}timeline.appendChild(item);});}
+    const honors=document.getElementById('honors-list');if(honors&&data.honors){honors.className='honors-list';honors.innerHTML='';const grouped={};data.honors.forEach(h=>(grouped[h.year]??=[]).push(h));Object.keys(grouped).sort((a,b)=>b-a).forEach(year=>{const h3=document.createElement('h3');h3.className='honors-year';h3.textContent=year;honors.appendChild(h3);grouped[year].forEach(h=>{const li=document.createElement('li');li.className='honor-item';li.innerHTML=`<strong>${escapeHTML(h.title)}</strong> — ${escapeHTML(h.issuer)}<div class="muted">${escapeHTML(h.month||'')} ${escapeHTML(h.year)}${h.note?' · '+escapeHTML(h.note):''}</div>`;honors.appendChild(li);});});}
+    const hobbies=document.getElementById('hobbies-root');if(hobbies&&data.hobbies){hobbies.innerHTML='';data.hobbies.forEach(h=>{const d=document.createElement('div');d.className='card hobby-item';d.innerHTML=`<h4>${escapeHTML(h)}</h4>`;hobbies.appendChild(d);});}
+    const img=document.querySelector('.profile-photo');if(img&&data.contact?.photo){img.src=data.contact.photo;img.addEventListener('error',()=>{img.classList.add('profile-photo-missing');img.removeAttribute('src');},{once:true});}setupContact(data);
+  }catch(err){console.error('Error loading data.json',err);setupContact({});}}
   document.addEventListener('DOMContentLoaded',()=>{buildNavigation();setupMouseLight();setupTheme();loadData();});
 })();
