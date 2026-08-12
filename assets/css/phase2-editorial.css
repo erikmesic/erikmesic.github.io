@@ -1,0 +1,17 @@
+/* Phase 2 editorial layer: subtle texture + hand-annotated motion language. */
+body::before{display:block;content:"";position:fixed;inset:0;pointer-events:none;z-index:0;opacity:.24;background-image:radial-gradient(rgba(186,142,111,.075) .45px,transparent .55px),radial-gradient(rgba(239,232,223,.028) .5px,transparent .65px),linear-gradient(115deg,rgba(122,75,47,.025),transparent 38%,rgba(47,143,138,.018) 72%,transparent);background-size:23px 23px,31px 31px,100% 100%;background-position:0 0,11px 7px,0 0;mix-blend-mode:normal}
+:root.light body::before{opacity:.20;background-image:radial-gradient(rgba(92,69,50,.06) .45px,transparent .55px),radial-gradient(rgba(40,111,107,.025) .5px,transparent .65px),linear-gradient(115deg,rgba(122,75,47,.022),transparent 38%,rgba(47,143,138,.014) 72%,transparent)}
+/* Annotation grammar: use sparingly; each mark behaves like a hand-applied editorial note. */
+.annotation-underline,.annotation-circle,.annotation-highlight{position:relative;display:inline-block}
+.annotation-underline::after{content:"";position:absolute;left:-2%;right:-2%;bottom:-.12em;height:.16em;background:var(--accent-2);opacity:.75;transform:scaleX(0) rotate(-1.2deg);transform-origin:left center;border-radius:50%;transition:transform .7s cubic-bezier(.2,.8,.2,1)}
+.annotation-underline.is-annotated::after{transform:scaleX(1)}
+.annotation-circle::after{content:"";position:absolute;inset:-.18em -.24em;border:1.5px solid var(--accent);border-radius:48% 53% 46% 55%;opacity:.72;transform:rotate(-2deg) scale(.82);clip-path:inset(0 100% 0 0);transition:clip-path .85s cubic-bezier(.2,.8,.2,1),transform .6s ease}
+.annotation-circle.is-annotated::after{clip-path:inset(0 0 0 0);transform:rotate(-2deg) scale(1)}
+.annotation-highlight::after{content:"";position:absolute;z-index:-1;left:-.05em;right:-.05em;bottom:.08em;height:.52em;background:rgba(186,142,111,.18);transform:skewX(-8deg) scaleX(0);transform-origin:left center;border-radius:2px;transition:transform .65s cubic-bezier(.2,.8,.2,1)}
+.annotation-highlight.is-annotated::after{transform:skewX(-8deg) scaleX(1)}
+.annotation-note{display:inline-block;margin-left:10px;color:var(--accent-2);font-family:var(--serif-literary);font-size:.78em;font-style:italic;transform:rotate(-1.5deg);opacity:0;transition:opacity .5s ease,transform .5s ease}
+.annotation-note.is-annotated{opacity:.85;transform:rotate(-1.5deg) translateY(-2px)}
+.research-interest,.timeline-item-featured,.featured-project{--annotation-delay:0ms}
+.research-interest:nth-child(2){--annotation-delay:90ms}.research-interest:nth-child(3){--annotation-delay:160ms}.research-interest:nth-child(4){--annotation-delay:230ms}
+@media(max-width:600px){body::before{opacity:.18}.annotation-note{display:none}}
+@media(prefers-reduced-motion:reduce){.annotation-underline::after,.annotation-circle::after,.annotation-highlight::after{transition:none}.annotation-note{transition:none}}
