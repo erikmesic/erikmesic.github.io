@@ -1,0 +1,23 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Masthead Candidates — Erik Mesic</title>
+<style>
+:root{color-scheme:dark;--bg:#171411;--panel:#211c18;--ink:#eee6dc;--muted:#b8a99b;--teal:#4eaaa3;--brown:#a46f4b}
+*{box-sizing:border-box}body{margin:0;background:var(--bg);color:var(--ink);font-family:Arial,sans-serif;padding:40px}header{max-width:1400px;margin:0 auto 32px}h1{font-family:Georgia,serif;font-weight:400;margin:0 0 8px}p{color:var(--muted)}.grid{max-width:1400px;margin:auto;display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:20px}.card{background:var(--panel);padding:12px;border:1px solid rgba(238,230,220,.12)}.card img{display:block;width:100%;height:210px;object-fit:cover;background:#ddd}.card img.contain{object-fit:contain}.name{font-family:Georgia,serif;font-size:15px;margin-top:10px}.number{color:var(--teal);font-size:12px;letter-spacing:.12em;margin-right:8px}.note{font-size:12px;color:var(--muted);margin-top:4px}@media(max-width:600px){body{padding:20px}.grid{grid-template-columns:1fr}.card img{height:240px}}
+</style>
+</head>
+<body>
+<header><h1>Masthead candidates</h1><p>Temporary visual review sheet. Original filenames are retained so the strongest candidates can be identified precisely.</p></header>
+<main class="grid" id="grid"></main>
+<script>
+const files=[
+'22BEED72-E131-4254-B6C1-A6B990536880.jpg','8C9858BD-9194-47D5-8719-894D7FE23FEC.jpg','IMG_0082.jpg','IMG_0862.png','IMG_1176.png','IMG_1505.jpg','IMG_2798.jpg','IMG_2862.jpg','IMG_3345.jpg','IMG_3352.png','IMG_3631.jpg','IMG_3821.jpg','IMG_3860.jpg','IMG_4947.jpg','IMG_5017.jpg','IMG_5257.jpg','IMG_5637.jpg','IMG_7656.jpg','IMG_7662.jpg','IMG_7795.jpg','IMG_8661.jpg','IMG_8983.jpg','IMG_9219.jpg','IMG_9228.png','headshot.jpg','nobgprofesh.png'
+];
+const grid=document.getElementById('grid');
+files.forEach((file,i)=>{const card=document.createElement('article');card.className='card';const img=document.createElement('img');img.src='assets/img/'+encodeURIComponent(file);img.alt=file;img.loading='lazy';if(file==='nobgprofesh.png')img.classList.add('contain');const name=document.createElement('div');name.className='name';name.innerHTML=`<span class="number">${String(i+1).padStart(2,'0')}</span>${file}`;card.append(img,name);if(file==='headshot.jpg'||file==='nobgprofesh.png'){const note=document.createElement('div');note.className='note';note.textContent='Professional headshot candidate';card.append(note)}grid.append(card)});
+</script>
+</body>
+</html>
