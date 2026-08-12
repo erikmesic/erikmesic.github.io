@@ -1,0 +1,22 @@
+{
+  "projects": [
+    {
+      "slug": "autobiographical-anthology",
+      "name": "Autobiographical Anthology",
+      "description": "An ongoing autobiographical book project combining memoir, journalism, literary experimentation, and philosophical inquiry.",
+      "tags": ["writing", "journalism", "philosophy", "publication"],
+      "status": "Publication · Apr 2025 – Present",
+      "overview": "An ongoing book project built around autobiographical reflection, literary experimentation, and philosophical inquiry, with intended publication around 2028.",
+      "role": "Author and primary researcher; developed the manuscript, incorporated mentor feedback, and revised for readability and impact.",
+      "details": [
+        "Written more than 100 pages of the planned manuscript.",
+        "Uses unconventional literary forms, including a chapter written as a letter of resignation.",
+        "Includes a four-page philosophical consideration of the value of human life relative to other animals, incorporating a logarithmic model.",
+        "Collaborated with five expert mentors for feedback, advice, and review, implementing revisions to improve readability and impact.",
+        "Emphasizes literary and philosophical reflection on past events and circumstances, with intended publication around 2028."
+      ],
+      "featured": false,
+      "category": "Writing & Publication"
+    }
+  ]
+}

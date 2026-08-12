@@ -1,95 +1,43 @@
-// pageload.js — load data.json, populate pages (experience, honors, projects, hobbies)
-async function loadData(){
-  try{
-    const res = await fetch('/assets/js/data.json');
-    const data = await res.json();
-    // footer year
-    const fy = document.querySelector('.footer p');
-    if(fy) fy.textContent = '© 2026 Erik Mesic';
+// pageload.js — shared site behavior and data population
+(function(){
+  const NAV_ITEMS=[['Home','/'],['Experience','/experience.html'],['Projects','/projects.html'],['Education','/education.html'],['Honors','/honors.html'],['Hobbies','/hobbies.html']];
+  const currentPath=()=>{const p=window.location.pathname.replace(/\/+$/,'');return p===''?'/':p;};
+  const escapeHTML=value=>String(value??'').replace(/[&<>\"]/g,char=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[char]));
+  const renderTags=items=>(items||[]).map(x=>`<span class="tag">${escapeHTML(x)}</span>`).join('');
+  const startDate=value=>{const m=String(value||'').match(/([A-Za-z]+)\s+(\d{4})/);return m?Date.parse(`${m[1]} 1, ${m[2]}`):0;};
 
-    // Featured projects on home
-    const cardRoot = document.getElementById('featured-projects');
-    if(cardRoot && data.projects){
-      cardRoot.innerHTML = '';
-      data.projects.forEach(p=>{
-        const a = document.createElement('a'); a.className = 'card'; a.href = `/projects/${encodeURIComponent(p.name.toLowerCase().replace(/[^a-z0-9]+/g,'-'))}.html`;
-        a.innerHTML = `<h3>${p.name}</h3><p class="muted">${(p.tags||[]).join(', ')}</p><p>${p.description}</p>`;
-        cardRoot.appendChild(a);
-      });
-    }
-
-    // Experience timeline
-    const timelineRoot = document.getElementById('timeline');
-    if(timelineRoot && data.experience){
-      timelineRoot.innerHTML = '';
-      data.experience.forEach(e=>{
-        const item = document.createElement('div'); item.className = 'timeline-item';
-        const bullets = e.bullets;
-        item.innerHTML = `<h3>${e.title}</h3><div class="muted">${e.company} • ${e.range}${e.location? ' • '+e.location : ''}</div>`;
-        if(bullets && bullets.length){
-          const ul = document.createElement('ul');
-          bullets.forEach(b=>{ const li=document.createElement('li'); li.textContent = b; ul.appendChild(li); });
-          item.appendChild(ul);
-        } else if(e.description){
-          const p = document.createElement('p'); p.textContent = e.description; item.appendChild(p);
-        }
-        timelineRoot.appendChild(item);
-      });
-    }
-
-    // Honors (sorted by year descending, display groups)
-    const honorsRoot = document.getElementById('honors-list');
-    if(honorsRoot && data.honors){
-      honorsRoot.innerHTML = '';
-      // data.honors is expected to be an array of objects {year:2026,title:...,meta:...}
-      const grouped = {};
-      data.honors.forEach(h=>{
-        grouped[h.year] = grouped[h.year] || [];
-        grouped[h.year].push(h);
-      });
-      // sort years descending
-      Object.keys(grouped).sort((a,b)=>b-a).forEach(year=>{
-        const yearH = document.createElement('h3'); yearH.textContent = year; honorsRoot.appendChild(yearH);
-        grouped[year].forEach(h=>{
-          const li = document.createElement('li');
-          li.innerHTML = `<strong>${h.title}</strong> — ${h.issuer} · ${h.month || ''} ${h.year}<div class="muted">${h.note || ''}</div>`;
-          honorsRoot.appendChild(li);
-        });
-      });
-    }
-
-    // Hobbies page
-    const hobbiesRoot = document.getElementById('hobbies-root');
-    if(hobbiesRoot && data.hobbies){
-      hobbiesRoot.innerHTML = '';
-      data.hobbies.forEach(h=>{
-        const d = document.createElement('div'); d.className = 'hobby-item'; d.innerHTML = `<h4>${h}</h4>`;
-        hobbiesRoot.appendChild(d);
-      });
-    }
-
-    // About profile image: if present, the markup points to /assets/img/profile-no-bg.png
-    const pimg = document.querySelector('.profile-photo');
-    if(pimg && data.contact && data.contact.photo){ pimg.src = data.contact.photo; }
-  }catch(err){ console.error('Error loading data.json', err); }
-}
-document.addEventListener('DOMContentLoaded', ()=>{
-  loadData();
-  // contact pill behavior
-  const pill = document.getElementById('contact-pill');
-  const panel = document.getElementById('contact-panel');
-  const close = document.getElementById('contact-close');
-  if(pill && panel){
-    pill.addEventListener('click', ()=>{ panel.style.display='block'; panel.setAttribute('aria-hidden','false'); });
-    close && close.addEventListener('click', ()=>{ panel.style.display='none'; panel.setAttribute('aria-hidden','true'); });
-    panel.addEventListener('click', (e)=>{ if(e.target === panel) { panel.style.display='none'; panel.setAttribute('aria-hidden','true'); }});
+  function buildNavigation(){
+    const nav=document.querySelector('.topnav');if(!nav)return;const path=currentPath();
+    const links=items=>items.map(([label,href])=>{const active=href==='/'?(path==='/'||path==='/index.html'):path===href;return `<a href="${href}"${active?' class="active" aria-current="page"':''}>${label}</a>`;}).join('');
+    nav.innerHTML=links(NAV_ITEMS);nav.setAttribute('aria-label','Main navigation');
+    const header=document.querySelector('.site-header'),inner=document.querySelector('.topbar-inner');if(!header||!inner)return;
+    let button=document.getElementById('mobile-menu-toggle'),menu=document.getElementById('mobile-menu');
+    if(!button){button=document.createElement('button');button.id='mobile-menu-toggle';button.className='mobile-menu-toggle';button.type='button';button.setAttribute('aria-controls','mobile-menu');button.setAttribute('aria-expanded','false');button.setAttribute('aria-label','Open navigation');button.innerHTML='<span></span><span></span><span></span>';inner.appendChild(button);}
+    if(!menu){menu=document.createElement('nav');menu.id='mobile-menu';menu.className='mobile-menu';menu.setAttribute('aria-label','Mobile navigation');menu.innerHTML=links(NAV_ITEMS);header.appendChild(menu);}
+    const close=()=>{header.classList.remove('menu-open');button.setAttribute('aria-expanded','false');button.setAttribute('aria-label','Open navigation');};
+    button.onclick=()=>{const open=header.classList.toggle('menu-open');button.setAttribute('aria-expanded',String(open));button.setAttribute('aria-label',open?'Close navigation':'Open navigation');};
+    menu.querySelectorAll('a').forEach(a=>a.addEventListener('click',close));
+    document.addEventListener('keydown',e=>{if(e.key==='Escape')close();});
+    window.addEventListener('resize',()=>{if(window.innerWidth>900)close();},{passive:true});
   }
-  // theme toggle
-  const toggle = document.getElementById('theme-toggle');
-  if(toggle){
-    function apply(t){ if(t==='light') document.documentElement.classList.add('light'); else document.documentElement.classList.remove('light'); localStorage.setItem('site-theme', t); toggle.textContent = t==='light'?'☼':'☾'; }
-    const saved = localStorage.getItem('site-theme'); const prefersDark = window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches;
-    apply(saved || (prefersDark ? 'dark' : 'light'));
-    toggle.addEventListener('click', ()=>{ const cur = localStorage.getItem('site-theme') || 'dark'; apply(cur === 'light' ? 'dark' : 'light'); });
+
+  function setupMouseLight(){
+    let light=document.getElementById('mouse-light');if(!light){light=document.createElement('div');light.id='mouse-light';light.setAttribute('aria-hidden','true');document.body.appendChild(light);}
+    if(window.matchMedia?.('(prefers-reduced-motion: reduce)').matches||window.matchMedia?.('(pointer: coarse)').matches){light.style.display='none';return;}
+    try{const saved=localStorage.getItem('mouse-position');if(saved){const p=JSON.parse(saved);if(Number.isFinite(p.x)&&Number.isFinite(p.y)){light.style.left=`${Math.min(Math.max(p.x,0),window.innerWidth)}px`;light.style.top=`${Math.min(Math.max(p.y,0),window.innerHeight)}px`;}}}catch(e){}
+    window.addEventListener('mousemove',e=>{light.style.left=`${e.clientX}px`;light.style.top=`${e.clientY}px`;try{localStorage.setItem('mouse-position',JSON.stringify({x:e.clientX,y:e.clientY}));}catch(err){}},{passive:true});
   }
-});
+
+  function setupContact(data){const pill=document.getElementById('contact-pill'),panel=document.getElementById('contact-panel');if(!pill||!panel)return;const email=data?.contact?.email||'erik.mesic@live.com',linkedin=data?.contact?.linkedin||'https://www.linkedin.com/in/erikmesic/';pill.textContent=`Contact • ${email}`;const el=panel.querySelector('[data-contact-email]'),ll=panel.querySelector('[data-contact-linkedin]');if(el){el.href=`mailto:${email}`;el.textContent=email;}if(ll){ll.href=linkedin;ll.textContent=linkedin.replace(/^https?:\/\/(www\.)?linkedin\.com/,'');}const close=()=>{panel.style.display='none';panel.setAttribute('aria-hidden','true');};pill.onclick=()=>{panel.style.display='block';panel.setAttribute('aria-hidden','false');};document.getElementById('contact-close')?.addEventListener('click',close);document.addEventListener('keydown',e=>{if(e.key==='Escape')close();});}
+  function setupTheme(){const toggle=document.getElementById('theme-toggle'),saved=localStorage.getItem('site-theme'),prefersDark=window.matchMedia?.('(prefers-color-scheme: dark)').matches;const apply=t=>{document.documentElement.classList.toggle('light',t==='light');localStorage.setItem('site-theme',t);if(toggle)toggle.textContent=t==='light'?'☼':'☾';};apply(saved||(prefersDark?'dark':'light'));toggle?.addEventListener('click',()=>apply((localStorage.getItem('site-theme')||'dark')==='light'?'dark':'light'));}
+  function renderEducation(data){const root=document.getElementById('education-list');if(!root||!data.education)return;root.className='education-grid';root.innerHTML='';data.education.forEach(e=>{const card=document.createElement('article');card.className='card education-card';card.innerHTML=`<p class="eyebrow">${escapeHTML(e.range)}</p><h3>${escapeHTML(e.school)}</h3><p><strong>${escapeHTML(e.degree)}</strong></p><p class="muted">${escapeHTML(e.details||'')}</p>`;root.appendChild(card);});}
+  function renderSkills(data){const root=document.getElementById('skills-root');if(!root||!data.skills)return;root.innerHTML=`<div class="skills-panel"><h3>Professional Skills</h3><div class="skill-tags">${renderTags(data.skills.professional)}</div></div><div class="skills-panel"><h3>Proficiencies</h3><div class="skill-tags">${renderTags(data.skills.proficiencies)}</div></div>`;}
+  function renderProjectCards(projects){document.querySelectorAll('[data-project-list], #featured-projects, #additional-projects').forEach(root=>{let list=projects;if(root.id==='featured-projects')list=projects.filter(p=>p.featured);if(root.id==='additional-projects')list=projects.filter(p=>!p.featured);root.innerHTML='';list.forEach(p=>{const a=document.createElement('a');a.className=`card project-card${p.featured?' featured-project':''}`;a.href=`/projects/${encodeURIComponent(p.slug)}.html`;a.innerHTML=`<div class="project-card-meta"><span>${escapeHTML(p.status||'Selected work')}</span><span>${p.featured?'Featured · ':''}${(p.tags||[]).map(escapeHTML).join(' · ')}</span></div><h3>${escapeHTML(p.name)}</h3><p>${escapeHTML(p.description||'')}</p><span class="project-card-link">Read project →</span>`;root.appendChild(a);});});}
+  function renderProjectDetail(projects){const root=document.getElementById('project-detail');if(!root)return;const slug=root.dataset.slug||currentPath().split('/').pop().replace(/\.html$/,'');const project=projects.find(p=>p.slug===slug);if(!project){root.innerHTML='<div class="project-not-found"><h1>Project not found</h1><p class="muted">The requested project could not be found.</p><a class="btn" href="/projects.html">Back to projects</a></div>';return;}document.title=`${project.name} — Erik Mesic`;const tags=renderTags(project.tags),details=(project.details||[]).map(item=>`<li>${escapeHTML(item)}</li>`).join('');root.innerHTML=`<a class="back-link" href="/projects.html">← All projects</a><header class="project-header"><p class="eyebrow">${escapeHTML(project.status||'Selected work')}</p><h1>${escapeHTML(project.name)}</h1><p class="project-deck">${escapeHTML(project.description||'')}</p><div class="project-tags">${tags}</div></header><div class="project-layout"><article class="project-main"><section><h2>Overview</h2><p>${escapeHTML(project.overview||project.description||'')}</p></section><section><h2>My role</h2><p>${escapeHTML(project.role||'Research, analysis, and development.')}</p></section>${details?`<section><h2>Selected work</h2><ul class="project-details">${details}</ul></section>`:''}</article><aside class="project-aside"><div class="project-aside-rule"></div><p class="eyebrow">Project</p><p class="muted">Supporting materials and links can be added as they are finalized.</p></aside></div>`;}
+  function renderResearchInterests(data){const root=document.getElementById('research-interests');if(!root||!data.researchInterests)return;root.innerHTML='';data.researchInterests.forEach((item,index)=>{const article=document.createElement('article');article.className='research-interest';article.innerHTML=`<div class="research-index">0${index+1}</div><div><h3>${escapeHTML(item.title)}</h3><p class="muted">${escapeHTML(item.description)}</p></div>`;root.appendChild(article);});}
+  function renderExperience(data){const root=document.getElementById('timeline');if(!root||!data.experience)return;root.innerHTML='';const items=[...data.experience].sort((a,b)=>startDate(b.range)-startDate(a.range));items.forEach(e=>{const item=document.createElement('article');item.className=`timeline-item${e.featured?' timeline-item-featured':''}`;item.innerHTML=`<div class="timeline-marker" aria-hidden="true"></div><div class="timeline-content"><div class="timeline-meta"><span>${escapeHTML(e.range)}</span><span>${escapeHTML(e.category||'Experience')}</span></div><h3>${escapeHTML(e.title)}</h3><div class="timeline-company">${escapeHTML(e.company)}${e.location?' · '+escapeHTML(e.location):''}</div>`;if(e.bullets?.length){const ul=document.createElement('ul');e.bullets.forEach(b=>{const li=document.createElement('li');li.textContent=b;ul.appendChild(li);});item.querySelector('.timeline-content').appendChild(ul);}item.querySelector('.timeline-content').insertAdjacentHTML('beforeend',e.featured?'<span class="timeline-featured-label">Selected experience</span>':'');root.appendChild(item);});}
+  function renderHonors(data){const root=document.getElementById('honors-list');if(!root||!data.honors)return;root.className='honors-list';root.innerHTML='';const grouped={};data.honors.forEach(h=>(grouped[h.year]??=[]).push(h));Object.keys(grouped).sort((a,b)=>b-a).forEach(year=>{const h3=document.createElement('h3');h3.className='honors-year';h3.textContent=year;root.appendChild(h3);grouped[year].forEach(h=>{const li=document.createElement('li');li.className='honor-item';li.innerHTML=`<div class="honor-main"><strong>${escapeHTML(h.title)}</strong><span>${escapeHTML(h.issuer)}</span><time>${escapeHTML(h.month||'')} ${escapeHTML(h.year)}</time></div>${h.note?`<details><summary>Details</summary><p class="muted">${escapeHTML(h.note)}</p></details>`:''}`;root.appendChild(li);});});}
+  function setupScrollReveal(){if(window.matchMedia?.('(prefers-reduced-motion: reduce)').matches)return;const targets=document.querySelectorAll('.timeline-item-featured,.featured-project,.signal-grid>div,.research-interest');if(!targets.length)return;targets.forEach(el=>el.classList.add('reveal-ready'));if(!('IntersectionObserver' in window)){targets.forEach(el=>el.classList.add('reveal-visible'));return;}const observer=new IntersectionObserver(entries=>entries.forEach(entry=>{if(entry.isIntersecting){entry.target.classList.add('reveal-visible');observer.unobserve(entry.target);}}),{threshold:.12,rootMargin:'0px 0px -30px'});targets.forEach(el=>observer.observe(el));}
+  async function loadData(){try{const res=await fetch('/assets/js/data.json',{cache:'no-store'});if(!res.ok)throw new Error(`data.json returned ${res.status}`);const data=await res.json();document.querySelectorAll('[data-site-name]').forEach(el=>el.textContent=data.name||'Erik Mesic');const headline=document.getElementById('headline');if(headline&&data.headline)headline.textContent=data.headline;const summary=document.getElementById('summary');if(summary&&data.summary)summary.textContent=data.summary;document.querySelectorAll('.footer p').forEach(p=>p.textContent=`© ${new Date().getFullYear()} ${data.name||'Erik Mesic'}`);renderEducation(data);renderSkills(data);if(data.projects)renderProjectCards(data.projects);renderProjectDetail(data.projects||[]);renderResearchInterests(data);renderExperience(data);renderHonors(data);const hobbies=document.getElementById('hobbies-root');if(hobbies&&data.hobbies){hobbies.innerHTML='';data.hobbies.forEach(h=>{const d=document.createElement('div');d.className='card hobby-item';d.innerHTML=`<h4>${escapeHTML(h)}</h4>`;hobbies.appendChild(d);});}const img=document.querySelector('.profile-photo');if(img&&data.contact?.photo){img.src=data.contact.photo;img.addEventListener('error',()=>{img.classList.add('profile-photo-missing');img.removeAttribute('src');},{once:true});}setupContact(data);setupScrollReveal();}catch(err){console.error('Error loading data.json',err);setupContact({});}}
+  document.addEventListener('DOMContentLoaded',()=>{buildNavigation();setupMouseLight();setupTheme();loadData();});
+})();
