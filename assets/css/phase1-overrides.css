@@ -1,0 +1,51 @@
+/* Phase 1 targeted overrides. Kept separate so the existing theme remains easy to revert. */
+:root{--accent-2:#2f8f8a;--accent-2-soft:rgba(47,143,138,.16)}
+:root.light{--accent-2:#286f6b;--accent-2-soft:rgba(40,111,107,.12)}
+body{font-family:'Glacial Indifference','Avenir Next',Avenir,Helvetica,Arial,sans-serif}
+body::before{display:none}
+h1,h2,h3,.project-deck,.honors-year,.honor-main strong,.education-card h3,.hobby-item h4,.profile-details strong{font-family:'Baskerville Old Face','EB Garamond',Baskerville,Georgia,serif}
+.hero h1{letter-spacing:-.025em}
+.eyebrow{letter-spacing:.14em}
+a{color:var(--accent-2)}
+.topnav a.active{border-bottom-color:var(--accent-2)}
+.timeline-company{color:var(--accent-2)}
+.project-card-link,.timeline-featured-label,.honor-main time,.project-aside-rule{color:var(--accent-2)}
+.project-aside-rule{background:var(--accent-2)}
+.tag{border:1px solid rgba(47,143,138,.12)}
+.signal-grid strong{letter-spacing:-.02em}
+.signal-grid span{max-width:180px}
+.timeline-item:not(.timeline-item-featured){opacity:.78}
+.timeline-item-featured{box-shadow:inset 2px 0 0 var(--accent)}
+.reveal-ready{opacity:0;transform:translateY(12px);transition:opacity .7s ease,transform .7s ease}
+.reveal-ready.reveal-visible{opacity:1;transform:none}
+.timeline-item-featured.reveal-ready{transform:translateY(12px)}
+.timeline-item-featured.reveal-ready.reveal-visible{transform:none}
+.footer{border-top:1px solid var(--line);margin-top:18px;padding-top:22px}
+.project-page{min-height:55vh}
+.contact-pill{background:linear-gradient(90deg,#7a4b2f,#8f5a3b)}
+
+@media(max-width:900px){
+  .site-header{z-index:100}
+  .site-header.menu-open .mobile-menu{z-index:101;box-shadow:0 18px 32px rgba(0,0,0,.28)}
+  .mobile-menu-toggle{z-index:102}
+  .mobile-menu a{font-size:15px}
+  .timeline{padding-left:24px}
+  .timeline:before{left:5px}
+  .timeline-item:before{left:-24px}
+}
+@media(max-width:600px){
+  .container{padding-left:18px;padding-right:18px}
+  .hero{padding-left:12px;padding-right:12px}
+  .hero-ctas{display:grid;grid-template-columns:1fr;gap:9px}
+  .hero-ctas .btn,.hero-ctas .btn-outline{width:100%;text-align:center}
+  .signal-grid>div{padding:18px 12px}
+  .signal-grid strong{font-size:21px}
+  .signal-grid span{font-size:10px}
+  .timeline-item{padding:14px 14px}
+  .timeline-item:not(.timeline-item-featured){opacity:.9}
+  .project-header{padding-bottom:34px}
+  .project-header h1{font-size:34px}
+  .project-deck{font-size:18px}
+  .honor-item{padding:14px 0}
+}
+@media(prefers-reduced-motion:reduce){.reveal-ready,.timeline-item-featured.reveal-ready{opacity:1;transform:none;transition:none}}
