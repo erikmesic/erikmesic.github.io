@@ -1,28 +1,42 @@
 /* Phase 1 targeted overrides. Kept separate so the existing theme remains easy to revert. */
-:root{--accent-2:#2f8f8a;--accent-2-soft:rgba(47,143,138,.16)}
+:root{--accent-2:#2f8f8a;--accent-2-soft:rgba(47,143,138,.16);--serif-display:'Baskerville Old Face','EB Garamond',Baskerville,Georgia,serif;--serif-literary:'EB Garamond','Baskerville Old Face',Baskerville,Georgia,serif}
 :root.light{--accent-2:#286f6b;--accent-2-soft:rgba(40,111,107,.12)}
 body{font-family:'Glacial Indifference','Avenir Next',Avenir,Helvetica,Arial,sans-serif}
 body::before{display:none}
-h1,h2,h3,.project-deck,.honors-year,.honor-main strong,.education-card h3,.hobby-item h4,.profile-details strong{font-family:'Baskerville Old Face','EB Garamond',Baskerville,Georgia,serif}
+h1,h2,h3,.project-deck,.honors-year,.honor-main strong,.education-card h3,.hobby-item h4,.profile-details strong{font-family:var(--serif-display)}
+.project-main p,.project-main li,.research-interest p,.research-intro{font-family:var(--serif-literary);font-size:17px}
 .hero h1{letter-spacing:-.025em}
 .eyebrow{letter-spacing:.14em}
 a{color:var(--accent-2)}
 .topnav a.active{border-bottom-color:var(--accent-2)}
 .timeline-company{color:var(--accent-2)}
-.project-card-link,.timeline-featured-label,.honor-main time,.project-aside-rule{color:var(--accent-2)}
+.project-card-link,.timeline-featured-label,.honor-main time{color:var(--accent-2)}
 .project-aside-rule{background:var(--accent-2)}
 .tag{border:1px solid rgba(47,143,138,.12)}
 .signal-grid strong{letter-spacing:-.02em}
 .signal-grid span{max-width:180px}
 .timeline-item:not(.timeline-item-featured){opacity:.78}
-.timeline-item-featured{box-shadow:inset 2px 0 0 var(--accent)}
-.reveal-ready{opacity:0;transform:translateY(12px);transition:opacity .7s ease,transform .7s ease}
+.timeline-item-featured{box-shadow:inset 2px 0 0 var(--accent);background:linear-gradient(90deg,rgba(122,75,47,.055),transparent 72%)}
+.reveal-ready{opacity:0;transform:translateY(12px);transition:opacity .65s ease,transform .65s ease}
 .reveal-ready.reveal-visible{opacity:1;transform:none}
 .timeline-item-featured.reveal-ready{transform:translateY(12px)}
 .timeline-item-featured.reveal-ready.reveal-visible{transform:none}
+.research-interests-section{border-top:1px solid var(--line);margin-top:16px;padding-top:54px}
+.research-intro{max-width:760px;line-height:1.65;margin:0 0 28px}
+.research-list{max-width:900px}
+.research-interest{display:grid;grid-template-columns:58px minmax(0,1fr);gap:20px;padding:22px 0;border-top:1px solid var(--line);transition:opacity .5s ease,transform .5s ease}
+.research-interest:last-child{border-bottom:1px solid var(--line)}
+.research-interest h3{margin:0 0 7px;font-size:22px}
+.research-interest p{margin:0;line-height:1.65;max-width:780px}
+.research-index{font-family:var(--serif-literary);font-size:14px;letter-spacing:.08em;color:var(--accent);padding-top:4px}
 .footer{border-top:1px solid var(--line);margin-top:18px;padding-top:22px}
 .project-page{min-height:55vh}
 .contact-pill{background:linear-gradient(90deg,#7a4b2f,#8f5a3b)}
+
+/* The dark-academia character comes from type, space, teal, and warm brown rather than a noise/texture overlay. */
+.hero{background:linear-gradient(135deg,rgba(122,75,47,.035),rgba(47,143,138,.018));border:1px solid rgba(239,232,223,.035)}
+.card:hover{border-color:rgba(47,143,138,.24);box-shadow:0 14px 38px rgba(0,0,0,.42)}
+.btn-outline:hover{border-color:rgba(47,143,138,.35)}
 
 @media(max-width:900px){
   .site-header{z-index:100}
@@ -32,6 +46,7 @@ a{color:var(--accent-2)}
   .timeline{padding-left:24px}
   .timeline:before{left:5px}
   .timeline-item:before{left:-24px}
+  .research-interest{grid-template-columns:42px minmax(0,1fr);gap:14px}
 }
 @media(max-width:600px){
   .container{padding-left:18px;padding-right:18px}
@@ -47,5 +62,9 @@ a{color:var(--accent-2)}
   .project-header h1{font-size:34px}
   .project-deck{font-size:18px}
   .honor-item{padding:14px 0}
+  .research-interests-section{padding-top:42px}
+  .research-interest{grid-template-columns:1fr;gap:6px;padding:20px 0}
+  .research-index{font-size:11px}
+  .research-interest h3{font-size:20px}
 }
 @media(prefers-reduced-motion:reduce){.reveal-ready,.timeline-item-featured.reveal-ready{opacity:1;transform:none;transition:none}}
