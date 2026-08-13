@@ -1,26 +1,29 @@
 # erikmesic.github.io
 
-This repository hosts your personal resume website (GitHub Pages). I added a simple, responsive single-page site that is data-driven so you can edit the content without touching HTML.
+Personal recruiting site for Erik Mesic, served through GitHub Pages.
 
-Files added:
+## Architecture
 
-- `index.html` — single-page resume layout
-- `assets/css/styles.css` — styles
-- `assets/js/main.js` — populates the page from the JSON data
-- `assets/js/data.json` — your profile data (edit this file to change text)
+The site is a multi-page, data-driven static site. Shared navigation, data population, contact behavior, theme persistence, responsive behavior, project rendering, and scroll reveals are handled by `assets/js/pageload.js`; the editorial motion and recruiter assistant live in `assets/js/visuals.js` and `assets/js/editorial.js`.
 
-How to edit content
+- `index.html` — homepage and masthead
+- `experience.html` — longer CV-style experience history
+- `projects.html` — selected and additional projects plus research interests
+- `education.html` — education
+- `honors.html` — honors and awards
+- `hobbies.html` — hobbies and interests
+- `projects/` — individual project pages
+- `assets/js/data.json` — primary structured content
+- `assets/js/pageload.js` — shared site loader/navigation/rendering
+- `assets/js/visuals.js` — lightweight motion bootstrap
+- `assets/js/editorial.js` — editorial annotations and recruiter assistant
+- `assets/js/assistant-ai.js` — optional browser-native AI refinement; no API key is embedded in the public site
+- `assets/css/` — core theme and targeted editorial overrides
 
-- Edit `assets/js/data.json` to update your name, headline, experience, projects, education, skills, honors, updates, and contact info. The site reads this JSON at runtime.
-- To add a resume PDF, upload `resume.pdf` to the repository root (or update the `contact.resume` field with an external URL).
+## Editing content
 
-Deployment
+Most factual content belongs in `assets/js/data.json`. Keep completed work, planned research, and research interests clearly distinguished; the recruiter assistant follows the same distinction.
 
-- This repo is a `username.github.io` repository — GitHub Pages will serve the site from the `main` branch automatically. You already have a `CNAME` in the repo; the site will be available at your custom domain when DNS is configured.
+## Deployment
 
-Next steps I can take (pick any):
-
-- Replace placeholder content with the full text from your LinkedIn / a supplied resume.
-- Add deeper styling, printable resume PDF generation, or PDF upload.
-- Add animations, light/dark theme toggle, or multi-page resume (separate pages for projects, publications, etc.).
-
+This is a `username.github.io` repository and is served from the `main` branch through GitHub Pages.
