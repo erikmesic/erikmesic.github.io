@@ -5,7 +5,6 @@
     const style=document.createElement('style');
     style.id='site-polish-style';
     style.textContent=`
-      /* Use the original headshot; do not substitute the background-removed portrait. */
       .profile-photo{content:url('/assets/img/headshot.jpg') !important; object-fit:cover;}
 
       /* One consistent floating-button stack on every page: Ask Erik above Contact. */
@@ -17,8 +16,29 @@
       #erik-assistant .assistant-launch{transition:transform .28s ease,box-shadow .28s ease,border-color .28s ease;}
       #erik-assistant .assistant-launch:hover{transform:translateY(-4px);box-shadow:0 14px 40px rgba(0,0,0,.38);border-color:rgba(186,142,111,.85);}
 
-      /* The signal-grid rules are more specific than the generic annotation rules,
-         so explicitly restore an inline formatting box around the actual text. */
+      /* Ask Erik: readable contrast in light mode. */
+      :root.light #erik-assistant .assistant-launch{
+        background:var(--accent) !important;
+        color:#fff !important;
+        -webkit-text-fill-color:#fff !important;
+        border-color:var(--accent) !important;
+      }
+
+      /* Ask Erik: rotate the plus mark with the open state. */
+      #erik-assistant .assistant-launch .assistant-plus,
+      #erik-assistant .assistant-launch .plus,
+      #erik-assistant .assistant-launch .assistant-icon{
+        display:inline-block !important;
+        transform:rotate(0deg);
+        transform-origin:center;
+        transition:transform .28s ease;
+      }
+      #erik-assistant.open .assistant-launch .assistant-plus,
+      #erik-assistant.open .assistant-launch .plus,
+      #erik-assistant.open .assistant-launch .assistant-icon{transform:rotate(45deg) !important;}
+      #erik-assistant .assistant-launch::after{transition:transform .28s ease;transform-origin:center;}
+      #erik-assistant.open .assistant-launch::after{transform:rotate(45deg);}
+
       .signal-grid>div strong.annotation-underline,
       .signal-grid>div strong.annotation-circle,
       .signal-grid>div strong.annotation-highlight,
@@ -38,7 +58,6 @@
       .annotation-circle::before{left:-.04em !important;right:-.07em !important;top:-.09em !important;bottom:-.04em !important;}
 
       .type-text{white-space:pre-wrap;}
-
       .masthead-photo-copy{max-width:900px;padding:clamp(28px,5vw,64px);}
       .masthead-photo-copy .eyebrow{letter-spacing:.18em;font-size:.72rem;}
       .masthead-photo-copy h1{font-family:'Libre Baskerville',Georgia,serif;font-weight:400;letter-spacing:-.025em;}
@@ -49,15 +68,23 @@
       .hero.large .page-title{font-size:clamp(2.6rem,6vw,5rem);letter-spacing:-.035em;line-height:.98;margin-bottom:.35rem;}
       .hero.large #headline{font-family:'EB Garamond',Georgia,serif;font-size:1.25rem;letter-spacing:.015em;}
       .hero.large #summary{max-width:760px;font-size:1.08rem;line-height:1.65;}
-
       .project-card-subjects .project-tag,.project-tags .project-tag{display:inline-flex!important;align-items:center;border:1px solid rgba(47,143,138,.32);background:rgba(47,143,138,.075);color:var(--accent-2,#6b8a83);border-radius:4px;padding:.12rem .42rem;font-family:ui-monospace,SFMono-Regular,Menlo,monospace;font-size:.68rem;line-height:1.35;letter-spacing:.01em;}
       .project-card-subjects .project-tag::before,.project-tags .project-tag::before{content:'`';opacity:.45;}
       .project-card-subjects .project-tag::after,.project-tags .project-tag::after{content:'`';opacity:.45;}
       .project-card-meta>span:nth-child(2){gap:5px;}
-
       .assistant-disclaimer{display:block !important;margin:.8rem 0 0;padding-top:.55rem;border-top:1px solid rgba(186,142,111,.16);font-size:.68rem;line-height:1.45;opacity:.62;}
+
+      /* Keep the expanded assistant inside the mobile viewport after an answer is rendered. */
       @media(max-width:600px){
-        #erik-assistant{right:12px !important;bottom:76px !important;}
+        #erik-assistant{right:12px !important;bottom:76px !important;left:12px !important;width:auto !important;max-width:none !important;}
+        #erik-assistant .assistant-panel{
+          width:min(100%,420px) !important;
+          max-width:100% !important;
+          max-height:calc(100dvh - 100px) !important;
+          overflow-y:auto !important;
+          overflow-x:hidden !important;
+          overscroll-behavior:contain !important;
+        }
         #contact-pill{right:12px !important;bottom:12px !important;}
         #contact-panel{right:12px !important;bottom:68px !important;}
         .masthead-photo-copy{padding:24px;}
@@ -91,8 +118,6 @@
 
   function bind(){
     ensureDisclaimer();
-    /* Capture the contact click at document level so it works regardless of
-       which script owns the Contact button or when that button was created. */
     if(!document.documentElement.dataset.assistantContactClose){
       document.documentElement.dataset.assistantContactClose='true';
       document.addEventListener('click',e=>{
