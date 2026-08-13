@@ -39,6 +39,13 @@
       .annotation-circle::after{left:-.055em!important;right:-.055em!important}
       .annotation-circle::before{left:-.04em!important;right:-.07em!important}
       .assistant-disclaimer{display:block!important;margin:.8rem 0 0!important;padding-top:.55rem!important;border-top:1px solid rgba(186,142,111,.16)!important;font-size:.68rem!important;line-height:1.45!important;opacity:.62!important}
+
+      /* Ask Erik: keep the label readable on the light theme. */
+      :root.light #erik-assistant .assistant-launch{color:var(--text)!important;-webkit-text-fill-color:var(--text)!important}
+
+      /* Ask Erik: rotate only the plus mark when the assistant is open. */
+      #erik-assistant .assistant-launch::after{transition:transform .28s ease;transform-origin:center}
+      #erik-assistant.open .assistant-launch::after{transform:rotate(45deg)}
       @media(max-width:600px){#erik-assistant{right:12px!important;bottom:76px!important}#contact-pill{right:12px!important;bottom:12px!important}#contact-panel{right:12px!important;bottom:68px!important}}
     `;
     if(!style.parentNode)document.head.appendChild(style);
