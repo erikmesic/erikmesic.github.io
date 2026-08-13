@@ -19,7 +19,7 @@
     document.head.appendChild(script);
   }
 
-  function typeEffect(el,text,speed=42){
+  function typeEffect(el,text,speed=90){
     if(!el||el.dataset.typed==='true'||window.matchMedia?.('(prefers-reduced-motion: reduce)').matches)return;
     el.dataset.typed='true';
     el.setAttribute('aria-label',text);
@@ -32,12 +32,10 @@
     let i=0;
     const id=setInterval(()=>{
       if(i<text.length) textSpan.textContent+=text[i++];
-      else { clearInterval(id); setTimeout(()=>caret.remove(),500); }
+      else { clearInterval(id); setTimeout(()=>caret.remove(),700); }
     },speed);
   }
 
-  // Do not observe project-card mutations here. The previous MutationObserver
-  // observed the same nodes it modified, causing an endless callback loop.
   function cleanProjectMeta(){
     document.querySelectorAll('.project-card-meta').forEach(meta=>{
       const status=meta.querySelector(':scope > span:first-child');
@@ -55,8 +53,6 @@
     loadOverrides();
     document.querySelectorAll('.page-title').forEach(el=>typeEffect(el,el.textContent.trim()));
     cleanProjectMeta();
-    // Data is rendered asynchronously. Clean the metadata once after it arrives;
-    // never continuously observe the DOM.
     window.addEventListener('site:data-ready',cleanProjectMeta,{once:true});
     loadEditorial();
   }
