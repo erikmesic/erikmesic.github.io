@@ -16,10 +16,11 @@
   ];
   const links={
     associateEditor:'https://ulrnyu.org/new-page-1',
-    ambassador:'https://www.ippfdebate.com/nyuambassadors',
+    ambassador:'https://nyucedaengage.com/service/ippf/',
     nationalMerit:'https://www.plantcityobserver.com/strawberry-crest-announces-28-national-merit-semifinalists/',
     sb1676:'https://www.flsenate.gov/Session/Bill/2026/1676',
     raiseProject:'/projects/raise-act-legislative-advocacy.html',
+    fblaStandings:'https://www.fbla.org/media/2025/07/TOP_10_NLC_HS.pdf',
     fblaCredentials:'https://www.credly.com/badges/a679ddd4-7638-41f5-bb62-5c5865a240d1/public_url',
     famatStrawberry:'https://famat.org/competitions/206/',
     famatMiddleton:'https://famat.org/competitions/199/'
@@ -38,9 +39,10 @@
     item.classList.toggle('timeline-item-featured',selected);
     item.querySelector('.timeline-featured-label')?.remove();
     item.querySelector('.site-selected-label')?.remove();
-    if(selected){const label=document.createElement('span');label.className='site-selected-label';label.textContent='Selected experience';item.querySelector('.timeline-content')?.appendChild(label);}
+    item.querySelector('.site-selected-mark')?.remove();
+    if(selected){const mark=document.createElement('span');mark.className='site-selected-mark';mark.setAttribute('aria-label','Selected experience');mark.textContent='*';item.querySelector('.timeline-content h3')?.appendChild(mark);const label=document.createElement('span');label.className='site-selected-label';label.textContent='Selected experience';item.querySelector('.timeline-content')?.appendChild(label);}
   }
-  function experienceKey(item){const title=item.querySelector('h3')?.textContent?.trim()||'';const company=item.querySelector('.timeline-company')?.textContent?.trim()||'';return {title,company};}
+  function experienceKey(item){const title=item.querySelector('h3')?.textContent?.trim().replace(/\s*\*$/,'')||'';const company=item.querySelector('.timeline-company')?.textContent?.trim()||'';return {title,company};}
   function updateExperience(){
     const items=[...document.querySelectorAll('.timeline-item')];
     items.forEach(item=>{
@@ -57,7 +59,7 @@
       if(!urls.length)continue;
       const wrap=document.createElement('div');wrap.className='site-external-links';urls.forEach(([label,url])=>wrap.appendChild(a(label,url)));item.querySelector('.timeline-company')?.after(wrap);
     });
-    const senate=[...document.querySelectorAll('.timeline-item')].find(x=>x.querySelector('h3')?.textContent?.trim()==='Florida Senate Page');
+    const senate=[...document.querySelectorAll('.timeline-item')].find(x=>x.querySelector('h3')?.textContent?.trim().replace(/\s*\*$/,'')==='Florida Senate Page');
     if(senate)markSelected(senate,true);
   }
   function addEducationCard(afterSchool,school,degree,range,details){
@@ -72,7 +74,7 @@
   }
   function updateHonorLinks(item,title){
     const existing=item.querySelector('.site-external-links');existing?.remove();let urls=[];
-    if(title.includes('FBLA International High School Business Law Champion'))urls.push(['Credentials',links.fblaCredentials]);
+    if(title.includes('FBLA International High School Business Law Champion'))urls.push(['Standings',links.fblaStandings],['Credentials',links.fblaCredentials]);
     if(title.includes('National Merit Semifinalist'))urls.push(['Plant City Observer',links.nationalMerit]);
     if(title.includes('FAMAT Strawberry Crest'))urls.push(['Competition page',links.famatStrawberry]);
     if(title.includes('FAMAT George S. Middleton'))urls.push(['Competition page',links.famatMiddleton]);
@@ -80,7 +82,7 @@
   }
   function updateHonors(){
     document.querySelectorAll('.honor-item').forEach(item=>{
-      const title=item.querySelector('.honor-main strong')?.textContent?.trim()||'';const selected=selectedHonors.some(fn=>fn(title));item.classList.toggle('honor-item-selected',selected);item.querySelector('.site-selected-label')?.remove();item.querySelector('.site-selected-mark')?.remove();
+      const title=item.querySelector('.honor-main strong')?.textContent?.trim().replace(/\s*\*$/,'')||'';const selected=selectedHonors.some(fn=>fn(title));item.classList.toggle('honor-item-selected',selected);item.querySelector('.site-selected-label')?.remove();item.querySelector('.site-selected-mark')?.remove();
       if(selected){const mark=document.createElement('span');mark.className='site-selected-mark';mark.setAttribute('aria-label','Selected honor');mark.textContent='*';item.querySelector('.honor-main strong')?.appendChild(mark);const label=document.createElement('span');label.className='site-selected-label';label.textContent='Selected honor';item.appendChild(label);}
       updateHonorLinks(item,title);
     });
@@ -92,18 +94,14 @@
     changeTitle('can-t-runoff','Can’t Runoff: A Stakeholder Solution for South Florida Eutrophication','Can’t Runoff');
     changeTitle('changing-social-landscapes','Changing Social Landscapes: A Mixed-Method Examination of ChatGPT Bias and Popular Opinion as Factors in Non-Meat Diet Adoption in Core Anglosphere Countries','Changing Social Landscapes');
     const tucson=document.querySelector('a.project-card[href*="assessing-tucson-property"]');const changing=document.querySelector('a.project-card[href*="changing-social-landscapes"]');
+    if(tucson?.querySelector('.project-card-meta span:first-child'))tucson.querySelector('.project-card-meta span:first-child').textContent='Investment Analysis · June 2026 – July 2026';
     if(featured&&tucson&&tucson.parentElement!==featured)featured.appendChild(tucson);
     if(additional&&changing&&changing.parentElement!==additional)additional.appendChild(changing);
     [tucson,changing].forEach(card=>{if(!card)return;card.classList.toggle('featured-project',card.parentElement===featured);const label=card.querySelector('.project-featured-label');if(card.parentElement===featured&&!label){const meta=card.querySelector('.project-card-meta');if(meta){const span=document.createElement('span');span.className='project-featured-label';span.textContent='Featured';meta.appendChild(span);}}if(card.parentElement===additional)label?.remove();});
-    if(featured&&!tucson){const card=document.createElement('a');card.className='card project-card featured-project';card.href='/projects/assessing-tucson-property.html';card.innerHTML='<div class="project-card-meta"><span>Investment Analysis · June 2026 – July 2026</span><span class="project-featured-label">Featured</span></div><div class="project-card-subjects"><span class="tag project-tag">mcmc</span><span class="tag project-tag">real estate</span><span class="tag project-tag">financial analysis</span><span class="tag project-tag">python</span></div><h3>Assessing Tucson Property</h3><p>Quantitative real-estate analysis combining financial modeling, market research, and MCMC simulation.</p><span class="project-card-link">Read project →</span>';featured.appendChild(card);}
   }
   function updateProjectDetail(){
-    const root=document.getElementById('project-detail');if(!root)return;const slug=root.dataset.slug||location.pathname.split('/').pop().replace(/\.html$/,'');const h1=root.querySelector('.project-header h1');const deck=root.querySelector('.project-deck');const eyebrow=root.querySelector('.project-header .eyebrow');
-    const titles={
-      'assessing-tucson-property':'Assessing Tucson Property: A Deep Analysis of Three Potential Options Following a Distressed Scenario',
-      'can-t-runoff':'Can’t Runoff: A Stakeholder Solution for South Florida Eutrophication',
-      'changing-social-landscapes':'Changing Social Landscapes: A Mixed-Method Examination of ChatGPT Bias and Popular Opinion as Factors in Non-Meat Diet Adoption in Core Anglosphere Countries'
-    };
+    const root=document.getElementById('project-detail');if(!root)return;const slug=root.dataset.slug||location.pathname.split('/').pop().replace(/\.html$/,'');const h1=root.querySelector('.project-header h1');const eyebrow=root.querySelector('.project-header .eyebrow');
+    const titles={'assessing-tucson-property':'Assessing Tucson Property: A Deep Analysis of Three Potential Options Following a Distressed Scenario','can-t-runoff':'Can’t Runoff: A Stakeholder Solution for South Florida Eutrophication','changing-social-landscapes':'Changing Social Landscapes: A Mixed-Method Examination of ChatGPT Bias and Popular Opinion as Factors in Non-Meat Diet Adoption in Core Anglosphere Countries'};
     if(titles[slug]&&h1){h1.textContent=titles[slug];document.title=`${titles[slug]} — Erik Mesic`;}
     if(slug==='assessing-tucson-property'&&eyebrow)eyebrow.textContent='Investment Analysis · June 2026 – July 2026';
     if(slug==='sir-seretse-khama')renderNewProject(root);
@@ -113,7 +111,7 @@
     root.innerHTML=`<a class="back-link" href="/projects.html">← All projects</a><header class="project-header"><p class="eyebrow">Additional Work</p><h1 class="page-title">Sir Seretse Khama: the Creation of Contemporary Botswana</h1><p class="project-deck">A 36-page historical paper analyzing the role of Sir Seretse Khama in the creation of contemporary Botswana.</p><div class="project-tags"><span class="tag project-tag">history</span><span class="tag project-tag">Botswana</span><span class="tag project-tag">politics</span><span class="tag project-tag">economic development</span></div></header><div class="project-layout"><article class="project-main"><section><h2>Overview</h2><p>Wrote a 36-page historical paper analyzing the role of Sir Seretse Khama in the creation of contemporary Botswana, considering Botswana's relative political stability and economic prosperity. In particular, analyzed the roles of Debswana and the De Beers Group in Botswana's diamond-forward economic development.</p></section></article><aside class="project-aside"><div class="project-aside-rule"></div><p class="eyebrow">Project</p><p class="muted">Additional project details can be added as they are finalized.</p></aside></div>`;
   }
   function addNewProjectCard(){
-    const root=document.getElementById('additional-projects');if(!root||root.querySelector('[data-sir-seretse-khama]'))return;if(root){const ael=document.createElement('a');ael.dataset.sirSeretseKhama='true';ael.className='card project-card';ael.href='/projects/sir-seretse-khama.html';ael.innerHTML='<div class="project-card-meta"><span>Additional Work</span></div><div class="project-card-subjects"><span class="tag project-tag">history</span><span class="tag project-tag">Botswana</span><span class="tag project-tag">politics</span><span class="tag project-tag">economic development</span></div><h3>Sir Seretse Khama: the Creation of Contemporary Botswana</h3><p>Wrote a 36-page historical paper analyzing the role of Sir Seretse Khama in the creation of contemporary Botswana, considering Botswana’s relative political stability and economic prosperity.</p><span class="project-card-link">Read project →</span>';root.appendChild(ael);}}
+    const root=document.getElementById('additional-projects');if(!root||root.querySelector('[data-sir-seretse-khama]'))return;const ael=document.createElement('a');ael.dataset.sirSeretseKhama='true';ael.className='card project-card';ael.href='/projects/sir-seretse-khama.html';ael.innerHTML='<div class="project-card-meta"><span>Additional Work</span></div><div class="project-card-subjects"><span class="tag project-tag">history</span><span class="tag project-tag">Botswana</span><span class="tag project-tag">politics</span><span class="tag project-tag">economic development</span></div><h3>Sir Seretse Khama: the Creation of Contemporary Botswana</h3><p>Wrote a 36-page historical paper analyzing the role of Sir Seretse Khama in the creation of contemporary Botswana, considering Botswana’s relative political stability and economic prosperity.</p><span class="project-card-link">Read project →</span>';root.appendChild(ael);}
   function apply(){addStyle();updateEducation();updateExperience();updateHonors();updateProjectCards();updateProjectDetail();addNewProjectCard();}
   function start(){apply();window.addEventListener('site:data-ready',apply);setTimeout(apply,300);setTimeout(apply,1000);}
   if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',start,{once:true});else start();
