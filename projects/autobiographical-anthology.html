@@ -13,24 +13,9 @@
   <header class="site-header"><div class="topbar-inner"><a class="logo" href="/">Erik Mesic</a><nav class="topnav"></nav></div></header>
   <main class="container"><section class="section project-page"><div id="project-detail" data-slug="autobiographical-anthology"></div></section></main>
   <footer class="footer"><p>© 2026 Erik Mesic</p></footer>
-  <script src="/assets/js/pageload.js"></script><script src="/assets/js/visuals.js"></script><script src="/assets/js/final-fixes.js"></script>
-  <script>
-    (function(){
-      function fix(){
-        const root=document.getElementById('project-detail');
-        if(!root)return;
-        const missing=root.querySelector('.project-not-found');
-        if(missing){
-          root.innerHTML='<a class="back-link" href="/projects.html">← All projects</a><header class="project-header"><p class="eyebrow">Publication · Apr 2025 – Present</p><h1 class="page-title">Autobiographical Anthology</h1><p class="project-deck">An ongoing autobiographical book project combining memoir, journalism, literary experimentation, and philosophical inquiry.</p></header>';
-        }else{
-          const h1=root.querySelector('.project-header h1');
-          if(h1)h1.textContent='Autobiographical Anthology';
-        }
-        document.title='Autobiographical Anthology — Erik Mesic';
-      }
-      if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',()=>setTimeout(fix,0),{once:true});else setTimeout(fix,0);
-      setTimeout(fix,500);
-    })();
-  </script>
+  <script src="/assets/js/pageload.js"></script>
+  <script src="/assets/js/visuals.js"></script>
+  <script src="/assets/js/final-fixes.js"></script>
+  <script src="/assets/js/site-updates.js"></script>
 </body>
 </html>
