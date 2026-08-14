@@ -4,13 +4,10 @@
 
   const BROWN='#7a4b2f';
   const selectedExperience=new Set([
-    'Strategic Real Estate and Investments Analyst',
-    'Legislative Advocate',
-    'Debater',
+    'Strategic Real Estate and Investments Analyst','Legislative Advocate','Debater',
     'Founder and Co-President|Accelerated Preparation Society',
     'Treasurer|Future Business Leaders of America, Durant High School',
-    'Florida Senate Page',
-    'Founder and President|Homework Helping',
+    'Florida Senate Page','Founder and President|Homework Helping',
     'Founder and President|Student Collective for Educational Reform'
   ]);
   const selectedHonors=[
@@ -23,146 +20,40 @@
     '1st Place, H.C.T.E. 2025 Spring Writing Awards, Nonfiction'
   ];
   const links={
-    fblaStandings:'https://www.fbla.org/media/2025/07/TOP_10_NLC_HS.pdf',
-    fblaCredentials:'https://www.credly.com/badges/a679ddd4-7638-41f5-bb62-5c5865a240d1/public_url',
-    famatResults:'https://famat.org/results/',
-    nationalMerit:'https://www.plantcityobserver.com/strawberry-crest-announces-28-national-merit-semifinalists/',
-    ambassador:'https://www.ippfdebate.com/nyuambassadors',
-    associateEditor:'https://ulrnyu.org/new-page-1',
-    sb1676:'https://www.flsenate.gov/Session/Bill/2026/1676',
-    raiseProject:'/projects/raise-act-legislative-advocacy.html',
-    linkedin:'https://www.linkedin.com/in/erikmesic/'
+    fblaStandings:'https://www.fbla.org/media/2025/07/TOP_10_NLC_HS.pdf',fblaCredentials:'https://www.credly.com/badges/a679ddd4-7638-41f5-bb62-5c5865a240d1/public_url',
+    famatResults:'https://famat.org/results/',nationalMerit:'https://www.plantcityobserver.com/strawberry-crest-announces-28-national-merit-semifinalists/',
+    ambassador:'https://www.ippfdebate.com/nyuambassadors',associateEditor:'https://ulrnyu.org/new-page-1',
+    sb1676:'https://www.flsenate.gov/Session/Bill/2026/1676',raiseProject:'/projects/raise-act-legislative-advocacy.html',linkedin:'https://www.linkedin.com/in/erikmesic/'
   };
-
-  function addStyle(){
-    if(document.getElementById('site-updates-style'))return;
-    const s=document.createElement('style');s.id='site-updates-style';
-    s.textContent=`
-      .site-selected-mark{display:inline-block;margin-left:.35rem;color:${BROWN};font-weight:800;font-size:1em;line-height:1}
-      .site-selected-label{display:block;margin-top:9px;color:${BROWN};font-size:10px;text-transform:uppercase;letter-spacing:.12em;font-weight:600}
-      .site-external-links{display:flex;flex-wrap:wrap;gap:8px;margin-top:9px}
-      .site-external-link{font-size:11px;color:${BROWN};text-decoration:underline;text-underline-offset:3px}
-      .honor-item-selected{border-top-color:rgba(122,75,47,.30)!important;background:linear-gradient(90deg,rgba(122,75,47,.045),transparent 72%);padding-left:8px;padding-right:8px;border-radius:4px}
-      .project-featured-label{margin-left:8px;color:${BROWN};font-weight:600}
-    `;
-    document.head.appendChild(s);
-  }
-
-  function externalLink(text,href){
-    const el=document.createElement('a');el.className='site-external-link';el.href=href;el.textContent=text;
-    if(href.startsWith('http')){el.target='_blank';el.rel='noopener noreferrer';}
-    return el;
-  }
-
-  function clearSelectedMarkers(root){
-    root.querySelectorAll('.site-selected-mark,.site-selected-label').forEach(x=>x.remove());
-  }
-
+  function addStyle(){if(document.getElementById('site-updates-style'))return;const s=document.createElement('style');s.id='site-updates-style';s.textContent=`
+    .site-selected-mark{display:inline-block;margin-left:.35rem;color:${BROWN};font-weight:800;font-size:1em;line-height:1}
+    .site-selected-label{display:block;margin-top:9px;color:${BROWN};font-size:10px;text-transform:uppercase;letter-spacing:.12em;font-weight:600}
+    .site-external-links{display:flex;flex-wrap:wrap;gap:8px;margin-top:9px}
+    .site-external-link{font-size:11px;color:${BROWN};text-decoration:underline;text-underline-offset:3px}
+    .honor-item-selected{border-top-color:rgba(122,75,47,.30)!important;background:linear-gradient(90deg,rgba(122,75,47,.045),transparent 72%);padding-left:8px;padding-right:8px;border-radius:4px}
+    .project-featured-label{margin-left:8px;color:${BROWN};font-weight:600}
+  `;document.head.appendChild(s);}
+  function externalLink(text,href){const el=document.createElement('a');el.className='site-external-link';el.href=href;el.textContent=text;if(href.startsWith('http')){el.target='_blank';el.rel='noopener noreferrer';}return el;}
   function updateExperience(){
-    const items=[...document.querySelectorAll('.timeline-item')];
-    if(!items.length)return false;
-    items.forEach(item=>{
-      const h=item.querySelector('h3');
-      if(!h)return;
-      const title=h.textContent.trim().replace(/\s*\*$/,'');
-      const company=(item.querySelector('.timeline-company')?.textContent||'').trim().replace(/\s*\*$/,'');
-      const selected=selectedExperience.has(title)||selectedExperience.has(`${title}|${company}`);
-      item.classList.toggle('timeline-item-featured',selected);
-      item.querySelector('.site-selected-mark')?.remove();
-      item.querySelector('.site-selected-label')?.remove();
-      if(selected){
-        const mark=document.createElement('span');mark.className='site-selected-mark';mark.setAttribute('aria-hidden','true');mark.textContent='*';h.appendChild(mark);
-        const label=document.createElement('span');label.className='site-selected-label';label.textContent='Selected experience';item.querySelector('.timeline-content')?.appendChild(label);
-      }
-      if(title==='Strategic Real Estate and Investments Analyst'){
-        const date=item.querySelector('.timeline-meta span:first-child');if(date)date.textContent='June 2026 – September 2026';
-      }
-      item.querySelector('.site-external-links')?.remove();
-      const urls=[];
-      if(title==='Legislative Advocate')urls.push(['Florida Senate · SB 1676',links.sb1676],['RAISE Act project',links.raiseProject]);
-      if(title==='NYU Ambassador')urls.push(['IPPF · NYU Ambassadors',links.ambassador]);
-      if(title==='Associate Editor')urls.push(['ULR masthead',links.associateEditor]);
-      if(title==='Founder and Co-President'&&company.includes('Accelerated Preparation Society'))urls.push(['LinkedIn',links.linkedin]);
-      if(title==='Founder and President'&&company.includes('Homework Helping'))urls.push(['LinkedIn',links.linkedin]);
-      if(title==='Founder and President'&&company.includes('Student Collective for Educational Reform'))urls.push(['LinkedIn',links.linkedin]);
-      if(title==='Treasurer'&&company.includes('Future Business Leaders of America'))urls.push(['FBLA standings',links.fblaStandings],['Credentials',links.fblaCredentials]);
-      if(urls.length){const wrap=document.createElement('div');wrap.className='site-external-links';urls.forEach(([label,url])=>wrap.appendChild(externalLink(label,url)));item.querySelector('.timeline-company')?.after(wrap);}
-    });
-    return true;
+    const items=[...document.querySelectorAll('.timeline-item')];if(!items.length)return false;
+    items.forEach(item=>{const h=item.querySelector('h3');if(!h)return;const title=h.textContent.trim().replace(/\s*\*$/,'');const company=(item.querySelector('.timeline-company')?.textContent||'').trim().replace(/\s*\*$/,'');const selected=selectedExperience.has(title)||selectedExperience.has(`${title}|${company}`);item.classList.toggle('timeline-item-featured',selected);item.querySelector('.site-selected-mark')?.remove();item.querySelector('.site-selected-label')?.remove();if(selected){const mark=document.createElement('span');mark.className='site-selected-mark';mark.setAttribute('aria-hidden','true');mark.textContent='*';h.appendChild(mark);const label=document.createElement('span');label.className='site-selected-label';label.textContent='Selected experience';item.querySelector('.timeline-content')?.appendChild(label);}if(title==='Strategic Real Estate and Investments Analyst'){const date=item.querySelector('.timeline-meta span:first-child');if(date)date.textContent='June 2026 – September 2026';}item.querySelector('.site-external-links')?.remove();const urls=[];if(title==='Legislative Advocate')urls.push(['Florida Senate · SB 1676',links.sb1676],['RAISE Act project',links.raiseProject]);if(title==='NYU Ambassador')urls.push(['IPPF · NYU Ambassadors',links.ambassador]);if(title==='Associate Editor')urls.push(['ULR masthead',links.associateEditor]);if(title==='Founder and Co-President'&&company.includes('Accelerated Preparation Society'))urls.push(['LinkedIn',links.linkedin]);if(title==='Founder and President'&&company.includes('Homework Helping'))urls.push(['LinkedIn',links.linkedin]);if(title==='Founder and President'&&company.includes('Student Collective for Educational Reform'))urls.push(['LinkedIn',links.linkedin]);if(title==='Treasurer'&&company.includes('Future Business Leaders of America'))urls.push(['FBLA standings',links.fblaStandings],['Credentials',links.fblaCredentials]);if(urls.length){const wrap=document.createElement('div');wrap.className='site-external-links';urls.forEach(([label,url])=>wrap.appendChild(externalLink(label,url)));item.querySelector('.timeline-company')?.after(wrap);}});return true;
   }
-
   function updateEducation(){
-    const root=document.getElementById('education-list');if(!root)return false;
-    const cards=[...root.querySelectorAll('.education-card')];
-    const add=(after,school,degree,range,details)=>{
-      if(cards.some(c=>c.querySelector('h3')?.textContent.trim()===school)||[...root.querySelectorAll('.education-card h3')].some(x=>x.textContent.trim()===school))return;
-      const target=[...root.querySelectorAll('.education-card')].find(c=>c.querySelector('h3')?.textContent.trim()===after);if(!target)return;
-      const card=document.createElement('article');card.className='card education-card';
-      card.innerHTML='<p class="eyebrow"></p><h3></h3><p><strong></strong></p><p class="muted"></p>';
-      card.querySelector('.eyebrow').textContent=range;card.querySelector('h3').textContent=school;card.querySelector('strong').textContent=degree;card.querySelector('.muted').textContent=details;target.after(card);
-    };
-    add('New York University — Stern School of Business','Yonsei University','Non-Degree · GPA: n/a','Spring 2027','Selected for admission to Yonsei University, my first choice, from among a very competitive applicant pool for the International Business Exchange (IBEX) program in Spring 2027 at NYU Stern.');
-    add('Hillsborough College','University of South Florida','Non-Degree · GPA: 4.0','Fall 2024','Completed Calculus III and Analytic Geography through in-person classes as a dual enrollment student.');
-    return true;
+    const root=document.getElementById('education-list');if(!root)return false;const add=(after,school,degree,range,details)=>{if([...root.querySelectorAll('.education-card h3')].some(x=>x.textContent.trim()===school))return;const target=[...root.querySelectorAll('.education-card')].find(c=>c.querySelector('h3')?.textContent.trim()===after);if(!target)return;const card=document.createElement('article');card.className='card education-card';card.innerHTML='<p class="eyebrow"></p><h3></h3><p><strong></strong></p><p class="muted"></p>';card.querySelector('.eyebrow').textContent=range;card.querySelector('h3').textContent=school;card.querySelector('strong').textContent=degree;card.querySelector('.muted').textContent=details;target.after(card);};add('New York University — Stern School of Business','Yonsei University','Non-Degree · GPA: n/a','Spring 2027','Selected for admission to Yonsei University, my first choice, from among a very competitive applicant pool for the International Business Exchange (IBEX) program in Spring 2027 at NYU Stern.');add('Hillsborough College','University of South Florida','Non-Degree · GPA: 4.0','Fall 2024','Completed Calculus III and Analytic Geography through in-person classes as a dual enrollment student.');return true;
   }
-
   function updateHonors(){
-    const items=[...document.querySelectorAll('.honor-item')];if(!items.length)return false;
-    items.forEach(item=>{
-      const strong=item.querySelector('.honor-main strong');if(!strong)return;
-      const title=strong.textContent.trim().replace(/\s*\*$/,'');
-      const selected=selectedHonors.includes(title);
-      item.classList.toggle('honor-item-selected',selected);
-      item.querySelector('.site-selected-mark')?.remove();item.querySelector('.site-selected-label')?.remove();item.querySelector('.site-external-links')?.remove();
-      if(selected){const mark=document.createElement('span');mark.className='site-selected-mark';mark.setAttribute('aria-hidden','true');mark.textContent='*';strong.appendChild(mark);const label=document.createElement('span');label.className='site-selected-label';label.textContent='Selected honor';item.appendChild(label);}
-      const urls=[];
-      if(title==='FBLA International High School Business Law Champion (1st Place)')urls.push(['FBLA standings',links.fblaStandings],['Credentials',links.fblaCredentials]);
-      if(title==='National Merit Semifinalist')urls.push(['Plant City Observer',links.nationalMerit]);
-      if(title==='3rd Place, FAMAT Strawberry Crest High School Regionals, Statistics'||title==='3rd Place, FAMAT George S. Middleton High School Regionals, Statistics')urls.push(['FAMAT results',links.famatResults]);
-      if(urls.length){const wrap=document.createElement('div');wrap.className='site-external-links';urls.forEach(([label,url])=>wrap.appendChild(externalLink(label,url)));item.querySelector('.honor-main')?.after(wrap);}
-    });
-    return true;
+    const items=[...document.querySelectorAll('.honor-item')];if(!items.length)return false;items.forEach(item=>{const strong=item.querySelector('.honor-main strong');if(!strong)return;const title=strong.textContent.trim().replace(/\s*\*$/,'');const selected=selectedHonors.includes(title);item.classList.toggle('honor-item-selected',selected);item.querySelector('.site-selected-mark')?.remove();item.querySelector('.site-selected-label')?.remove();item.querySelector('.site-external-links')?.remove();if(selected){const mark=document.createElement('span');mark.className='site-selected-mark';mark.setAttribute('aria-hidden','true');mark.textContent='*';strong.appendChild(mark);const label=document.createElement('span');label.className='site-selected-label';label.textContent='Selected honor';item.appendChild(label);}const urls=[];if(title==='FBLA International High School Business Law Champion (1st Place)')urls.push(['FBLA standings',links.fblaStandings],['Credentials',links.fblaCredentials]);if(title==='National Merit Semifinalist')urls.push(['Plant City Observer',links.nationalMerit]);if(title==='3rd Place, FAMAT Strawberry Crest High School Regionals, Statistics'||title==='3rd Place, FAMAT George S. Middleton High School Regionals, Statistics')urls.push(['FAMAT results',links.famatResults]);if(urls.length){const wrap=document.createElement('div');wrap.className='site-external-links';urls.forEach(([label,url])=>wrap.appendChild(externalLink(label,url)));item.querySelector('.honor-main')?.after(wrap);}});return true;
   }
-
   function updateProjects(){
-    const featured=document.getElementById('featured-projects'),additional=document.getElementById('additional-projects');
-    if(!featured&&!additional)return false;
-    const cards=[...document.querySelectorAll('a.project-card')];
-    const find=slug=>cards.find(c=>c.getAttribute('href')?.includes(`/projects/${slug}.html`));
-    const tucson=find('assessing-tucson-property'),changing=find('changing-social-landscapes'),runoff=find('can-t-runoff');
-    if(tucson){tucson.querySelector('h3').textContent='Assessing Tucson Property: A Deep Analysis of Three Potential Options Following a Distressed Scenario';const meta=tucson.querySelector('.project-card-meta');if(meta){const first=meta.querySelector('span:first-child');if(first)first.textContent='Investment Analysis · June 2026 – July 2026';}if(featured&&tucson.parentElement!==featured)featured.appendChild(tucson);}
-    if(changing){changing.querySelector('h3').textContent='Changing Social Landscapes: A Mixed-Method Examination of ChatGPT Bias and Popular Opinion as Factors in Non-Meat Diet Adoption in Core Anglosphere Countries';if(additional&&changing.parentElement!==additional)additional.appendChild(changing);}
-    if(runoff)runoff.querySelector('h3').textContent='Can’t Runoff: A Stakeholder Solution for South Florida Eutrophication';
-    if(tucson&&featured){tucson.classList.add('featured-project');const meta=tucson.querySelector('.project-card-meta');if(meta&&!meta.querySelector('.project-featured-label')){const label=document.createElement('span');label.className='project-featured-label';label.textContent='Featured';meta.appendChild(label);}}
-    if(changing){changing.classList.remove('featured-project');changing.querySelector('.project-featured-label')?.remove();}
-    if(additional&&!additional.querySelector('[data-sir-seretse-khama]')){
-      const card=document.createElement('a');card.className='card project-card';card.dataset.sirSeretseKhama='true';card.href='/projects/sir-seretse-khama.html';
-      card.innerHTML='<div class="project-card-meta"><span>Additional Work</span></div><div class="project-card-subjects"><span class="tag project-tag">writing</span><span class="tag project-tag">deep research</span><span class="tag project-tag">historical analysis</span></div><h3>Sir Seretse Khama: the Creation of Contemporary Botswana</h3><p>Wrote a 36-page historical paper analyzing the role of Sir Seretse Khama in the creation of contemporary Botswana, considering Botswana’s relative political stability and economic prosperity. In particular, analyzed the roles of Debswana and the De Beers Group in Botswana’s diamond-forward economic development.</p><span class="project-card-link">Read project →</span>';
-      additional.appendChild(card);
-    }
+    const featured=document.getElementById('featured-projects'),additional=document.getElementById('additional-projects');if(!featured&&!additional)return false;const cards=[...document.querySelectorAll('a.project-card')];const find=slug=>cards.find(c=>c.getAttribute('href')?.includes(`/projects/${slug}.html`));const tucson=find('assessing-tucson-property'),changing=find('changing-social-landscapes'),runoff=find('can-t-runoff');if(tucson){tucson.querySelector('h3').textContent='Assessing Tucson Property: A Deep Analysis of Three Potential Options Following a Distressed Scenario';const meta=tucson.querySelector('.project-card-meta');if(meta){const first=meta.querySelector('span:first-child');if(first)first.textContent='Investment Analysis · June 2026 – July 2026';}if(featured&&tucson.parentElement!==featured)featured.appendChild(tucson);}if(changing){changing.querySelector('h3').textContent='Changing Social Landscapes: A Mixed-Method Examination of ChatGPT Bias and Popular Opinion as Factors in Non-Meat Diet Adoption in Core Anglosphere Countries';if(additional&&changing.parentElement!==additional)additional.appendChild(changing);}if(runoff)runoff.querySelector('h3').textContent='Can’t Runoff: A Stakeholder Solution for South Florida Eutrophication';if(tucson&&featured){tucson.classList.add('featured-project');const meta=tucson.querySelector('.project-card-meta');if(meta&&!meta.querySelector('.project-featured-label')){const label=document.createElement('span');label.className='project-featured-label';label.textContent='Featured';meta.appendChild(label);}}if(changing){changing.classList.remove('featured-project');changing.querySelector('.project-featured-label')?.remove();}
+    if(additional&&!additional.querySelector('[data-sir-seretse-khama]')){const card=document.createElement('a');card.className='card project-card';card.dataset.sirSeretseKhama='true';card.href='/projects/sir-seretse-khama.html';card.innerHTML='<div class="project-card-meta"><span>Additional Work</span></div><div class="project-card-subjects"><span class="tag project-tag">writing</span><span class="tag project-tag">deep research</span><span class="tag project-tag">historical analysis</span></div><h3>Sir Seretse Khama: the Creation of Contemporary Botswana</h3><p>Wrote a 36-page historical paper analyzing the role of Sir Seretse Khama in the creation of contemporary Botswana, considering Botswana’s relative political stability and economic prosperity. In particular, analyzed the roles of Debswana and the De Beers Group in Botswana’s diamond-forward economic development.</p><span class="project-card-link">Read project →</span>';additional.appendChild(card);}
+    if(additional&&!additional.querySelector('[data-autobiographical-anthology]')){const card=document.createElement('a');card.className='card project-card';card.dataset.autobiographicalAnthology='true';card.href='/projects/autobiographical-anthology.html';card.innerHTML='<div class="project-card-meta"><span>Publication · Apr 2025 – Present</span></div><div class="project-card-subjects"><span class="tag project-tag">writing</span><span class="tag project-tag">memoir</span><span class="tag project-tag">literary experimentation</span></div><h3>Autobiographical Anthology</h3><p>An ongoing autobiographical book project combining memoir, journalism, literary experimentation, and philosophical inquiry.</p><span class="project-card-link">Read project →</span>';additional.appendChild(card);}
     return true;
   }
-
   function updateProjectDetail(){
-    const root=document.getElementById('project-detail');if(!root)return false;
-    const slug=root.dataset.slug||location.pathname.split('/').pop().replace(/\.html$/,'');
-    const titles={
-      'assessing-tucson-property':'Assessing Tucson Property: A Deep Analysis of Three Potential Options Following a Distressed Scenario',
-      'can-t-runoff':'Can’t Runoff: A Stakeholder Solution for South Florida Eutrophication',
-      'changing-social-landscapes':'Changing Social Landscapes: A Mixed-Method Examination of ChatGPT Bias and Popular Opinion as Factors in Non-Meat Diet Adoption in Core Anglosphere Countries'
-    };
-    const h1=root.querySelector('.project-header h1');if(h1&&titles[slug]){h1.textContent=titles[slug];document.title=`${titles[slug]} — Erik Mesic`;}
-    const eyebrow=root.querySelector('.project-header .eyebrow');if(eyebrow&&slug==='assessing-tucson-property')eyebrow.textContent='Investment Analysis · June 2026 – July 2026';
-    if(slug==='sir-seretse-khama'&&!root.dataset.siteSeretseRendered){root.dataset.siteSeretseRendered='true';root.innerHTML='<a class="back-link" href="/projects.html">← All projects</a><header class="project-header"><p class="eyebrow">Additional Work · Jan 2024 – Feb 2024</p><h1 class="page-title">Sir Seretse Khama: the Creation of Contemporary Botswana</h1><p class="project-deck">Wrote a 36-page historical paper analyzing the role of Sir Seretse Khama in the creation of contemporary Botswana, considering Botswana’s relative political stability and economic prosperity. In particular, analyzed the roles of Debswana and the De Beers Group in Botswana’s diamond-forward economic development.</p><div class="project-tags"><span class="tag project-tag">writing</span><span class="tag project-tag">deep research</span><span class="tag project-tag">historical analysis</span></div></header><div class="project-layout"><article class="project-main"><section><h2>Overview</h2><p>Wrote a 36-page historical paper analyzing the role of Sir Seretse Khama in the creation of contemporary Botswana, considering Botswana’s relative political stability and economic prosperity. In particular, analyzed the roles of Debswana and the De Beers Group in Botswana’s diamond-forward economic development.</p></section><section><h2>My role</h2><p>Author and primary researcher; reviewed historical research, analyzed Sir Seretse Khama’s particular role, and revised to ensure historical accuracy.</p></section></article><aside class="project-aside"><div class="project-aside-rule"></div><p class="eyebrow">Project</p><p class="muted">Jan 2024 – Feb 2024</p></aside></div>';document.title='Sir Seretse Khama: the Creation of Contemporary Botswana — Erik Mesic';}
-    return true;
+    const root=document.getElementById('project-detail');if(!root)return false;const slug=root.dataset.slug||location.pathname.split('/').pop().replace(/\.html$/,'');const titles={'assessing-tucson-property':'Assessing Tucson Property: A Deep Analysis of Three Potential Options Following a Distressed Scenario','can-t-runoff':'Can’t Runoff: A Stakeholder Solution for South Florida Eutrophication','changing-social-landscapes':'Changing Social Landscapes: A Mixed-Method Examination of ChatGPT Bias and Popular Opinion as Factors in Non-Meat Diet Adoption in Core Anglosphere Countries'};const h1=root.querySelector('.project-header h1');if(h1&&titles[slug]){h1.textContent=titles[slug];document.title=`${titles[slug]} — Erik Mesic`;}const eyebrow=root.querySelector('.project-header .eyebrow');if(eyebrow&&slug==='assessing-tucson-property')eyebrow.textContent='Investment Analysis · June 2026 – July 2026';if(slug==='sir-seretse-khama'&&!root.dataset.siteSeretseRendered){root.dataset.siteSeretseRendered='true';root.innerHTML='<a class="back-link" href="/projects.html">← All projects</a><header class="project-header"><p class="eyebrow">Additional Work · Jan 2024 – Feb 2024</p><h1 class="page-title">Sir Seretse Khama: the Creation of Contemporary Botswana</h1><p class="project-deck">Wrote a 36-page historical paper analyzing the role of Sir Seretse Khama in the creation of contemporary Botswana, considering Botswana’s relative political stability and economic prosperity. In particular, analyzed the roles of Debswana and the De Beers Group in Botswana’s diamond-forward economic development.</p><div class="project-tags"><span class="tag project-tag">writing</span><span class="tag project-tag">deep research</span><span class="tag project-tag">historical analysis</span></div></header><div class="project-layout"><article class="project-main"><section><h2>Overview</h2><p>Wrote a 36-page historical paper analyzing the role of Sir Seretse Khama in the creation of contemporary Botswana, considering Botswana’s relative political stability and economic prosperity. In particular, analyzed the roles of Debswana and the De Beers Group in Botswana’s diamond-forward economic development.</p></section><section><h2>My role</h2><p>Author and primary researcher; reviewed historical research, analyzed Sir Seretse Khama’s particular role, and revised to ensure historical accuracy.</p></section></article><aside class="project-aside"><div class="project-aside-rule"></div><p class="eyebrow">Project</p><p class="muted">Jan 2024 – Feb 2024</p></aside></div>';document.title='Sir Seretse Khama: the Creation of Contemporary Botswana — Erik Mesic';}return true;
   }
-
   function apply(){addStyle();updateEducation();updateExperience();updateHonors();updateProjects();updateProjectDetail();}
-  function start(){
-    apply();
-    const observer=new MutationObserver(()=>apply());
-    observer.observe(document.body,{childList:true,subtree:true});
-    setTimeout(()=>observer.disconnect(),5000);
-  }
+  function start(){apply();const observer=new MutationObserver(()=>apply());observer.observe(document.body,{childList:true,subtree:true});setTimeout(()=>observer.disconnect(),5000);}
   if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',start,{once:true});else start();
 })();
