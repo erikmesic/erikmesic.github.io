@@ -2,8 +2,8 @@
 (function(){
   const selectedExperience=new Set([
     'Strategic Real Estate and Investments Analyst','Legislative Advocate','Debater',
-    'Founder and Co-President','Treasurer','Florida Senate Page','Founder and President|Homework Helping',
-    'Founder and President|Student Collective for Educational Reform'
+    'Founder and Co-President|Accelerated Preparation Society','Treasurer','Florida Senate Page',
+    'Founder and President|Homework Helping','Founder and President|Student Collective for Educational Reform'
   ]);
   const selectedHonors=[
     h=>h.includes('Ethan Rosen Incentive Award (ERIA)'),
@@ -22,8 +22,7 @@
     raiseProject:'/projects/raise-act-legislative-advocacy.html',
     fblaStandings:'https://www.fbla.org/media/2025/07/TOP_10_NLC_HS.pdf',
     fblaCredentials:'https://www.credly.com/badges/a679ddd4-7638-41f5-bb62-5c5865a240d1/public_url',
-    famatStrawberry:'https://famat.org/competitions/206/',
-    famatMiddleton:'https://famat.org/competitions/199/'
+    famatResults:'https://famat.org/results/'
   };
   const a=(text,href)=>{const el=document.createElement('a');el.href=href;el.textContent=text;el.target=href.startsWith('http')?'_blank':'_self';el.rel=href.startsWith('http')?'noopener noreferrer':'';el.className='site-external-link';return el;};
   function addStyle(){if(document.getElementById('site-updates-style'))return;const s=document.createElement('style');s.id='site-updates-style';s.textContent=`
@@ -69,15 +68,15 @@
     const card=document.createElement('article');card.className='card education-card';card.innerHTML=`<p class="eyebrow"></p><h3></h3><p><strong></strong></p><p class="muted"></p>`;card.querySelector('.eyebrow').textContent=range;card.querySelector('h3').textContent=school;card.querySelector('strong').textContent=degree;card.querySelector('.muted').textContent=details;target.after(card);return true;
   }
   function updateEducation(){
-    addEducationCard('New York University — Stern School of Business','Yonsei University','Non-Degree','Spring 2027','GPA: n/a. Selected for admission to Yonsei University, my first choice, from among a very competitive applicant pool for the International Business Exchange (IBEX) program in Spring 2027 at NYU Stern.');
-    addEducationCard('Hillsborough College','University of South Florida','Non-Degree','Fall 2024','GPA: 4.0. Completed Calculus III and Analytic Geography through in-person classes as a dual enrollment student.');
+    addEducationCard('New York University — Stern School of Business','Yonsei University','Non-Degree · GPA: n/a','Spring 2027','Selected for admission to Yonsei University, my first choice, from among a very competitive applicant pool for the International Business Exchange (IBEX) program in Spring 2027 at NYU Stern.');
+    addEducationCard('Hillsborough College','University of South Florida','Non-Degree · GPA: 4.0','Fall 2024','Completed Calculus III and Analytic Geography through in-person classes as a dual enrollment student.');
   }
   function updateHonorLinks(item,title){
     const existing=item.querySelector('.site-external-links');existing?.remove();let urls=[];
     if(title.includes('FBLA International High School Business Law Champion'))urls.push(['Standings',links.fblaStandings],['Credentials',links.fblaCredentials]);
     if(title.includes('National Merit Semifinalist'))urls.push(['Plant City Observer',links.nationalMerit]);
-    if(title.includes('FAMAT Strawberry Crest'))urls.push(['Competition page',links.famatStrawberry]);
-    if(title.includes('FAMAT George S. Middleton'))urls.push(['Competition page',links.famatMiddleton]);
+    if(title.includes('FAMAT Strawberry Crest'))urls.push(['Competition results',links.famatResults]);
+    if(title.includes('FAMAT George S. Middleton'))urls.push(['Competition results',links.famatResults]);
     if(!urls.length)return;const wrap=document.createElement('div');wrap.className='site-external-links';urls.forEach(([label,url])=>wrap.appendChild(a(label,url)));item.querySelector('.honor-main')?.after(wrap);
   }
   function updateHonors(){
@@ -108,10 +107,10 @@
   }
   function renderNewProject(root){
     if(root.dataset.siteUpdateRendered==='true')return;root.dataset.siteUpdateRendered='true';
-    root.innerHTML=`<a class="back-link" href="/projects.html">← All projects</a><header class="project-header"><p class="eyebrow">Additional Work</p><h1 class="page-title">Sir Seretse Khama: the Creation of Contemporary Botswana</h1><p class="project-deck">A 36-page historical paper analyzing the role of Sir Seretse Khama in the creation of contemporary Botswana.</p><div class="project-tags"><span class="tag project-tag">history</span><span class="tag project-tag">Botswana</span><span class="tag project-tag">politics</span><span class="tag project-tag">economic development</span></div></header><div class="project-layout"><article class="project-main"><section><h2>Overview</h2><p>Wrote a 36-page historical paper analyzing the role of Sir Seretse Khama in the creation of contemporary Botswana, considering Botswana's relative political stability and economic prosperity. In particular, analyzed the roles of Debswana and the De Beers Group in Botswana's diamond-forward economic development.</p></section></article><aside class="project-aside"><div class="project-aside-rule"></div><p class="eyebrow">Project</p><p class="muted">Additional project details can be added as they are finalized.</p></aside></div>`;
+    root.innerHTML=`<a class="back-link" href="/projects.html">← All projects</a><header class="project-header"><p class="eyebrow">Additional Work</p><h1 class="page-title">Sir Seretse Khama: the Creation of Contemporary Botswana</h1><p class="project-deck">Wrote a 36-page historical paper analyzing the role of Sir Seretse Khama in the creation of contemporary Botswana, considering Botswana's relative political stability and economic prosperity. In particular, analyzed the roles of Debswana and the De Beers Group in Botswana's diamond-forward economic development.</p><div class="project-tags"><span class="tag project-tag">history</span><span class="tag project-tag">Botswana</span><span class="tag project-tag">politics</span><span class="tag project-tag">economic development</span></div></header><div class="project-layout"><article class="project-main"><section><h2>Overview</h2><p>Wrote a 36-page historical paper analyzing the role of Sir Seretse Khama in the creation of contemporary Botswana, considering Botswana's relative political stability and economic prosperity. In particular, analyzed the roles of Debswana and the De Beers Group in Botswana's diamond-forward economic development.</p></section></article><aside class="project-aside"><div class="project-aside-rule"></div><p class="eyebrow">Project</p><p class="muted">Additional project details can be added as they are finalized.</p></aside></div>`;
   }
   function addNewProjectCard(){
-    const root=document.getElementById('additional-projects');if(!root||root.querySelector('[data-sir-seretse-khama]'))return;const ael=document.createElement('a');ael.dataset.sirSeretseKhama='true';ael.className='card project-card';ael.href='/projects/sir-seretse-khama.html';ael.innerHTML='<div class="project-card-meta"><span>Additional Work</span></div><div class="project-card-subjects"><span class="tag project-tag">history</span><span class="tag project-tag">Botswana</span><span class="tag project-tag">politics</span><span class="tag project-tag">economic development</span></div><h3>Sir Seretse Khama: the Creation of Contemporary Botswana</h3><p>Wrote a 36-page historical paper analyzing the role of Sir Seretse Khama in the creation of contemporary Botswana, considering Botswana’s relative political stability and economic prosperity.</p><span class="project-card-link">Read project →</span>';root.appendChild(ael);}
+    const root=document.getElementById('additional-projects');if(!root||root.querySelector('[data-sir-seretse-khama]'))return;const ael=document.createElement('a');ael.dataset.sirSeretseKhama='true';ael.className='card project-card';ael.href='/projects/sir-seretse-khama.html';ael.innerHTML='<div class="project-card-meta"><span>Additional Work</span></div><div class="project-card-subjects"><span class="tag project-tag">history</span><span class="tag project-tag">Botswana</span><span class="tag project-tag">politics</span><span class="tag project-tag">economic development</span></div><h3>Sir Seretse Khama: the Creation of Contemporary Botswana</h3><p>Wrote a 36-page historical paper analyzing the role of Sir Seretse Khama in the creation of contemporary Botswana, considering Botswana’s relative political stability and economic prosperity. In particular, analyzed the roles of Debswana and the De Beers Group in Botswana’s diamond-forward economic development.</p><span class="project-card-link">Read project →</span>';root.appendChild(ael);}
   function apply(){addStyle();updateEducation();updateExperience();updateHonors();updateProjectCards();updateProjectDetail();addNewProjectCard();}
   function start(){apply();window.addEventListener('site:data-ready',apply);setTimeout(apply,300);setTimeout(apply,1000);}
   if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',start,{once:true});else start();
