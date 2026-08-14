@@ -19,75 +19,20 @@
   };
   function addStyle(){
     if(document.getElementById('site-updates-style'))return;
-    const s=document.createElement('style');
-    s.id='site-updates-style';
-    s.textContent=`
+    const s=document.createElement('style');s.id='site-updates-style';s.textContent=`
       .site-honor-mark{color:${BROWN};font-weight:800;margin-left:.3em}
       .site-external-links{display:flex;flex-wrap:wrap;gap:9px;margin-top:9px}
       .site-external-link{font-size:11px;color:${BROWN};text-decoration:underline;text-underline-offset:3px}
       .project-card-meta{font-weight:700!important}
-    `;
-    document.head.appendChild(s);
+    `;document.head.appendChild(s);
   }
-  function link(text,href){
-    const a=document.createElement('a');a.className='site-external-link';a.href=href;a.textContent=text;
-    if(/^https?:/.test(href)){a.target='_blank';a.rel='noopener noreferrer'}
-    return a;
-  }
-  function selectFloridaSenatePage(){
-    document.querySelectorAll('.timeline-item').forEach(item=>{
-      const title=item.querySelector('h3')?.textContent.trim();
-      if(title!=='Florida Senate Page')return;
-      item.classList.add('timeline-item-featured');
-      if(!item.querySelector('.timeline-featured-label')){
-        const label=document.createElement('span');label.className='timeline-featured-label';label.textContent='Selected experience';item.querySelector('.timeline-content')?.appendChild(label);
-      }
-    });
-  }
-  function addExperienceLinks(){
-    document.querySelectorAll('.timeline-item').forEach(item=>{
-      const title=item.querySelector('h3')?.textContent.trim()||'';
-      const company=item.querySelector('.timeline-company')?.textContent.trim()||'';
-      item.querySelector('.site-external-links')?.remove();
-      let urls=[];
-      if(title==='Debater')urls=[['WSHU',LINKS.wshu],['SBU News',LINKS.sbu]];
-      else if(title==='Legislative Advocate')urls=[['Florida Senate · SB 1676',LINKS.sb1676],['RAISE Act project',LINKS.raiseAct]];
-      else if(title==='NYU Ambassador')urls=[['IPPF · NYU Ambassadors',LINKS.ippf]];
-      else if(title==='Associate Editor')urls=[['ULR masthead',LINKS.ulr]];
-      else if(title==='Founder and Co-President'&&company.startsWith('Accelerated Preparation Society'))urls=[['LinkedIn',LINKS.aps]];
-      else if(title==='Founder and President'&&company.startsWith('Homework Helping'))urls=[['LinkedIn',LINKS.homework]];
-      else if(title==='Founder and President'&&company.startsWith('Student Collective for Educational Reform'))urls=[['LinkedIn',LINKS.scre]];
-      else if(title==='Treasurer'&&company.startsWith('Future Business Leaders of America'))urls=[['FBLA standings',LINKS.fblaStandings],['Credentials',LINKS.fblaCredentials]];
-      if(!urls.length)return;
-      const box=document.createElement('div');box.className='site-external-links';urls.forEach(([t,u])=>box.appendChild(link(t,u)));
-      item.querySelector('.timeline-company')?.after(box);
-    });
-  }
-  function addHonorMarks(){
-    const selected=[
-      '2nd Place, Ethan Rosen Incentive Award (ERIA)',
-      'Quarterfinalist and 6th Seed, Jacob M. Weigler Gotham Debate Tournament, Novice Division',
-      'FBLA International High School Business Law Champion (1st Place)',
-      'Mathematics Department Diamond Award',
-      '3rd Place, FAMAT Strawberry Crest High School Regionals, Statistics',
-      '7th Place, Statistics, University of South Florida Math Bowl Competition',
-      '1st Place, H.C.T.E. 2025 Spring Writing Awards, Nonfiction'
-    ];
-    document.querySelectorAll('.honor-item').forEach(item=>{
-      const strong=item.querySelector('.honor-main strong');if(!strong)return;
-      const title=strong.textContent.trim().replace(/\s*\*$/,'');
-      item.querySelector('.site-honor-mark')?.remove();
-      if(!selected.includes(title))return;
-      const mark=document.createElement('span');mark.className='site-honor-mark';mark.textContent='*';strong.appendChild(mark);
-      item.querySelector('.site-external-links')?.remove();
-      let urls=[];
-      if(title==='FBLA International High School Business Law Champion (1st Place)')urls=[['FBLA standings',LINKS.fblaStandings],['Credentials',LINKS.fblaCredentials]];
-      else if(title.includes('FAMAT Strawberry Crest')||title.includes('FAMAT George S. Middleton'))urls=[['FAMAT standings',LINKS.famatResults]];
-      else if(title==='National Merit Semifinalist')urls=[['Plant City Observer',LINKS.nationalMerit]];
-      if(urls.length){const box=document.createElement('div');box.className='site-external-links';urls.forEach(([t,u])=>box.appendChild(link(t,u)));item.querySelector('.honor-main')?.after(box)}
-    });
-  }
-  function apply(){addStyle();selectFloridaSenatePage();addExperienceLinks();addHonorMarks();}
-  function start(){apply();window.addEventListener('site:data-ready',apply);setTimeout(apply,300);setTimeout(apply,1000);}
+  function link(text,href){const a=document.createElement('a');a.className='site-external-link';a.href=href;a.textContent=text;if(/^https?:/.test(href)){a.target='_blank';a.rel='noopener noreferrer'}return a}
+  function selectFloridaSenatePage(){document.querySelectorAll('.timeline-item').forEach(item=>{const title=item.querySelector('h3')?.textContent.trim();if(title!=='Florida Senate Page')return;item.classList.add('timeline-item-featured');if(!item.querySelector('.timeline-featured-label')){const label=document.createElement('span');label.className='timeline-featured-label';label.textContent='Selected experience';item.querySelector('.timeline-content')?.appendChild(label)}})}
+  function addExperienceLinks(){document.querySelectorAll('.timeline-item').forEach(item=>{const title=item.querySelector('h3')?.textContent.trim()||'';const company=item.querySelector('.timeline-company')?.textContent.trim()||'';item.querySelector('.site-external-links')?.remove();let urls=[];if(title==='Debater')urls=[['WSHU',LINKS.wshu],['SBU News',LINKS.sbu]];else if(title==='Legislative Advocate')urls=[['Florida Senate · SB 1676',LINKS.sb1676],['RAISE Act project',LINKS.raiseAct]];else if(title==='NYU Ambassador')urls=[['IPPF · NYU Ambassadors',LINKS.ippf]];else if(title==='Associate Editor')urls=[['ULR masthead',LINKS.ulr]];else if(title==='Founder and Co-President'&&company.startsWith('Accelerated Preparation Society'))urls=[['LinkedIn',LINKS.aps]];else if(title==='Founder and President'&&company.startsWith('Homework Helping'))urls=[['LinkedIn',LINKS.homework]];else if(title==='Founder and President'&&company.startsWith('Student Collective for Educational Reform'))urls=[['LinkedIn',LINKS.scre]];else if(title==='Treasurer'&&company.startsWith('Future Business Leaders of America'))urls=[['FBLA standings',LINKS.fblaStandings],['Credentials',LINKS.fblaCredentials]];if(!urls.length)return;const box=document.createElement('div');box.className='site-external-links';urls.forEach(([t,u])=>box.appendChild(link(t,u)));item.querySelector('.timeline-company')?.after(box)})}
+  function addHonorMarks(){const selected=['2nd Place, Ethan Rosen Incentive Award (ERIA)','Quarterfinalist and 6th Seed, Jacob M. Weigler Gotham Debate Tournament, Novice Division','FBLA International High School Business Law Champion (1st Place)','Mathematics Department Diamond Award','3rd Place, FAMAT Strawberry Crest High School Regionals, Statistics','7th Place, Statistics, University of South Florida Math Bowl Competition','1st Place, H.C.T.E. 2025 Spring Writing Awards, Nonfiction'];document.querySelectorAll('.honor-item').forEach(item=>{const strong=item.querySelector('.honor-main strong');if(!strong)return;const title=strong.textContent.trim().replace(/\s*\*$/,'');item.querySelector('.site-honor-mark')?.remove();if(selected.includes(title)){const mark=document.createElement('span');mark.className='site-honor-mark';mark.textContent='*';strong.appendChild(mark)}item.querySelector('.site-external-links')?.remove();let urls=[];if(title==='FBLA International High School Business Law Champion (1st Place)')urls=[['FBLA standings',LINKS.fblaStandings],['Credentials',LINKS.fblaCredentials]];else if(title.includes('FAMAT Strawberry Crest')||title.includes('FAMAT George S. Middleton'))urls=[['FAMAT standings',LINKS.famatResults]];else if(title==='National Merit Semifinalist')urls=[['Plant City Observer',LINKS.nationalMerit]];if(urls.length){const box=document.createElement('div');box.className='site-external-links';urls.forEach(([t,u])=>box.appendChild(link(t,u)));item.querySelector('.honor-main')?.after(box)}})}
+  function fixSirSeretseDetail(){const root=document.getElementById('project-detail');if(!root||root.dataset.slug!=='sir-seretse-khama')return;const h1=root.querySelector('.project-header h1');if(h1&&h1.textContent!=='Sir Seretse Khama: the Creation of Contemporary Botswana')h1.textContent='Sir Seretse Khama: the Creation of Contemporary Botswana';document.title='Sir Seretse Khama: the Creation of Contemporary Botswana — Erik Mesic';const eyebrow=root.querySelector('.project-header .eyebrow');if(eyebrow)eyebrow.textContent='RESEARCH · Jan 2024 – Feb 2024';const aside=root.querySelector('.project-aside .muted');if(aside)aside.textContent='Author and primary researcher; reviewed historical research, analyzed Sir Seretse Khama’s particular role, and revised to ensure historical accuracy.'}
+  function restoreAnthology(){const root=document.getElementById('project-detail');if(!root||root.dataset.slug!=='autobiographical-anthology')return;const project={name:'Autobiographical Anthology',description:'An ongoing autobiographical book project combining memoir, journalism, literary experimentation, and philosophical inquiry.',status:'Publication · Apr 2025 – Present',overview:'An ongoing book project built around autobiographical reflection, literary experimentation, and philosophical inquiry, with intended publication around 2028.',role:'Author and primary researcher; developed the manuscript, incorporated mentor feedback, and revised for readability and impact.',details:['Written more than 100 pages of the planned manuscript.','Uses unconventional literary forms, including a chapter written as a letter of resignation.','Includes a four-page philosophical consideration of the value of human life relative to other animals, incorporating a logarithmic model.','Collaborated with five expert mentors for feedback, advice, and review, implementing revisions to improve readability and impact.','Emphasizes literary and philosophical reflection on past events and circumstances, with intended publication around 2028.']};const h1=root.querySelector('.project-header h1');if(!h1)return;h1.textContent=project.name;document.title=project.name+' — Erik Mesic';const eyebrow=root.querySelector('.project-header .eyebrow');if(eyebrow)eyebrow.textContent=project.status;const deck=root.querySelector('.project-deck');if(deck)deck.textContent=project.description;const main=root.querySelector('.project-main');if(main){main.innerHTML='<section><h2>Overview</h2><p>'+project.overview+'</p></section><section><h2>My role</h2><p>'+project.role+'</p></section><section><h2>Selected work</h2><ul class="project-details">'+project.details.map(x=>'<li>'+x+'</li>').join('')+'</ul></section>';}const aside=root.querySelector('.project-aside .muted');if(aside)aside.textContent='Writing & Publication';}
+  function apply(){addStyle();selectFloridaSenatePage();addExperienceLinks();addHonorMarks();fixSirSeretseDetail();restoreAnthology()}
+  function start(){apply();window.addEventListener('site:data-ready',apply);setTimeout(apply,300);setTimeout(apply,1000)}
   if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',start,{once:true});else start();
 })();
