@@ -23,5 +23,24 @@
   </main>
   <footer class="footer"><p>© 2026 Erik Mesic</p></footer>
   <script src="/assets/js/pageload.js"></script><script src="/assets/js/visuals.js"></script><script src="/assets/js/final-fixes.js"></script><script src="/assets/js/site-updates.js"></script>
+  <script>
+    (function(){
+      const profile='https://www.linkedin.com/in/erikmesic/';
+      const roles=new Set(['Founder and Co-President','Founder and President|Homework Helping','Founder and President|Student Collective for Educational Reform']);
+      function add(){
+        document.querySelectorAll('.timeline-item').forEach(item=>{
+          const title=item.querySelector('h3')?.textContent?.trim().replace(/\s*\*$/,'')||'';
+          const company=item.querySelector('.timeline-company')?.textContent?.trim()||'';
+          const key=`${title}|${company}`;
+          if(!roles.has(key)&&!(title==='Founder and Co-President'&&company.startsWith('Accelerated Preparation Society')))return;
+          if(item.querySelector('[data-linkedin-role]'))return;
+          const link=document.createElement('a');link.href=profile;link.target='_blank';link.rel='noopener noreferrer';link.className='site-external-link';link.dataset.linkedinRole='true';link.textContent='LinkedIn';
+          const wrap=document.createElement('div');wrap.className='site-external-links';wrap.appendChild(link);item.querySelector('.timeline-company')?.after(wrap);
+        });
+      }
+      if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',()=>setTimeout(add,50),{once:true});else setTimeout(add,50);
+      setTimeout(add,400);
+    })();
+  </script>
 </body>
 </html>
