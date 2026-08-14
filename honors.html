@@ -22,5 +22,20 @@
   </main>
   <footer class="footer"><p>© 2026 Erik Mesic</p></footer>
   <script src="/assets/js/pageload.js"></script><script src="/assets/js/visuals.js"></script><script src="/assets/js/final-fixes.js"></script><script src="/assets/js/site-updates.js"></script>
+  <script>
+    (function(){
+      function positionSelectedHonorLabels(){
+        document.querySelectorAll('#honors-list .honor-item').forEach(function(item){
+          var label=item.querySelector('.site-selected-label');
+          var details=item.querySelector('details');
+          if(label && details && label.previousElementSibling!==details){
+            details.insertAdjacentElement('afterend',label);
+          }
+        });
+      }
+      positionSelectedHonorLabels();
+      new MutationObserver(positionSelectedHonorLabels).observe(document.getElementById('honors-list'),{childList:true,subtree:true});
+    })();
+  </script>
 </body>
 </html>
