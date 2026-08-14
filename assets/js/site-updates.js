@@ -10,82 +10,31 @@
   function addStyle(){
     if(document.getElementById('site-updates-style'))return;
     const s=document.createElement('style');s.id='site-updates-style';s.textContent=`
-      .site-selected-mark,.site-honor-mark{color:${BROWN}!important;font-weight:800!important;margin-left:.3em;display:inline-block}
+      .site-selected-mark{color:${BROWN}!important;font-weight:800!important;margin-left:.3em;display:inline-block}
+      .site-honor-mark{color:${BROWN}!important;font-weight:800!important;margin-left:.3em;display:inline-block}
       .timeline-item-featured .timeline-featured-label{color:${BROWN}!important}
       .site-honor-selected{background:rgba(122,75,47,.055)!important;border-radius:4px;padding-left:8px;padding-right:8px}
-      .site-selected-label{display:block;margin-top:8px;color:${BROWN}!important;font-size:10px;text-transform:uppercase;letter-spacing:.12em;font-weight:600}
+      .site-selected-label{display:block;margin-top:5px;color:${BROWN}!important;font-family:var(--font-mono,monospace)!important;font-size:9px!important;text-transform:uppercase;letter-spacing:.1em;font-weight:400!important}
       .site-external-links{display:flex;flex-wrap:wrap;gap:9px;margin-top:9px}.site-external-link{font-size:11px;color:${BROWN};text-decoration:underline;text-underline-offset:3px}
       .project-card{display:flex!important;flex-direction:column!important;min-height:230px!important;transition:transform .36s ease,box-shadow .36s ease,border-color .36s ease!important}
       .project-card:hover,.project-card.reveal-ready.reveal-visible:hover{transform:translateY(-4px)!important;box-shadow:0 12px 36px rgba(0,0,0,.45)!important;border-color:rgba(143,90,59,.32)!important}
       .project-card-meta{font-weight:700!important}
-      .project-header .page-title{white-space:normal;overflow:visible;display:block}
+      .project-header .page-title{white-space:normal;overflow:visible;display:block;line-height:1.08}
       .project-header .page-title .type-text{display:inline;white-space:normal}
-      .project-header .page-title .type-caret{display:inline-block;width:2px;height:1.05em;margin-left:2px;vertical-align:-.12em;background:${BROWN};animation:type-caret-blink .8s step-end infinite}
+      .project-header .page-title .type-caret{display:inline-block;width:.075em;height:1em;margin-left:.08em;vertical-align:-.06em;background:${BROWN};animation:type-caret-blink .8s step-end infinite}
+      .additional-work-project .project-card-meta,.project-card[data-category="additional-work"] .project-card-meta{ text-transform:uppercase!important }
       @keyframes type-caret-blink{50%{opacity:0}}
     `;document.head.appendChild(s)
   }
   function link(text,href){const a=document.createElement('a');a.className='site-external-link';a.href=href;a.textContent=text;a.target='_blank';a.rel='noopener noreferrer';return a}
-  function markSelectedExperiences(){
-    document.querySelectorAll('.timeline-item').forEach(item=>{
-      const h=item.querySelector('.timeline-content h3'),companyEl=item.querySelector('.timeline-company');if(!h||!companyEl)return;
-      const title=h.textContent.trim().replace(/\s*\*$/,''),company=companyEl.textContent.trim().replace(/\s*\*$/,'');
-      const selected=SELECTED_EXPERIENCE_TITLES.has(title)&&[...SELECTED_EXPERIENCE_COMPANIES].some(c=>company.startsWith(c));
-      if(!selected)return;
-      if(!h.querySelector('.site-selected-mark')){const star=document.createElement('span');star.className='site-selected-mark';star.textContent='*';h.appendChild(star)}
-      item.classList.add('timeline-item-featured');
-    });
-  }
-  function addExperienceLinks(){
-    document.querySelectorAll('.timeline-item').forEach(item=>{
-      const title=item.querySelector('h3')?.textContent.trim().replace(/\s*\*$/,'')||'',company=item.querySelector('.timeline-company')?.textContent.trim()||'';
-      item.querySelectorAll('a[href*="linkedin.com/company/homework-helping"],a[href*="linkedin.com/company/accelerated-preparation-society"]').forEach(a=>a.remove());
-      item.querySelector('.site-external-links')?.remove();let urls=[];
-      if(title==='Debater')urls=[['WSHU',LINKS.wshu],['SBU News',LINKS.sbu]];
-      else if(title==='Legislative Advocate')urls=[['Florida Senate · SB 1676',LINKS.sb1676],['RAISE Act project',LINKS.raiseAct]];
-      else if(title==='NYU Ambassador')urls=[['IPPF · NYU Ambassadors',LINKS.ippf]];
-      else if(title==='Associate Editor')urls=[['ULR masthead',LINKS.ulr]];
-      else if(title==='Founder and Co-President'&&company.startsWith('Accelerated Preparation Society'))urls=[['LinkedIn',LINKS.aps]];
-      else if(title==='Founder and President'&&company.startsWith('Homework Helping'))urls=[['LinkedIn',LINKS.homework]];
-      else if(title==='Founder and President'&&company.startsWith('Student Collective for Educational Reform'))urls=[['LinkedIn',LINKS.scre]];
-      else if(title==='Treasurer'&&company.startsWith('Future Business Leaders of America'))urls=[['FBLA standings',LINKS.fblaStandings],['Credentials',LINKS.fblaCredentials]];
-      if(!urls.length)return;const box=document.createElement('div');box.className='site-external-links';urls.forEach(([t,u])=>box.appendChild(link(t,u)));item.querySelector('.timeline-company')?.after(box);
-    });
-  }
-  function addHonorMarks(){
-    document.querySelectorAll('.honor-item').forEach(item=>{
-      const strong=item.querySelector('.honor-main strong');if(!strong)return;const title=strong.textContent.trim().replace(/\s*\*$/,'');
-      item.classList.remove('site-honor-selected');item.querySelector('.site-selected-label')?.remove();item.querySelector('.site-honor-mark')?.remove();
-      if(SELECTED_HONORS.some(x=>title===x||title.includes(x)||x.includes(title))){
-        item.classList.add('site-honor-selected');
-        const mark=document.createElement('span');mark.className='site-honor-mark';mark.textContent='*';strong.appendChild(mark);
-        const label=document.createElement('span');label.className='site-selected-label';label.textContent='Selected honor/award';item.querySelector('.honor-main')?.appendChild(label);
-      }
-      item.querySelector('.site-external-links')?.remove();let urls=[];
-      if(title==='FBLA International High School Business Law Champion (1st Place)')urls=[['FBLA standings',LINKS.fblaStandings],['Credentials',LINKS.fblaCredentials]];
-      else if(title.includes('FAMAT Strawberry Crest')||title.includes('FAMAT George S. Middleton'))urls=[['FAMAT standings',LINKS.famatResults]];
-      else if(title==='National Merit Semifinalist')urls=[['Plant City Observer',LINKS.nationalMerit]];
-      if(urls.length){const box=document.createElement('div');box.className='site-external-links';urls.forEach(([t,u])=>box.appendChild(link(t,u)));item.querySelector('.honor-main')?.after(box)}
-    });
-  }
-  function capitalizeAdditionalWork(){
-    document.querySelectorAll('.project-card').forEach(card=>{
-      const heading=card.querySelector('.project-card-meta span:first-child');if(!heading)return;
-      const parent=card.closest('[data-project-category="additional-work"],.additional-work');
-      const text=heading.textContent.trim();
-      if(parent||/^publication\b/i.test(text))heading.textContent=text.replace(/^([a-z])/,(m)=>m.toUpperCase()).replace(/\b([a-z]{3,})\b/g,(m)=>m==='apr'||m==='may'||m==='jun'||m==='jul'||m==='aug'||m==='sep'||m==='oct'||m==='nov'||m==='dec'?m.charAt(0).toUpperCase()+m.slice(1):m);
-    });
-  }
-  function restoreAnthologyCard(){const card=document.querySelector('a.project-card[href*="/projects/autobiographical-anthology.html"]');if(!card)return;const meta=card.querySelector('.project-card-meta span:first-child');if(meta)meta.textContent=ANTHOLOGY.status;const subjects=card.querySelector('.project-card-subjects');if(subjects)subjects.innerHTML=ANTHOLOGY.tags.map(t=>`<span class="tag project-tag">${t}</span>`).join('');const h3=card.querySelector('h3');if(h3)h3.textContent=ANTHOLOGY.name;const p=card.querySelector('p');if(p)p.textContent=ANTHOLOGY.description}
+  function markSelectedExperiences(){document.querySelectorAll('.timeline-item').forEach(item=>{const h=item.querySelector('.timeline-content h3'),companyEl=item.querySelector('.timeline-company');if(!h||!companyEl)return;const title=h.textContent.trim().replace(/\s*\*$/,''),company=companyEl.textContent.trim().replace(/\s*\*$/,'');const selected=SELECTED_EXPERIENCE_TITLES.has(title)&&[...SELECTED_EXPERIENCE_COMPANIES].some(c=>company.startsWith(c));if(!selected)return;if(!h.querySelector('.site-selected-mark')){const star=document.createElement('span');star.className='site-selected-mark';star.textContent='*';h.appendChild(star)}item.classList.add('timeline-item-featured')})}
+  function addExperienceLinks(){document.querySelectorAll('.timeline-item').forEach(item=>{const title=item.querySelector('h3')?.textContent.trim().replace(/\s*\*$/,'')||'',company=item.querySelector('.timeline-company')?.textContent.trim()||'';item.querySelectorAll('a[href*="linkedin.com/company/homework-helping"],a[href*="linkedin.com/company/accelerated-preparation-society"]').forEach(a=>a.remove());item.querySelector('.site-external-links')?.remove();let urls=[];if(title==='Debater')urls=[['WSHU',LINKS.wshu],['SBU News',LINKS.sbu]];else if(title==='Legislative Advocate')urls=[['Florida Senate · SB 1676',LINKS.sb1676],['RAISE Act project',LINKS.raiseAct]];else if(title==='NYU Ambassador')urls=[['IPPF · NYU Ambassadors',LINKS.ippf]];else if(title==='Associate Editor')urls=[['ULR masthead',LINKS.ulr]];else if(title==='Founder and Co-President'&&company.startsWith('Accelerated Preparation Society'))urls=[['LinkedIn',LINKS.aps]];else if(title==='Founder and President'&&company.startsWith('Homework Helping'))urls=[['LinkedIn',LINKS.homework]];else if(title==='Founder and President'&&company.startsWith('Student Collective for Educational Reform'))urls=[['LinkedIn',LINKS.scre]];else if(title==='Treasurer'&&company.startsWith('Future Business Leaders of America'))urls=[['FBLA standings',LINKS.fblaStandings],['Credentials',LINKS.fblaCredentials]];if(!urls.length)return;const box=document.createElement('div');box.className='site-external-links';urls.forEach(([t,u])=>box.appendChild(link(t,u)));item.querySelector('.timeline-company')?.after(box)})}
+  function addHonorMarks(){document.querySelectorAll('.honor-item').forEach(item=>{const strong=item.querySelector('.honor-main strong');if(!strong)return;const title=strong.textContent.trim().replace(/\s*\*$/,'');item.classList.remove('site-honor-selected');item.querySelector('.site-selected-label')?.remove();item.querySelector('.site-honor-mark')?.remove();if(SELECTED_HONORS.some(x=>title===x||title.includes(x)||x.includes(title))){item.classList.add('site-honor-selected');const mark=document.createElement('span');mark.className='site-honor-mark';mark.textContent='*';strong.appendChild(mark)}item.querySelector('.site-external-links')?.remove();let urls=[];if(title==='FBLA International High School Business Law Champion (1st Place)')urls=[['FBLA standings',LINKS.fblaStandings],['Credentials',LINKS.fblaCredentials]];else if(title.includes('FAMAT Strawberry Crest')||title.includes('FAMAT George S. Middleton'))urls=[['FAMAT standings',LINKS.famatResults]];else if(title==='National Merit Semifinalist')urls=[['Plant City Observer',LINKS.nationalMerit]];if(urls.length){const box=document.createElement('div');box.className='site-external-links';urls.forEach(([t,u])=>box.appendChild(link(t,u)));const label=document.createElement('span');label.className='site-selected-label';label.textContent='Selected honor/award';box.after(label);item.querySelector('.honor-main')?.after(box);box.after(label)}}) }
+  function capitalizeAdditionalWork(){document.querySelectorAll('.project-card').forEach(card=>{const heading=card.querySelector('.project-card-meta span:first-child');if(!heading)return;const text=heading.textContent.trim();const href=card.getAttribute('href')||'';if(card.closest('.additional-work,[data-project-category="additional-work"]')||href.includes('autobiographical-anthology')||href.includes('sir-seretse-khama'))heading.textContent=text.toUpperCase()})}
+  function restoreAnthologyCard(){const card=document.querySelector('a.project-card[href*="/projects/autobiographical-anthology.html"]');if(!card)return;const meta=card.querySelector('.project-card-meta span:first-child');if(meta)meta.textContent=ANTHOLOGY.status;const subjects=card.querySelector('.project-card-subjects');if(subjects)subjects.innerHTML=ANTHOLOGY.tags.map(t=>`<span class="tag project-tag">${t}</span>`).join('');const h3=card.querySelector('h3');if(h3)h3.textContent=ANTHOLOGY.name;const p=card.querySelector('p');if(p)p.textContent=ANTHOLOGY.description)}
   function restoreAnthologyPage(){const root=document.getElementById('project-detail');if(!root||root.dataset.slug!=='autobiographical-anthology')return;const h1=root.querySelector('.project-header h1');if(!h1)return;const eyebrow=root.querySelector('.project-header .eyebrow');if(eyebrow)eyebrow.textContent=ANTHOLOGY.status;h1.dataset.finalTyped='';h1.textContent=ANTHOLOGY.name;const deck=root.querySelector('.project-deck');if(deck)deck.textContent=ANTHOLOGY.description;const main=root.querySelector('.project-main');if(main)main.innerHTML=`<section><h2>Overview</h2><p>${ANTHOLOGY.overview}</p></section><section><h2>My role</h2><p>${ANTHOLOGY.role}</p></section><section><h2>Selected work</h2><ul class="project-details">${ANTHOLOGY.details.map(x=>`<li>${x}</li>`).join('')}</ul></section>`;const aside=root.querySelector('.project-aside .muted');if(aside)aside.textContent='Writing & Publication';document.title=ANTHOLOGY.name+' — Erik Mesic'}
   function fixSirSeretseDetail(){const root=document.getElementById('project-detail');if(!root||root.dataset.slug!=='sir-seretse-khama')return;const h1=root.querySelector('.project-header h1');if(h1){h1.dataset.finalTyped='';h1.textContent='Sir Seretse Khama: the Creation of Contemporary Botswana'}const eyebrow=root.querySelector('.project-header .eyebrow');if(eyebrow)eyebrow.textContent='RESEARCH · Jan 2024 – Feb 2024';const aside=root.querySelector('.project-aside .muted');if(aside)aside.textContent='Author and primary researcher; reviewed historical research, analyzed Sir Seretse Khama’s particular role, and revised to ensure historical accuracy.';document.title='Sir Seretse Khama: the Creation of Contemporary Botswana — Erik Mesic'}
-  function restoreTypewriter(){
-    if(window.matchMedia?.('(prefers-reduced-motion: reduce)').matches)return;
-    document.querySelectorAll('.project-header .page-title').forEach(el=>{
-      if(el.dataset.finalTyped==='true')return;const text=(el.textContent||'').trim();if(!text)return;el.dataset.finalTyped='true';el.setAttribute('aria-label',text);el.innerHTML='';
-      const out=document.createElement('span');out.className='type-text';const caret=document.createElement('span');caret.className='type-caret';el.append(out,caret);
-      let i=0;const timer=setInterval(()=>{if(i<text.length)out.textContent+=text[i++];else{clearInterval(timer);setTimeout(()=>caret.remove(),1000)}},120);
-    });
-  }
+  function restoreTypewriter(){if(window.matchMedia?.('(prefers-reduced-motion: reduce)').matches)return;document.querySelectorAll('.project-header .page-title').forEach(el=>{if(el.dataset.finalTyped==='true')return;const text=(el.textContent||'').trim();if(!text)return;el.dataset.finalTyped='true';el.setAttribute('aria-label',text);el.innerHTML='';const out=document.createElement('span');out.className='type-text';const caret=document.createElement('span');caret.className='type-caret';el.append(out,caret);let i=0;const timer=setInterval(()=>{if(i<text.length)out.textContent+=text[i++];else{clearInterval(timer);setTimeout(()=>caret.remove(),1000)}},65)})}
   function apply(){addStyle();markSelectedExperiences();addExperienceLinks();addHonorMarks();capitalizeAdditionalWork();restoreAnthologyCard();restoreAnthologyPage();fixSirSeretseDetail();restoreTypewriter()}
   function start(){apply();window.addEventListener('site:data-ready',apply);setTimeout(apply,300);setTimeout(apply,1000);setTimeout(apply,2000)}
   if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',start,{once:true});else start();
