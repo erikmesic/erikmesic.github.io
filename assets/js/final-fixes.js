@@ -26,7 +26,6 @@
       .gis-backpacking-map{position:relative;margin-top:1rem}.gis-backpacking-map .gis-map-main{height:520px;border:1px solid rgba(92,75,58,.25);box-shadow:0 10px 28px rgba(92,75,58,.09);background:#e7eee9}.gis-backpacking-map .gis-map-inset{height:260px;margin-top:12px;border:1px solid rgba(92,75,58,.25);box-shadow:0 8px 22px rgba(92,75,58,.08);background:#e7eee9}.gis-backpacking-map .leaflet-container{font-family:Arial,sans-serif}.gis-backpacking-map .leaflet-control-attribution{display:none!important}.gis-backpacking-map .leaflet-popup-content-wrapper,.gis-backpacking-map .leaflet-popup-tip{background:#f7f3ec;color:#211d19}.gis-backpacking-map .leaflet-popup-content{font-family:Arial,sans-serif;font-size:12px;line-height:1.35}
       .gis-backpacking-map .trip-marker{box-sizing:border-box!important;width:26px!important;height:26px!important;margin-left:-13px!important;margin-top:-13px!important;border-radius:50%!important;background:#8b5e3c!important;border:3px solid #f7f3ec!important;box-shadow:0 0 0 2px rgba(139,94,60,.72),0 3px 10px rgba(0,0,0,.45)!important;display:flex!important;align-items:center!important;justify-content:center!important;color:#fff!important;font:700 12px/1 Arial,sans-serif!important;text-align:center!important}
       .gis-backpacking-map .trip-marker.brown{background:#8b5e3c!important;box-shadow:0 0 0 2px rgba(139,94,60,.72),0 3px 10px rgba(0,0,0,.45)!important}
-      .gis-backpacking-map .trip-arrow{width:0;height:0;border-top:6px solid transparent;border-bottom:6px solid transparent;border-left:11px solid #8b5e3c;filter:drop-shadow(0 1px 2px rgba(0,0,0,.45));transform-origin:center center}
       .gis-backpacking-map .trip-route{stroke:#8b5e3c;stroke-width:3.2;dash-array:none;opacity:.82}.gis-backpacking-map .map-heading{font-family:Arial,sans-serif;letter-spacing:.12em;text-transform:uppercase;font-size:.72rem;color:#5c4b3a;margin:.75rem 0 .35rem;font-weight:700}.gis-backpacking-map .map-note{font-size:.8rem;color:#5c4b3a;margin:.55rem 0 0}.gis-backpacking-map .leaflet-control-zoom a{color:#5c4b3a}
       @media(max-width:600px){#erik-assistant{right:12px!important;bottom:76px!important;left:auto!important;width:auto!important}#erik-assistant .assistant-panel{position:fixed!important;top:84px!important;right:12px!important;bottom:132px!important;left:12px!important;width:auto!important;max-width:none!important;max-height:none!important;height:auto!important;overflow-x:hidden!important;overflow-y:auto!important;-webkit-overflow-scrolling:touch!important}#contact-pill{right:12px!important;bottom:12px!important}#contact-panel{right:12px!important;bottom:68px!important}.gis-backpacking-map .gis-map-main{height:430px}.gis-backpacking-map .gis-map-inset{height:220px}}
     `;if(!style.parentNode)document.head.appendChild(style);}
@@ -49,7 +48,7 @@
     frame.dataset.gisReady='loading';
     loadLeaflet().then(()=>{
       if(!frame.isConnected)return;
-      frame.innerHTML='<div class="gis-backpacking-map"><div class="map-heading">United States · topographic trips</div><div class="gis-map-main"></div><div class="map-heading">Jablanovec, Croatia · regional inset</div><div class="gis-map-inset"></div><p class="map-note">Interactive GIS basemap: USGS The National Map for U.S. locations; OpenStreetMap for the Croatia inset. The numbered markers follow the trips chronologically.</p></div>';
+      frame.innerHTML='<div class="gis-backpacking-map"><div class="map-heading">United States · topographic trips</div><div class="gis-map-main"></div><div class="map-heading">Jablanovec, Croatia · regional inset</div><div class="gis-map-inset"></div><p class="map-note">Interactive GIS basemap: USGS The National Map for U.S. locations; OpenStreetMap for the Croatia inset. Numbered markers show the trips chronologically; the solid line connects the U.S. trips in that order.</p></div>';
       const trips=[
         {name:'Deception Pass State Park',date:'JUL 2023',lat:48.39733,lon:-122.64602},
         {name:'Tunnel Creek · Olympic National Forest',date:'JUL 2024',lat:47.7814,lon:-123.0524},
@@ -66,14 +65,6 @@
       L.tileLayer('https://basemap.nationalmap.gov/arcgis/rest/services/USGSTopo/MapServer/tile/{z}/{y}/{x}',{maxZoom:16,attribution:'USGS The National Map'}).addTo(map);
       const points=trips.map(t=>[t.lat,t.lon]);
       L.polyline(points,{className:'trip-route',color:'#8b5e3c',weight:3.2,dashArray:null,opacity:.82,interactive:false}).addTo(map);
-      function addArrow(a,b){
-        const lat=a[0]+(b[0]-a[0])*.68,lon=a[1]+(b[1]-a[1])*.68;
-        const dy=-(b[0]-a[0]),dx=(b[1]-a[1])*Math.cos(lat*Math.PI/180);
-        const angle=Math.atan2(dy,dx)*180/Math.PI;
-        const icon=L.divIcon({className:'',html:'<span class="trip-arrow" style="transform:rotate('+angle+'deg)"></span>',iconSize:[16,16],iconAnchor:[8,8]});
-        L.marker([lat,lon],{icon,interactive:false,zIndexOffset:900}).addTo(map);
-      }
-      for(let i=0;i<points.length-1;i++)addArrow(points[i],points[i+1]);
       trips.forEach((t,i)=>{const icon=L.divIcon({className:'',html:'<span class="trip-marker">'+(i+1)+'</span>',iconSize:[26,26],iconAnchor:[13,13]});L.marker([t.lat,t.lon],{icon,zIndexOffset:1000+i}).addTo(map).bindPopup('<strong>'+(i+1)+'. '+t.name+'</strong><br>'+t.date);});
       map.fitBounds(L.latLngBounds(points),{padding:[35,35]});
       const croatia=L.map(frame.querySelector('.gis-map-inset'),{scrollWheelZoom:false,zoomControl:true,attributionControl:false}).setView([45.87999,15.855],13);
