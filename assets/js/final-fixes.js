@@ -23,10 +23,11 @@
       .project-header .page-title .type-text{display:inline!important;white-space:normal!important}
       .project-header .page-title .type-text.typewriter-active::after{content:"";display:inline-block;width:2px;height:.9em;margin-left:.08em;background:#7a4b2f;vertical-align:-.08em;animation:type-caret-blink .8s step-end infinite}
       @keyframes type-caret-blink{50%{opacity:0}}
-      .gis-backpacking-map{position:relative;margin-top:1rem}.gis-backpacking-map .gis-map-main{height:520px;border:1px solid rgba(92,75,58,.25);box-shadow:0 10px 28px rgba(92,75,58,.09);background:#e7eee9}.gis-backpacking-map .gis-map-inset{height:260px;margin-top:12px;border:1px solid rgba(92,75,58,.25);box-shadow:0 8px 22px rgba(92,75,58,.08);background:#e7eee9}.gis-backpacking-map .leaflet-container{font-family:Arial,sans-serif}.gis-backpacking-map .leaflet-control-attribution{font-size:9px}.gis-backpacking-map .leaflet-popup-content-wrapper,.gis-backpacking-map .leaflet-popup-tip{background:#f7f3ec;color:#211d19}.gis-backpacking-map .leaflet-popup-content{font-family:Arial,sans-serif;font-size:12px;line-height:1.35}
-      .gis-backpacking-map .trip-marker{box-sizing:border-box!important;width:26px!important;height:26px!important;margin-left:-13px!important;margin-top:-13px!important;border-radius:50%!important;background:#2f6f6b!important;border:3px solid #fff!important;box-shadow:0 0 0 2px rgba(47,111,107,.65),0 3px 10px rgba(0,0,0,.45)!important;display:flex!important;align-items:center!important;justify-content:center!important;color:#fff!important;font:700 12px/1 Arial,sans-serif!important;text-align:center!important}
+      .gis-backpacking-map{position:relative;margin-top:1rem}.gis-backpacking-map .gis-map-main{height:520px;border:1px solid rgba(92,75,58,.25);box-shadow:0 10px 28px rgba(92,75,58,.09);background:#e7eee9}.gis-backpacking-map .gis-map-inset{height:260px;margin-top:12px;border:1px solid rgba(92,75,58,.25);box-shadow:0 8px 22px rgba(92,75,58,.08);background:#e7eee9}.gis-backpacking-map .leaflet-container{font-family:Arial,sans-serif}.gis-backpacking-map .leaflet-control-attribution{display:none!important}.gis-backpacking-map .leaflet-popup-content-wrapper,.gis-backpacking-map .leaflet-popup-tip{background:#f7f3ec;color:#211d19}.gis-backpacking-map .leaflet-popup-content{font-family:Arial,sans-serif;font-size:12px;line-height:1.35}
+      .gis-backpacking-map .trip-marker{box-sizing:border-box!important;width:26px!important;height:26px!important;margin-left:-13px!important;margin-top:-13px!important;border-radius:50%!important;background:#8b5e3c!important;border:3px solid #f7f3ec!important;box-shadow:0 0 0 2px rgba(139,94,60,.72),0 3px 10px rgba(0,0,0,.45)!important;display:flex!important;align-items:center!important;justify-content:center!important;color:#fff!important;font:700 12px/1 Arial,sans-serif!important;text-align:center!important}
       .gis-backpacking-map .trip-marker.brown{background:#8b5e3c!important;box-shadow:0 0 0 2px rgba(139,94,60,.72),0 3px 10px rgba(0,0,0,.45)!important}
-      .gis-backpacking-map .trip-route{stroke:#8b5e3c;stroke-width:4;dash-array:8 7;opacity:.95}.gis-backpacking-map .map-heading{font-family:Arial,sans-serif;letter-spacing:.12em;text-transform:uppercase;font-size:.72rem;color:#5c4b3a;margin:.75rem 0 .35rem;font-weight:700}.gis-backpacking-map .map-note{font-size:.8rem;color:#5c4b3a;margin:.55rem 0 0}.gis-backpacking-map .leaflet-control-zoom a{color:#5c4b3a}
+      .gis-backpacking-map .trip-arrow{width:0;height:0;border-top:7px solid transparent;border-bottom:7px solid transparent;border-left:12px solid #2f6f6b;filter:drop-shadow(0 1px 2px rgba(0,0,0,.45));transform-origin:center center}
+      .gis-backpacking-map .trip-route{stroke:#2f6f6b;stroke-width:3.5;dash-array:7 7;opacity:.72}.gis-backpacking-map .map-heading{font-family:Arial,sans-serif;letter-spacing:.12em;text-transform:uppercase;font-size:.72rem;color:#5c4b3a;margin:.75rem 0 .35rem;font-weight:700}.gis-backpacking-map .map-note{font-size:.8rem;color:#5c4b3a;margin:.55rem 0 0}.gis-backpacking-map .leaflet-control-zoom a{color:#5c4b3a}
       @media(max-width:600px){#erik-assistant{right:12px!important;bottom:76px!important;left:auto!important;width:auto!important}#erik-assistant .assistant-panel{position:fixed!important;top:84px!important;right:12px!important;bottom:132px!important;left:12px!important;width:auto!important;max-width:none!important;max-height:none!important;height:auto!important;overflow-x:hidden!important;overflow-y:auto!important;-webkit-overflow-scrolling:touch!important}#contact-pill{right:12px!important;bottom:12px!important}#contact-panel{right:12px!important;bottom:68px!important}.gis-backpacking-map .gis-map-main{height:430px}.gis-backpacking-map .gis-map-inset{height:220px}}
     `;if(!style.parentNode)document.head.appendChild(style);}
   function disclaimer(){const panel=document.querySelector('#erik-assistant .assistant-panel');if(panel&&!panel.querySelector('.assistant-disclaimer')){const p=document.createElement('p');p.className='assistant-disclaimer';p.textContent=DISCLAIMER;panel.appendChild(p);}}
@@ -61,15 +62,23 @@
         {name:'Cascade Pass · North Cascades National Park',date:'JUN 2026',lat:48.4754,lon:-121.0751},
         {name:'Hanging Rock State Park · North Carolina',date:'JUL 2026',lat:36.4119,lon:-80.2541}
       ];
-      const map=L.map(frame.querySelector('.gis-map-main'),{scrollWheelZoom:false,worldCopyJump:true,zoomControl:true}).setView([40,-96],4);
+      const map=L.map(frame.querySelector('.gis-map-main'),{scrollWheelZoom:false,worldCopyJump:true,zoomControl:true,attributionControl:false}).setView([40,-96],4);
       L.tileLayer('https://basemap.nationalmap.gov/arcgis/rest/services/USGSTopo/MapServer/tile/{z}/{y}/{x}',{maxZoom:16,attribution:'USGS The National Map'}).addTo(map);
       const points=trips.map(t=>[t.lat,t.lon]);
-      L.polyline(points,{className:'trip-route',color:'#8b5e3c',weight:4,dashArray:'8 7',opacity:.95}).addTo(map);
-      trips.forEach((t,i)=>{const icon=L.divIcon({className:'',html:'<span class="trip-marker'+(i===trips.length-1?' brown':'')+'">'+(i+1)+'</span>',iconSize:[26,26],iconAnchor:[13,13]});L.marker([t.lat,t.lon],{icon,zIndexOffset:1000+i}).addTo(map).bindPopup('<strong>'+(i+1)+'. '+t.name+'</strong><br>'+t.date);});
+      L.polyline(points,{className:'trip-route',color:'#2f6f6b',weight:3.5,dashArray:'7 7',opacity:.72,interactive:false}).addTo(map);
+      function addArrow(a,b){
+        const lat=(a[0]+b[0])/2,lon=(a[1]+b[1])/2;
+        const dy=b[0]-a[0],dx=(b[1]-a[1])*Math.cos(lat*Math.PI/180);
+        const angle=Math.atan2(dy,dx)*180/Math.PI;
+        const icon=L.divIcon({className:'',html:'<span class="trip-arrow" style="transform:rotate('+angle+'deg)"></span>',iconSize:[16,16],iconAnchor:[8,8]});
+        L.marker([lat,lon],{icon,interactive:false,zIndexOffset:900}).addTo(map);
+      }
+      for(let i=0;i<points.length-1;i++)addArrow(points[i],points[i+1]);
+      trips.forEach((t,i)=>{const icon=L.divIcon({className:'',html:'<span class="trip-marker">'+(i+1)+'</span>',iconSize:[26,26],iconAnchor:[13,13]});L.marker([t.lat,t.lon],{icon,zIndexOffset:1000+i}).addTo(map).bindPopup('<strong>'+(i+1)+'. '+t.name+'</strong><br>'+t.date);});
       map.fitBounds(L.latLngBounds(points),{padding:[35,35]});
-      const croatia=L.map(frame.querySelector('.gis-map-inset'),{scrollWheelZoom:false,zoomControl:true,attributionControl:true}).setView([45.87999,15.855],13);
+      const croatia=L.map(frame.querySelector('.gis-map-inset'),{scrollWheelZoom:false,zoomControl:true,attributionControl:false}).setView([45.87999,15.855],13);
       L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png',{maxZoom:19,attribution:'© OpenStreetMap contributors'}).addTo(croatia);
-      const cicon=L.divIcon({className:'',html:'<span class="trip-marker brown">11</span>',iconSize:[26,26],iconAnchor:[13,13]});
+      const cicon=L.divIcon({className:'',html:'<span class="trip-marker">11</span>',iconSize:[26,26],iconAnchor:[13,13]});
       L.marker([45.88,15.855],{icon:cicon,zIndexOffset:1100}).addTo(croatia).bindPopup('<strong>11. Jablanovec, Croatia</strong><br>AUG 2026').openPopup();
       frame.dataset.gisReady='true';
     }).catch(()=>{frame.dataset.gisReady='false';});
